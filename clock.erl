@@ -1,13 +1,16 @@
 -module(clock).
--export([start/1, remove/1, add/1]).
+-export([start/1, remove/2, add/2, startClock/1]).
 
 start(RegName) -> register(RegName, spawn(fun() -> wait([]) end)).
 
-add(Pid) -> self() ! {add, Pid}.
+add(Clock, Pid) -> Clock ! {add, Pid}.
 
-remove(Pid) -> self() ! {remove, Pid}.
+remove(Clock, Pid) -> Clock ! {remove, Pid}.
 
-wait(ObjList) -> receive
+startClock(Clock) -> Clock ! {startClock}.
+
+wait(ObjList) -> 
+                receive
                     {add, Pid} -> wait([Pid|ObjList]);
                     {startClock} -> loop(0, add_rest(ObjList), 0)
                 end.
@@ -19,9 +22,8 @@ add_rest(ObjList) -> receive
 
 loop(Minute, ObjList, ObjDone) ->
                 receive
-                    {minuteDone} ->
-                        if
-                            ObjDone + 1 =:= length(ObjList) ->
+                    {minuteDone} ->  if
+                            ObjDone + 1 == length(ObjList) ->
                                 lists:map(fun(Pid) ->
                                         Pid ! {clockTick, Minute + 1}
                                     end, ObjList),
@@ -30,6 +32,10 @@ loop(Minute, ObjList, ObjDone) ->
                                 loop(Minute, ObjList, ObjDone + 1)
                         end;
                     {add, Pid} -> loop(Minute, [Pid|ObjList], ObjDone);
-                    {remove, Pid} -> loop(Minute, lists:delete(Pid, ObjList),
-                                            ObjDone)
+                    {remove, Pid} -> NewList = lists:delete(Pid, ObjList),
+                        if
+                            NewList /= [] -> io:format("~p~n", NewList),
+                                loop(Minute, NewList, 
+                                    ObjDone);
+                        end
                 end.
