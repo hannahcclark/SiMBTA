@@ -15,29 +15,29 @@ directionFromTo(Start, End) ->
         davis ->
             case End of
                 alewife -> north;
-                true -> south
-            end.
+                _ -> south
+            end;
         porter ->
             case End of
                 alewife -> north;
                 davis -> north;
-                true -> south
-            end.
+                _ -> south
+            end;
         harvard ->
             case End of
                 alewife -> north;
                 davis -> north;
                 porter -> north;
-                true -> south
-            end.
+                _ -> south
+            end;
         central ->
             case End of
                 alewife -> north;
                 davis -> north;
                 porter -> north;
                 harvard -> north;
-                true -> south
-            end.
+                _ -> south
+            end;
         kendall ->
             case End of
                 alewife -> north;
@@ -45,8 +45,8 @@ directionFromTo(Start, End) ->
                 porter -> north;
                 harvard -> north;
                 central -> north;
-                true -> south
-            end.
+                _ -> south
+            end;
         charles_mgh ->
             case End of
                 alewife -> north;
@@ -55,8 +55,8 @@ directionFromTo(Start, End) ->
                 harvard -> north;
                 central -> north;
                 kendall -> north;
-                true -> south
-            end. 
+                _ -> south
+            end; 
         park_street ->
             case End of
                 alewife -> north;
@@ -66,8 +66,8 @@ directionFromTo(Start, End) ->
                 central -> north;
                 kendall -> north;
                 charles_mgh -> north;
-                true -> south
-            end. 
+                _ -> south
+            end; 
         downtown_crossing ->
             case End of
                 south -> south;
@@ -76,10 +76,10 @@ directionFromTo(Start, End) ->
                 jfk_umass-> south;
                 savin_hill -> south;
                 fields_corner -> south;
-                shwamut -> south;
+                shawmut -> south;
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         south ->
             case End of
                 broadway -> south;
@@ -87,55 +87,55 @@ directionFromTo(Start, End) ->
                 jfk_umass-> south;
                 savin_hill -> south;
                 fields_corner -> south;
-                shwamut -> south;
+                shawmut -> south;
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         broadway ->
             case End of
                 andrew -> south;
                 jfk_umass-> south;
                 savin_hill -> south;
                 fields_corner -> south;
-                shwamut -> south;
+                shawmut -> south;
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         andrew ->
             case End of
                 jfk_umass-> south;
                 savin_hill -> south;
                 fields_corner -> south;
-                shwamut -> south;
+                shawmut -> south;
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         jfk_umass ->
             case End of
                 savin_hill -> south;
                 fields_corner -> south;
-                shwamut -> south;
+                shawmut -> south;
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         savin_hill ->
             case End of
                 fields_corner -> south;
-                shwamut -> south;
+                shawmut -> south;
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         fields_corner ->
             case End of
-                shwamut -> south;
+                shawmut -> south;
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         shawmut ->
             case End of
                 ashmont -> south;
-                true -> north
-            end.
+                _ -> north
+            end;
         ashmont -> north
     end.
 
@@ -160,7 +160,7 @@ timeToNext(Station, Direction) ->
                 fields_corner -> 14;
                 shawmut -> 15;
                 ashmont -> 16
-            end.
+            end;
         south ->
             case Station of
                 alewife -> 1;
