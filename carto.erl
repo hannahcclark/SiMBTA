@@ -11,137 +11,137 @@ cartograph() ->
 
 directionFromTo(Start, End) ->
     case Start of
-        alewife -> south;
+        alewife -> in;
         davis ->
             case End of
-                alewife -> north;
-                _ -> south
-            end;
+                alewife -> out;
+                true -> in
+            end.
         porter ->
             case End of
-                alewife -> north;
-                davis -> north;
-                _ -> south
-            end;
+                alewife -> out;
+                davis -> out;
+                true -> in
+            end.
         harvard ->
             case End of
-                alewife -> north;
-                davis -> north;
-                porter -> north;
-                _ -> south
-            end;
+                alewife -> out;
+                davis -> out;
+                porter -> out;
+                true -> in
+            end.
         central ->
             case End of
-                alewife -> north;
-                davis -> north;
-                porter -> north;
-                harvard -> north;
-                _ -> south
-            end;
+                alewife -> out;
+                davis -> out;
+                porter -> out;
+                harvard -> out;
+                true -> in
+            end.
         kendall ->
             case End of
-                alewife -> north;
-                davis -> north;
-                porter -> north;
-                harvard -> north;
-                central -> north;
-                _ -> south
-            end;
+                alewife -> out;
+                davis -> out;
+                porter -> out;
+                harvard -> out;
+                central -> out;
+                true -> in
+            end.
         charles_mgh ->
             case End of
-                alewife -> north;
-                davis -> north;
-                porter -> north;
-                harvard -> north;
-                central -> north;
-                kendall -> north;
-                _ -> south
-            end; 
+                alewife -> out;
+                davis -> out;
+                porter -> out;
+                harvard -> out;
+                central -> out;
+                kendall -> out;
+                true -> in
+            end. 
         park_street ->
             case End of
-                alewife -> north;
-                davis -> north;
-                porter -> north;
-                harvard -> north;
-                central -> north;
-                kendall -> north;
-                charles_mgh -> north;
-                _ -> south
-            end; 
+                alewife -> out;
+                davis -> out;
+                porter -> out;
+                harvard -> out;
+                central -> out;
+                kendall -> out;
+                charles_mgh -> out;
+                true -> in
+            end. 
         downtown_crossing ->
             case End of
-                south -> south;
-                broadway -> south;
-                andrew -> south;
-                jfk_umass-> south;
-                savin_hill -> south;
-                fields_corner -> south;
-                shawmut -> south;
-                ashmont -> south;
-                _ -> north
-            end;
+                south -> in;
+                broadway -> in;
+                andrew -> in;
+                jfk_umass-> in;
+                savin_hill -> in;
+                fields_corner -> in;
+                shwamut -> in;
+                ashmont -> in;
+                true -> out
+            end.
         south ->
             case End of
-                broadway -> south;
-                andrew -> south;
-                jfk_umass-> south;
-                savin_hill -> south;
-                fields_corner -> south;
-                shawmut -> south;
-                ashmont -> south;
-                _ -> north
-            end;
+                broadway -> out;
+                andrew -> out;
+                jfk_umass-> out;
+                savin_hill -> out;
+                fields_corner -> out;
+                shwamut -> out;
+                ashmont -> out;
+                true -> in
+            end.
         broadway ->
             case End of
-                andrew -> south;
-                jfk_umass-> south;
-                savin_hill -> south;
-                fields_corner -> south;
-                shawmut -> south;
-                ashmont -> south;
-                _ -> north
-            end;
+                andrew -> out;
+                jfk_umass-> out;
+                savin_hill -> out;
+                fields_corner -> out;
+                shwamut -> out;
+                ashmont -> out;
+                true -> in
+            end.
         andrew ->
             case End of
-                jfk_umass-> south;
-                savin_hill -> south;
-                fields_corner -> south;
-                shawmut -> south;
-                ashmont -> south;
-                _ -> north
-            end;
+                jfk_umass-> out;
+                savin_hill -> out;
+                fields_corner -> out;
+                shwamut -> out;
+                ashmont -> out;
+                true -> in
+            end.
         jfk_umass ->
             case End of
-                savin_hill -> south;
-                fields_corner -> south;
-                shawmut -> south;
-                ashmont -> south;
-                _ -> north
-            end;
+                savin_hill -> out;
+                fields_corner -> out;
+                shwamut -> out;
+                ashmont -> out;
+                true -> in
+            end.
         savin_hill ->
             case End of
-                fields_corner -> south;
-                shawmut -> south;
-                ashmont -> south;
-                _ -> north
-            end;
+                fields_corner -> out;
+                shwamut -> out;
+                ashmont -> out;
+                true -> in
+            end.
         fields_corner ->
             case End of
-                shawmut -> south;
-                ashmont -> south;
-                _ -> north
-            end;
+                shwamut -> out;
+                ashmont -> out;
+                true -> in
+            end.
         shawmut ->
             case End of
-                ashmont -> south;
-                _ -> north
-            end;
-        ashmont -> north
+                ashmont -> out;
+                true -> in
+            end.
+        ashmont -> in
     end.
 
 timeToNext(Station, Direction) ->
     case Direction of
-        north ->
+        in ->
             case Station of
                 alewife -> 0;
                 davis -> 1;
@@ -160,8 +160,8 @@ timeToNext(Station, Direction) ->
                 fields_corner -> 14;
                 shawmut -> 15;
                 ashmont -> 16
-            end;
-        south ->
+            end.
+        out ->
             case Station of
                 alewife -> 1;
                 davis -> 2;
@@ -183,10 +183,49 @@ timeToNext(Station, Direction) ->
             end
     end.
 
-lastStation(Direction) ->
+lastStation(CurrStation, Direction) ->
     case Direction of
-        north -> alwife;
-        south -> ashmont
+        in -> 
+	    case CurrStation of
+                alewife -> ashmont;
+                davis -> ashmont;
+                porter -> ashmont;
+                harvard -> ashmont;
+                central -> ashmont;
+                kendall -> ashmont;
+                charles_mgh -> ashmont;
+                park_street -> ashmont;
+                downtown_crossing -> ashmont;
+                south -> alewife;
+                broadway -> alewife;
+                andrew -> alewife;
+                jfk_umass -> alewife;
+                savin_hill -> alewife;
+                fields_corner -> alewife;
+                shawmut -> alewife;
+                ashmont -> alewife
+	    end;
+        out ->
+	    case CurrStation of
+                alewife -> alewife;
+                davis -> alewife;
+                porter -> alewife;
+                harvard -> alewife;
+                central -> alewife;
+                kendall -> alewife;
+                charles_mgh -> alewife;
+                park_street -> alewife;
+                downtown_crossing -> alewife;
+                south -> ashmont;
+                broadway -> ashmont;
+                andrew -> ashmont;
+                jfk_umass -> ashmont;
+                savin_hill -> ashmont;
+                fields_corner -> ashmont;
+                shawmut -> ashmont;
+                ashmont -> ashmont
+	    end;
+	    
     end.
 
 
