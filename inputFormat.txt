@@ -1,2 +1,5 @@
 train directionAtom startTimeInt capacityInt
+delay time timeInt delayLengthInt
 passenger countInt startTimeInt startStationAtom endStationAtom
+
+    Note: delays apply to the train immediately preceding.
