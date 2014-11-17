@@ -1,9 +1,11 @@
 -module(output).
 -export([start/1, remove/2, add/2, endSimulation/1].
 
-start(ProcName) -> register(ProcName,
-                       spawn(fun -> loop(0, 0) end)),
-                   {ok}.
+start(ProcName, OutputFile) -> 
+    {ok, Device} = file:open(OutputFile, [write]),
+    register(ProcName,
+            spawn(fun -> loop(0, 0, [], [], Device) end)),
+    {ok}.
 
 remove(Proc, Type) -> Proc ! {remove, Type}.
 add(Proc, Type) -> Proc ! {add, Type}.
