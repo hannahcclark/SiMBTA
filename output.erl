@@ -16,6 +16,7 @@ newStationStat(Proc, Stats) -> %Stats: {StationName, NumPass, HasAsh, HasAle}
 newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
                                 % CurrLoc should be atom station or track
     Proc ! {trainStat, Stats}.
+passengerDone(Proc, PassInfo) -> Proc ! {passenger, PassInfo}.
 
 printTrains([], _) -> {ok};
 printTrains([{Dir, CurrLoc, Station, Pass}|Trains], Device) ->
@@ -34,6 +35,9 @@ printStations([{StationName, NumPass, HasAsh, HasAle}|Stations], Device) ->
     io:fwrite(Device, "station Name:~p Passengers:~p AshTrain:~p AleTrain:~p~n",
                     [StationName, NumPass, HasAsh, HasAle]),
     printStations(Stations, Device).
+printPassenger({Start, Dest, Time, Dur}, Device) ->
+    io:fwrite(Device, "passenger Start:~p End:~p Began:~p Duration:~p~n",
+                [Start, Dest, Time, Dur]).
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) 
     when (length(TrainStats) =:= TrainCnt) and 
@@ -58,7 +62,9 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
                                 StationStats, Device);
         {stationStat, Stat} -> loop(TrainCnt, StationCnt, TrainStats,
                                 [Stat|StationStats], Device);
-
+        {passenger, PassInfo} -> printPassenger(PassInfo),
+                                loop(TrainCnt, StationCnt, TrainStats,
+                                StationStats, Device);
         {endSim} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
                     file:close(Device),
