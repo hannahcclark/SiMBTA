@@ -1,6 +1,6 @@
 -module(output).
 -export([start/2, remove/2, add/2, newStationStat/2, newTrainStat/2,
-        endSimulation/1]).
+        passengerDone/2, endSimulation/1]).
 
 start(ProcName, OutputFile) -> 
     {ok, Device} = file:open(OutputFile, [write]),
@@ -17,7 +17,7 @@ newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
                                 % CurrLoc should be atom station or track
     Proc ! {trainStat, Stats}.
 passengerDone(Proc, PassInfo) -> Proc ! {passenger, PassInfo}.
-
+                        %PassInfo: {StartStation, EndStation, BegTime, Duration}
 printTrains([], _) -> {ok};
 printTrains([{Dir, CurrLoc, Station, Pass}|Trains], Device) ->
     case CurrLoc of
@@ -41,7 +41,8 @@ printPassenger({Start, Dest, Time, Dur}, Device) ->
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) 
     when (length(TrainStats) =:= TrainCnt) and 
-    (length(StationStats) =:= StationCnt) ->
+    (length(StationStats) =:= StationCnt) and 
+    ((TrainCnt > 0) or (StationCnt > 0))->
     printTrains(TrainStats, Device),
     printStations(StationStats, Device),
     loop(TrainCnt, StationCnt, [], [], Device);
@@ -62,7 +63,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
                                 StationStats, Device);
         {stationStat, Stat} -> loop(TrainCnt, StationCnt, TrainStats,
                                 [Stat|StationStats], Device);
-        {passenger, PassInfo} -> printPassenger(PassInfo),
+        {passenger, PassInfo} -> printPassenger(PassInfo, Device),
                                 loop(TrainCnt, StationCnt, TrainStats,
                                 StationStats, Device);
         {endSim} -> printTrains(TrainStats, Device),
