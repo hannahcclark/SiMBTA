@@ -1,0 +1,5 @@
+Minute num
+train Direction:dir Station:station Passengers:num
+train Direction:dir Approaching:station Passengers:num
+station Name:station Passengers:num AshTrain:bool AleTrain:bool
+passenger Start:station End:station Began:timeNum Duration:num
