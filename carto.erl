@@ -143,43 +143,43 @@ timeToNext(Station, Direction) ->
     case Direction of
         alewife ->
             case Station of
-                alewife -> 0;
-                davis -> 1;
-                porter -> 2;
-                harvard -> 3;
-                central -> 4;
-                kendall -> 5;
-                charles_mgh -> 6;
-                park_street -> 7;
-                downtown_crossing -> 8;
-                south -> 9;
-                broadway -> 10;
-                andrew -> 11;
-                jfk_umass -> 12;
-                savin_hill -> 13;
-                fields_corner -> 14;
-                shawmut -> 15;
-                ashmont -> 16
+                alewife -> (endStation, 0);
+                davis -> (alewife, 1);
+                porter -> (davis, 2);
+                harvard -> (porter, 3);
+                central -> (harvard, 4);
+                kendall -> (central, 5);
+                charles_mgh -> (kendall, 6);
+                park_street -> (charles_mgh, 7);
+                downtown_crossing -> (park_street, 8);
+                south -> (downtown_crossing, 9);
+                broadway -> (south, 10);
+                andrew -> (broadway, 11);
+                jfk_umass -> (andrew, 12);
+                savin_hill -> (jfk_umass, 13);
+                fields_corner -> (savin_hill, 14);
+                shawmut -> (fields_corner, 15);
+                ashmont -> (shawmut, 16);
             end.
         ashmont ->
             case Station of
-                alewife -> 1;
-                davis -> 2;
-                porter -> 3;
-                harvard -> 4;
-                central -> 5;
-                kendall -> 6;
-                charles_mgh -> 7;
-                park_street -> 8;
-                downtown_crossing -> 9;
-                south -> 10;
-                broadway -> 11;
-                andrew -> 12;
-                jfk_umass -> 13;
-                savin_hill -> 14;
-                fields_corner -> 15;
-                shawmut -> 16;
-                ashmont -> 0
+                alewife -> (davis, 1);
+                davis -> (porter, 2);
+                porter -> (harvard, 3);
+                harvard -> (central, 4);
+                central -> (kendall, 5);
+                kendall -> (charles_mgh, 6);
+                charles_mgh -> (park_street, 7);
+                park_street -> (downtown_crossing, 8);
+                downtown_crossing -> (south, 9);
+                south -> (broadway, 10);
+                broadway -> (andrew, 11);
+                andrew -> (jfk_umass, 12);
+                jfk_umass -> (savin_hill, 13);
+                savin_hill -> (fields_corner, 14);
+                fields_corner -> (shawmut, 15);
+                shawmut -> (ashmont, 16);
+                ashmont -> (endStation, 0)
             end
     end.
 
