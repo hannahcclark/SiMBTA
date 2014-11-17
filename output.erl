@@ -1,15 +1,16 @@
 -module(output).
--export([start/1, remove/2, add/2, endSimulation/1].
+-export([start/2, remove/2, add/2, newStationStat/2, newTrainStat/2,
+        endSimulation/1]).
 
 start(ProcName, OutputFile) -> 
     {ok, Device} = file:open(OutputFile, [write]),
     register(ProcName,
-            spawn(fun -> loop(0, 0, [], [], Device) end)),
+            spawn(fun() -> loop(0, 0, [], [], Device) end)),
     {ok}.
 
 remove(Proc, Type) -> Proc ! {remove, Type}.
 add(Proc, Type) -> Proc ! {add, Type}.
-endSimulation(Proc) -> Proc ! {end}.
+endSimulation(Proc) -> Proc ! {endSim}.
 newStationStat(Proc, Stats) -> %Stats: {StationName, NumPass, HasIn, HasOut}
     Proc ! {stationStat, Stats}.
 newTrainStat(Proc, Stats) -> %Stats: {CurrLoc, NextOrCurrStation, NumPass}
@@ -32,12 +33,11 @@ printStations([{StationName, NumPass, HasIn, HasOut}|Stations], Device) ->
                     [StationName, NumPass, HasIn, HasOut]),
     printStations(Stations, Device).
 
-loop(TrainCnt, StationCnt, TrainCnt, StationCnt, TrainStats, StationStats,
-irintStations([], _) -> {ok}.
-    Device) when length(TrainStats) =:= TrainCnt and 
-                length(StationStats =:= StationCnt ->
-    printTrains(TrainStats),
-    printStations(StationStats),
+loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) 
+    when (length(TrainStats) =:= TrainCnt) and 
+    (length(StationStats) =:= StationCnt) ->
+    printTrains(TrainStats, Device),
+    printStations(StationStats, Device),
     loop(TrainCnt, StationCnt, [], [], Device);
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
     receive
@@ -55,9 +55,9 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
         {trainStat, Stat} -> loop(TrainCnt, StationCnt, [Stat|TrainStats],
                                 StationStats, Device);
         {stationStat, Stat} -> loop(TrainCnt, StationCnt, TrainStats,
-                                [Stat|StationStats, Device);
+                                [Stat|StationStats], Device);
 
-        {endSim} -> printTrains(TrainStats),
-                    printStations(StationStats),
+        {endSim} -> printTrains(TrainStats, Device),
+                    printStations(StationStats, Device),
                     {ok}
     end.
