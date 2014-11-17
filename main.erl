@@ -15,17 +15,23 @@ parseInput(Device, Delays) ->
         {ok, [Name|_]} -> 
             case Name
                 train -> 
-                    {ok, [Dir, Cap, Time]} = 
-                        io:fread(Device, "", "~a ~10u ~10u~n"),
-                    train:start(Cap, Time, Dir, carto:firstStation(Dir)),
-                    parseInput(Device);
+                    {ok, [Dir, Cap, Time, NumDelays]} = 
+                        io:fread(Device, "", "~a ~10u ~10u ~10u~n"),
+                    parseInput(Device, parseDelays(NumDelays, train:start(Cap,
+                                Time, Dir, carto:firstStation(Dir)), Delays),
                 passenger -> 
                     {ok, [Count, Time, Start, End]} =
                         io:fread(Device, "", "~10u ~10u ~a ~a"),
-                    makeXPassengers(Count, Start, End)
+                    makeXPassengers(Count, Start, End),
+                    parseInput(Device, Delays)
             end
         eof -> Delays
     end.
+
+parseDelays(0, _, Delays) -> Delays;
+parseDelays(NumDelays, Train, Delays) -> 
+    {ok, [Time, Length]} = io:fread(Device, "", "delay ~10u ~10u~n"),
+    parseDelays(NumDelays - 1, Train, [{Train, Time, Length}|Delays]).
 
 makeXPassengers(0, StartStation, StartTime, EndStation) -> {ok};
 makeXPassengers(X, StartStation, StartTime, EndStation) ->
