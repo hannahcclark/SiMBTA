@@ -11,26 +11,28 @@ start(ProcName, OutputFile) ->
 remove(Proc, Type) -> Proc ! {remove, Type}.
 add(Proc, Type) -> Proc ! {add, Type}.
 endSimulation(Proc) -> Proc ! {endSim}.
-newStationStat(Proc, Stats) -> %Stats: {StationName, NumPass, HasIn, HasOut}
+newStationStat(Proc, Stats) -> %Stats: {StationName, NumPass, HasAsh, HasAle}
     Proc ! {stationStat, Stats}.
-newTrainStat(Proc, Stats) -> %Stats: {CurrLoc, NextOrCurrStation, NumPass}
+newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
                                 % CurrLoc should be atom station or track
     Proc ! {trainStat, Stats}.
 
 printTrains([], _) -> {ok};
-printTrains([{CurrLoc, Station, Pass}|Trains], Device) ->
+printTrains([{Dir, CurrLoc, Station, Pass}|Trains], Device) ->
     case CurrLoc of
-        station -> io:fwrite(Device, "train Station:~p Passengers:~p~n",
-                                [Station, Pass]);
-        track -> io:fwrite(Device, "train Approaching:~p Passengers:~p~n",
-                                [Station, Pass])
+        station -> io:fwrite(Device, 
+                        "train Direction:~p Station:~p Passengers:~p~n",
+                        [Dir, Station, Pass]);
+        track -> io:fwrite(Device, 
+                        "train Direction: ~p Approaching:~p Passengers:~p~n",
+                        [Dir, Station, Pass])
     end,
     printTrains(Trains, Device).
 
 printStations([], _) -> {ok};
-printStations([{StationName, NumPass, HasIn, HasOut}|Stations], Device) ->
-    io:fwrite(Device, "station Name:~p Passengers:~p InTrain:~p OutTrain:~p~n",
-                    [StationName, NumPass, HasIn, HasOut]),
+printStations([{StationName, NumPass, HasAsh, HasAle}|Stations], Device) ->
+    io:fwrite(Device, "station Name:~p Passengers:~p AshTrain:~p AleTrain:~p~n",
+                    [StationName, NumPass, HasAsh, HasAle]),
     printStations(Stations, Device).
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) 
@@ -59,5 +61,6 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
 
         {endSim} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
+                    file:close(Device),
                     {ok}
     end.
