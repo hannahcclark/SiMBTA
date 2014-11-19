@@ -25,6 +25,11 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 
 				% Successfully Pulled Into Station
 				{ enteredPlatform, _Station } ->
+
+					% Tell Passengers On Board
+					% Note: This formt is different - what is Name?
+					notifyPassengers(PassengerList, { station, CurrStation, self() }),
+
 					DisembarkCount = peopleDisembarking(CurrStation, PassengerList, 0),
 					Clock ! { minuteDone },
 					loop(StartTime, Capacity, Direction, CurrStation, PassengerList, 0, 0, DisembarkCount, 0, Clock)
@@ -38,17 +43,12 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 
 		% Train is Currently Boarding
 		{ tick, _Time } when (TimeToStation == 0) -> 
-			
-			% Tell Passengers On Board
-			% Note: Do I do this every tick or just once?
-			% Note: This formt is different - what is Name?
-			notifyPassengers(PassengerList, { station, CurrStation, self() }),
 
 			if
 				% Train is At Capacity, So Leave
 				Capacity == length(PassengerList) ->
 					CurrStation ! { trainLeaving, Direction },
-					NextStation = carto:next(CurrStation),
+					NextStation = carto:next(CurrStation, Direction),
 					NewTimeToNext = carto:timeToNext(NextStation, Direction),
 					Clock ! { minuteDone },
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0, 0, Clock);
@@ -78,11 +78,13 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 				% Too Many People Have Boarded this Minute
 				MovedThisTick > 10 -> 
 					Passenger ! { entryFailed, self() },
+					emptyMailbox(),
 					loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime, Clock);
 
 				% Train Can't Hold Any More People
 				length(PassengerList) == Capacity ->
 					Passenger ! { entryFailed, self() },
+					emptyMailbox(),
 					loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime, Clock);
 
 				% People Still Need to Get Off
@@ -111,13 +113,21 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 			end;
 
 		% Increments Arrival Time To Simulate Delay
-		{ delay, Incr } ->
-			loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation+Incr, MovedThisTick, DisembRemaining, WaitTime, Clock)
+		% Delay Between Stations
+		{ delay, Incr } when (TimeToStation > 0) ->
+			loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation+Incr, MovedThisTick, DisembRemaining, WaitTime, Clock);
+
+		% Delay While in Station
+		{ delay, Incr } when (TimeToStation == 0) ->
+			loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime-Incr, Clock)
 
 	end.
 
 
-
+emptyMailbox() ->
+	receive
+		_ -> ok
+	end.
 
 
 
@@ -139,12 +149,6 @@ notifyPassengers([Passenger|PassengerList], Message) ->
 
 
 
-% Note: This was not documented, I just made this up
-% peopleOnPlatform(CurrStation, Direction) ->
-% 	CurrStation ! { getNumWaiting, Direction },
-% 	receive
-% 		{ numWaiting, NumPassengers } -> NumPassengers
-% 	end.
 
 % Note: This was not documented, I just made this up
 peopleDisembarking(_CurrStation, [], Count) -> Count;
