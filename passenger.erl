@@ -59,8 +59,10 @@ loop(StartTime, CurrentLocation, Endpoint, Direction) ->
 	    CurrentLocation ! {passengerLeaves, Self};
 	    loop(StartTime, Train, Endpoint, Direction);
 	{boardFailed, Train} ->
+	    Train ! {board, Self},
 	    loop(StartTime, CurrentLocation, Endpoint, Direction);
 	{disembarkFailed, Train} ->
+	    Train ! {disembark, Self},
 	    loop(StartTime, CurrentLocation, Endpoing, Direction);
     end.
 
