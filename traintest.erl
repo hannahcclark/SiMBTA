@@ -2,6 +2,8 @@
 -export([run/0]).
 
 run() ->
-	ClkP = clock:start(clk),
-	Train1 = train:start(50, 5, in, alewife, ClkP),
-	clock:add(ClkP, Train1).
+	T1 = train:start(50, 2, ashmont, alewife),
+	T1 ! { tick, 1 },
+	T1 ! { tick, 2 },
+	T1 ! { tick, 3 },
+	T1 ! { tick, 4 }.
