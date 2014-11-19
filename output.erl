@@ -45,6 +45,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device)
     ((TrainCnt > 0) or (StationCnt > 0))->
     printTrains(TrainStats, Device),
     printStations(StationStats, Device),
+    clk ! {minuteDone},
     loop(TrainCnt, StationCnt, [], [], Device);
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
     receive
