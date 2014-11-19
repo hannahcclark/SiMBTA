@@ -1,28 +1,24 @@
 -module(passenger).
--export([start/4,loop/4,trip_stats/2]).
+-export([start/3,loop/3,trip_stats/2]).
 
-start(StartStation, StartTime, EndStation, Clock) ->
+start(StartStation, StartTime, EndStation) ->
 	%% add self to clock
     Direction = corto:directionFromTo(StartStation, EndStation),
-    WaitSelf = spawn(fun() ->
-	wait(StartStation, StartTime, EndStation, Clock, Direction)
-	end), 
-    clock:add(Clock, WaitSelf).
+    clock:add(ckl, spawn(fun() ->
+	wait(StartStation, StartTime, EndStation, Direction)
+	end)).
 
-wait(StartStation, StartTime, EndStation, Clock, Direction) ->
+wait(StartStation, StartTime, EndStation,  Direction) ->
 	%% receives {tick, Time} -> if time is start time ->
 	%%				remove self from clock
 	%%				add self to station
 	%% sends {minuteDone} to Clock if time doesn't match start
 	%%	 {passengerEnters, Pid} to Station when time is start
 	%%		Pid is passenger's pid
-    WaitSelf = self(),
     receives
 	{tick, StartTime} ->
-	    Self = spawn(fun() ->
-	    	loop(StartTime, StartStation, EndStation, Direction)
-		end),
-	    clock:remove(Clock, WaitSelf),
+	    clock:remove(clk, self()),
+		loop(StartTime, StartStation, EndStation, Direction)
 	    StartStation ! {passengerEnters, Self};
 	{tick, _} ->
 	    Clock ! {minuteDone},
