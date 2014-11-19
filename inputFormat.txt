@@ -1,7 +1,6 @@
 train directionAtom startTimeInt capacityInt numDelaysInt
 delay timeInt delayLengthInt
 passenger countInt startTimeInt startStationAtom endStationAtom
-delay 
 
     Note: Delays apply to the train immediately preceding.
           A numDelaysInt of zero for a train indicates there are no delays
