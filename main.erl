@@ -4,27 +4,33 @@
 start(FileName) -> lists:map(station:start, carto:cartograph()),
                    {ok, Device} = file:open(FileName, [read]),
                    clock:start(clk),
+                   {Delays, Procs} = parseInput(Device, [], []),
                    clock:add(clk, spawn(fun()->
                                     delayLoop(parseInput(Device, [])) end),
+                   output:start(outMod, "outFile.txt"),
                    clock:startClock(clk),
-                   {ok}.
-
-parseInput(Device, Delays) -> 
+                   procsAlive(Procs),
+                   output:endSim(outMod),
+                   map(fun(Pid) -> exit(Pid, simDone) end, carto:cartograph()).
+procsAlive([]) -> ok;
+procsAlive(Procs) -> procsAlive(lists:filter(is_process_alive, Procs)).
+parseInput(Device, Delays, Procs) -> 
     case io:fread(Device, "", "~a ")  of
         {ok, [Name|_]} -> 
             case Name of
                 train -> 
                     {ok, [Dir, Time, Cap, NumDelays]} = 
                         io:fread(Device, "", "~a ~10u ~10u ~10u"),
-                    parseInput(Device, parseDelays(NumDelays, train:start(Cap,
-                    Time, Dir, carto:firstStation(Dir)), Delays, Device);
+                    Train = train:start(Cap, Time, Dir, carto:firstStation(Dir)),
+                    parseInput(Device, parseDelays(NumDelays, Train, Delays, 
+                                Device), [Train|Procs]);
                 passenger -> 
                     {ok, [Count, Time, Start, End]} =
                         io:fread(Device, "", "~10u ~10u ~a ~a"),
-                    makeXPassengers(Count, Start, Time, End),
-                    parseInput(Device, Delays)
+                    parseInput(Device, Delays, lists:append(Procs,
+                        makeXPassengers(Count, Start, Time, End)))
             end;
-        eof -> Delays
+        eof -> {Delays,Procs}
     end.
 
 parseDelays(0, _, Delays, _) -> Delays;
@@ -32,10 +38,10 @@ parseDelays(NumDelays, Train, Delays, Device) ->
     {ok, [Time, Length]} = io:fread(Device, "", "delay ~10u ~10u"),
     parseDelays(NumDelays - 1, Train, [{Train, Time, Length}|Delays], Device).
 
-makeXPassengers(0, _, _, _) -> {ok};
+makeXPassengers(0, _, _, _) -> [];
 makeXPassengers(X, StartStation, StartTime, EndStation) ->
-    passenger:start(StartStation, StartTime, EndStation),
-    makeXPassengers(X-1, StartStation, StartTime, EndStation).
+    [passenger:start(StartStation, StartTime, EndStation)|
+    makeXPassengers(X-1, StartStation, StartTime, EndStation)].
 
 delayLoop([]) -> clock:remove(clk, self());
 delayLoop(Delays) ->

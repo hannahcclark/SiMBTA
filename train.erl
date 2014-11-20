@@ -139,7 +139,7 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 				% Otherwise, Allow Passenger to Disembark
 				true ->
 					io:fwrite("    disembark attempt success ~n"),
-					Passenger ! { changedLocation, self() },
+					Passenger ! { changedLocation, CurrStation },
 						loop(StartTime, Capacity, Direction, CurrStation, lists:delete(Passenger, PassengerList), TimeToStation, MovedThisTick+1, DisembRemaining-1, WaitTime)
 			end;
 
