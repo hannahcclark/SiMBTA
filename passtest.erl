@@ -42,7 +42,7 @@ train() ->
                             pass ! {station, porter, tr},
                             clk ! {minuteDone},
                             train();
-        {tick, Min} -> %io:fwrite("tminute ~p~n", [Min]),
+        {tick, Min} -> io:fwrite("tminute ~p~n", [Min]),
                             clk ! {minuteDone},
                             train();
         {board, Pid} -> io:fwrite("board rec'd~n", []),

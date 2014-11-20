@@ -41,7 +41,7 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	%%		notifies failure to disembark
 	%% sends {board, Pid} to train to request boarding
 	%%	 {disembark, Pid} to train to request disembarking
-    io:fwrite("l~n", []),
+    io:fwrite("~p ~p ~p ~p ~p~n", [StartTime, StartStation, CurrentLocation,Endpoint, Direction]),
     receive
 	{train, Train, Direction} -> io:fwrite("train rec~n", []),
 	    Train ! {board, self()},
@@ -51,17 +51,18 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, _, _} -> io:fwrite("not st~n", []),
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-	{changedLocation, Endpoint} ->
+	{changedLocation, Endpoint} -> io:fwrite("endpt~n", []),
         output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
 	        trip_stats(clock:currTime(clk), StartTime)}),
-            output:endSim(outMod);%TODO:REMOVE LINE AFTER MODULE TESTING
+            output:endSim(outMod),
+            io:fwrite("done~n",[]);%TODO:REMOVE LINE AFTER MODULE TESTING
 	{changedLocation, Train} -> io:fwrite("on train~n", []),
 	    CurrentLocation ! {passengerLeaves, self()},
 	    loop(StartTime, StartStation, Train, Endpoint, Direction);
-	{boardFailed, Train} ->
+	{boardFailed, Train} -> io:fwrite("bf~n", []),
 	    Train ! {board, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-	{disembarkFailed, Train} ->
+	{disembarkFailed, Train} -> io:fwrite("df~n", []),
 	    Train ! {disembark, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction)
     end.
