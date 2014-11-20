@@ -2,17 +2,21 @@
 -export([test/0]).
 
 test() ->
+    process_flag(trap_exit, true),
     clock:start(clk),
     output:start(outMod, "outFile.txt"),
     register(alewife, spawn(fun() -> ale() end)),
-    register(trn, spawn(fun() -> train() end)),
+    register(trn, spawn_link(fun() -> train() end)),
     register(pass, passenger:start(alewife, 2, porter)),
     io:fwrite("created~n", []),
     clock:add(clk, trn),
     io:fwrite("~p~n", [clk]),
     clock:add(clk, self()),
     clock:startClock(clk),
-    recLoop().
+    recLoop(),
+    receive
+        {'EXIT',_,_}-> done
+    end.
 
 recLoop()->
     receive
@@ -35,14 +39,14 @@ ale() ->
 train() ->
     receive
         {tick, 8} -> io:fwrite("tminute 8~n", []),
-                            pass ! {station, davis, tr},
+                            pass ! {station, davis, trn},
                             clk ! {minuteDone},
                             train();
         {tick, 10} -> io:fwrite("tminute 10~n", []),
-                            pass ! {station, porter, tr},
+                            pass ! {station, porter, trn},
                             clk ! {minuteDone},
                             train();
-        {tick, Min} -> io:fwrite("tminute ~p~n", [Min]),
+        {tick, Min} ->io:fwrite("tminute ~p~n", [Min]),
                             clk ! {minuteDone},
                             train();
         {board, Pid} -> io:fwrite("board rec'd~n", []),
