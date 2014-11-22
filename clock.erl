@@ -34,6 +34,6 @@ loop(Minute, ObjList, ObjDone) ->
                     {add, Pid} -> loop(Minute, [Pid|ObjList], ObjDone);
                     {remove, Pid} -> NewList = lists:delete(Pid, ObjList),
                         if
-                            NewList /= [] -> loop(Minute, NewList, ObjDone);
+                            NewList /= [] -> loop(Minute, NewList, ObjDone)
                         end
                 end.

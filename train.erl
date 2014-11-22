@@ -21,6 +21,7 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 		% Don't Do Anything if Haven't Started Yet
 		{tick, Time } when (Time < StartTime) ->
 			io:fwrite("tick: ~p, not started~n", [Time]),
+			clk ! { minuteDone },
 			loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime);
 
 		% Train is Outside Station, Ready to Enter
@@ -91,7 +92,7 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 				true ->
 					io:fwrite("tick: ~p, not at capcity, waiting time: ~p~n", [Time, WaitTime]),
 					clk ! { minuteDone },
-					output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
+					output:newTrainStat(outMod, { Direction, station, CurrStation, lists:length(PassengerList) }),
 					loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime)
 			end;
 
