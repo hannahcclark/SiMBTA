@@ -92,8 +92,8 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 				true ->
 					io:fwrite("tick: ~p, not at capcity, waiting time: ~p~n", [Time, WaitTime]),
 					clk ! { minuteDone },
-					output:newTrainStat(outMod, { Direction, station, CurrStation, lists:length(PassengerList) }),
-					loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime)
+					%output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
+					loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime+1)
 			end;
 
 
