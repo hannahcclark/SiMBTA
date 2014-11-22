@@ -31,7 +31,7 @@ loop(Minute, ObjList, ObjDone) ->
                 receive
                     {minuteDone} ->  if
                             ObjDone + 1 == length(ObjList) ->
-                                lists:map(fun(Pid) ->
+                                lists:foreach(fun(Pid) ->
                                         Pid ! {tick, Minute + 1}
                                     end, ObjList),
                                 loop(Minute + 1, ObjList, 0);
