@@ -54,7 +54,7 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{changedLocation, Endpoint} ->
             output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
-	        trip_stats(clock:currTime(clk), StartTime)}),
+	        trip_stats(clock:currTime(clk), StartTime)});
 	{changedLocation, Train} ->
 	    CurrentLocation ! {passengerLeaves, self()},
 	    loop(StartTime, StartStation, Train, Endpoint, Direction);
