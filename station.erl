@@ -70,12 +70,12 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
 			   IncomingIn, IncomingOut)
 	    end;
 	{trainLeaving, ashmont} -> 
-        loop(Name, PassengerList, nil, PlatformOut,
+            loop(Name, PassengerList, nil, PlatformOut,
 		 IncomingIn, IncomingOut);
 	{trainLeaving, alewife} ->
 	    loop(Name, PassengerList, PlatformIn, nil,
 		 IncomingIn, IncomingOut);
-    {endSim} -> ok
+    	{endSim} -> ok
     end.
 
 tryTrainEntry(Train, Queue, Platform) ->
@@ -92,6 +92,6 @@ tryTrainEntry(Train, Queue, Platform) ->
     end.
 
 alertPassengers(Train, Direction, PassengerList) ->
-	%% sends {train, Train, Direction} to passengerlist
+    %%
     lists:foreach(fun(Elem) -> Elem ! {train, Train, Direction} end, 
                     PassengerList).
