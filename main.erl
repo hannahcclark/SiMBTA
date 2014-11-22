@@ -10,13 +10,13 @@ start(FileName) -> {ok, Device} = file:open(FileName, [read]),
                    clock:add(clk, spawn(fun()->
                                     delayLoop(Delays) end)),
                    clock:startClock(clk),
-                   procsAlive(Procs),
+                   %procsAlive(Procs),
                    output:endSim(outMod),
                    lists:map(fun(Pid) -> clock:remove(clk, Pid),
                                     exit(Pid, simDone)
                         end, carto:cartograph()).
-procsAlive([]) -> ok;
-procsAlive(Procs) -> procsAlive(lists:filter(is_process_alive, Procs)).
+%procsAlive([]) -> ok;
+%procsAlive(Procs) -> procsAlive(lists:filter(is_process_alive, Procs)).
 parseInput(Device, Delays, Procs) -> 
     case io:fread(Device, "", "~a ")  of
         {ok, [Name|_]} -> 
