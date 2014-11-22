@@ -45,16 +45,16 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	{train, Train, Direction} ->
 	    Train ! {board, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-    {train, _, _} ->
-        loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
+        {train, _, _} ->
+            loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, Endpoint, Train} ->
 	    Train ! {disembark, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, _, _} ->
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{changedLocation, Endpoint} ->
-        output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
-	        trip_stats(clock:currTime(clk), StartTime)}),
+            output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
+	        trip_stats(clock:currTime(clk), StartTime)});
 	{changedLocation, Train} ->
 	    CurrentLocation ! {passengerLeaves, self()},
 	    loop(StartTime, StartStation, Train, Endpoint, Direction);
