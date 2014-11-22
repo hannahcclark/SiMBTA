@@ -10,7 +10,10 @@ start(ProcName, OutputFile) ->
 
 remove(Proc, Type) -> Proc ! {remove, Type}.
 add(Proc, Type) -> Proc ! {add, Type}.
-endSimulation(Proc) -> Proc ! {endSim}.
+endSimulation(Proc) -> Proc ! {endSim, self()},
+                        receive
+                            Message -> Message
+                        end.
 newStationStat(Proc, Stats) -> %Stats: {StationName, NumPass, HasAsh, HasAle}
     Proc ! {stationStat, Stats}.
 newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
@@ -37,7 +40,8 @@ printStations([{StationName, NumPass, HasAsh, HasAle}|Stations], Device) ->
     printStations(Stations, Device).
 printPassenger({Start, Dest, Time, Dur}, Device) ->
     io:fwrite(Device, "passenger Start:~p End:~p Began:~p Duration:~p~n",
-                [Start, Dest, Time, Dur]).
+                [Start, Dest, Time, Dur]),
+                io:fwrite("output~n", []).
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) 
     when (length(TrainStats) =:= TrainCnt) and 
@@ -57,7 +61,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
                                 StationStats, Device);
         {remove, station} -> loop(TrainCnt, StationCnt - 1, TrainStats, 
                                 StationStats, Device);
-        {clockTick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
+        {tick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
                                 loop(TrainCnt, StationCnt, TrainStats, 
                                     StationStats, Device);
         {trainStat, Stat} -> loop(TrainCnt, StationCnt, [Stat|TrainStats],
@@ -67,8 +71,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
         {passenger, PassInfo} -> printPassenger(PassInfo, Device),
                                 loop(TrainCnt, StationCnt, TrainStats,
                                 StationStats, Device);
-        {endSim} -> printTrains(TrainStats, Device),
+        {endSim, Sender} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
-                    file:close(Device),
-                    {ok}
+                    Sender ! file:close(Device)
     end.
