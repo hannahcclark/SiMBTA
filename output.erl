@@ -4,8 +4,9 @@
 
 start(ProcName, OutputFile) -> 
     {ok, Device} = file:open(OutputFile, [write]),
-    register(ProcName,
-            spawn(fun() -> loop(0, 0, [], [], Device) end)),
+    Proc = spawn(fun() -> loop(0, 0, [], [], Device) end),
+    clock:add(clk, Proc),
+    register(ProcName,Proc),
     {ok}.
 
 remove(Proc, Type) -> Proc ! {remove, Type}.
