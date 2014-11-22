@@ -1,17 +1,20 @@
 -module(main).
 -export([start/1]).
 
-start(FileName) -> lists:map(station:start, carto:cartograph()),
-                   {ok, Device} = file:open(FileName, [read]),
-                   clock:start(clk),
+start(FileName) -> {ok, Device} = file:open(FileName, [read]),
+                   clock:init(clk),
+                   output:start(outMod, "outFile.txt"),
+                   lists:map(fun(Elem) -> station:start(Elem) end, 
+                            carto:cartograph()),
                    {Delays, Procs} = parseInput(Device, [], []),
                    clock:add(clk, spawn(fun()->
-                                    delayLoop(parseInput(Device, [])) end),
-                   output:start(outMod, "outFile.txt"),
+                                    delayLoop(Delays) end)),
                    clock:startClock(clk),
                    procsAlive(Procs),
                    output:endSim(outMod),
-                   map(fun(Pid) -> exit(Pid, simDone) end, carto:cartograph()).
+                   lists:map(fun(Pid) -> clock:remove(clk, Pid),
+                                    exit(Pid, simDone)
+                        end, carto:cartograph()).
 procsAlive([]) -> ok;
 procsAlive(Procs) -> procsAlive(lists:filter(is_process_alive, Procs)).
 parseInput(Device, Delays, Procs) -> 

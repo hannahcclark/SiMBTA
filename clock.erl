@@ -1,7 +1,7 @@
 -module(clock).
--export([start/1, remove/2, add/2, currTime/1, startClock/1]).
+-export([init/1, remove/2, add/2, currTime/1, startClock/1]).
 
-start(RegName) -> register(RegName, spawn(fun() -> wait([]) end)).
+init(RegName) -> register(RegName, spawn(fun() -> wait([]) end)).
 
 add(Clock, Pid) -> Clock ! {add, Pid}.
 
