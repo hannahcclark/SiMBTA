@@ -3,7 +3,8 @@
         passengerDone/2, endSimulation/1]).
 
 start(ProcName, OutputFile) -> 
-    {ok, Device} = file:open(OutputFile, [write]),
+    %{ok, Device} = file:open(OutputFile, [write]),
+    Device = standard_io,
     Proc = spawn(fun() -> loop(0, 0, [], [], Device) end),
     clock:add(clk, Proc),
     register(ProcName,Proc),
@@ -46,12 +47,14 @@ printPassenger({Start, Dest, Time, Dur}, Device) ->
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) 
     when (length(TrainStats) =:= TrainCnt) and 
-    (length(StationStats) =:= StationCnt) and 
-    ((TrainCnt > 0) or (StationCnt > 0))->
-    printTrains(TrainStats, Device),
-    printStations(StationStats, Device),
-    clk ! {minuteDone},
-    loop(TrainCnt, StationCnt, [], [], Device);
+        (length(StationStats) =:= StationCnt) and 
+        ((TrainCnt > 0) or (StationCnt > 0)) ->
+        
+        printTrains(TrainStats, Device),
+        printStations(StationStats, Device),
+        clk ! {minuteDone},
+        loop(TrainCnt, StationCnt, [], [], Device);
+
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
     receive
         {add, train} -> loop(TrainCnt + 1, StationCnt, TrainStats, StationStats,
