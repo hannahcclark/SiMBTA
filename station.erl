@@ -17,7 +17,6 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
 	%%	    {trainEntry, Train, Direction} -> trytrainentry
 	%%		if yes -> alertPassengers
 	%%	    {trainLeaving, Direction} -> update queue 
-    PlatformOut, IncomingIn, IncomingOut]),
     receive
         {tick, Minute} ->
             case PlatformIn of
