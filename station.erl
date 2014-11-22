@@ -1,73 +1,92 @@
 -module(station).
--export([start/1,loop/5]).
+-export([start/1,loop/6]).
 
 start(Name) ->
     IncomingIn = queue:new(),
     IncomingOut = queue:new(),
-    loop([], nil, {nil}, IncomingIn, IncomingOut).
+    register(Name, spawn(fun() -> 
+                    loop(Name, [], nil, {nil}, IncomingIn, IncomingOut) end)),
+    clock:add(clk, Name),
+    output:add(outMod, station).
 
-loop(PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
+loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
 	%% receives {passengerEnters, Passenger} -> update passengerlist
 	%%	    {passengerLeaves, Passenger} -> update passengerlist
 	%%	    {trainIncoming, Train, Direction} -> addincomingtrain
 	%%	    {trainEntry, Train, Direction} -> trytrainentry
 	%%		if yes -> alertPassengers
 	%%	    {trainLeaving, Direction} -> update queue 
-    receives
+    receive
+        {tick, minute} ->
+            case PlatformIn of
+                nil -> InCase = false;
+                 _ -> InCase = true
+            end,
+            case PlatformOut of
+                nil -> OutCase = false;
+                _ -> OutCase = true
+            end,
+            output:newStationStat(outMod, 
+                   {Name, length(PassengerList), InCase, OutCase}),
+            clk ! {minuteDone},
+            loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, 
+                    IncomingOut);
 	{passengerEnters, Passenger} ->
 	    NewPassengerList = [Passenger|PassengerList],
-	    loop(NewPassengerList, PlatformIn, PlatformOut,
+	    loop(Name, NewPassengerList, PlatformIn, PlatformOut,
 		 IncomingIn, IncomingOut);
 	{passengerLeaves, Passenger} ->
 	    NewPassengerList = lists:delete(Passenger, PassengerList),
-	    loop(NewPassengerList, PlatformIn, PlatformOut,
+	    loop(Name, NewPassengerList, PlatformIn, PlatformOut,
 		 IncomingIn, IncomingOut);
-	{trainIncoming, Train, in} ->
-	    NewIincomingIn = queue:in(Train, IncomingIn),
-	    loop(PassengerList, PlatformIn, PlatformOut,
+	{trainIncoming, Train, ashmont} ->
+	    NewIncomingIn = queue:in(Train, IncomingIn),
+	    loop(Name, PassengerList, PlatformIn, PlatformOut,
 		 NewIncomingIn, IncomingOut);
-	{trainIncoming, Train, out} ->
+	{trainIncoming, Train, alewife} ->
 	    NewIncomingOut = queue:in(Train, IncomingOut),
-	    loop(PassengerList, PlatformIn, PlatformOut,
+	    loop(Name, PassengerList, PlatformIn, PlatformOut,
 		 IncomingIn, NewIncomingOut);
-	{trainEntry, Train, in} ->
+	{trainEntry, Train, ashmont} ->
 	    case tryTrainEntry(Train, IncomingIn, PlatformIn) of
 		yes -> {_, NewIncomingIn} = queue:out(IncomingIn),
-		       alertPassengers(Train, in, PassengerList),
-		       loop(PassengerList, Train, PlatformOut,
+		       alertPassengers(Train, ashmont, PassengerList),
+		       loop(Name, PassengerList, Train, PlatformOut,
 			    NewIncomingIn, IncomingOut);
-		no -> loop(PassengerList, PlatformIn, PlatformOut,
-			   IncomingIn, IncomingOut);
+		no -> loop(Name, PassengerList, PlatformIn, PlatformOut,
+			   IncomingIn, IncomingOut)
 	    end;
-	{trainEntry, Train, out} ->
+	{trainEntry, Train, alewife} ->
 	    case tryTrainEntry(Train, IncomingOut, PlatformOut) of
 		yes -> {_,NewIncomingOut} = queue:out(IncomingOut),
-		       alertPassengers(Train, out, PassengerList),
-		       loop(PassengerList, PlatformIn, Train,
+		       alertPassengers(Train, alewife, PassengerList),
+		       loop(Name, PassengerList, PlatformIn, Train,
 			    IncomingIn, NewIncomingOut);
-		no -> loop(PassengerList, PlatformIn, PlatformOut,
-			   IncomingIn, IncomingOut);
+		no -> loop(Name, PassengerList, PlatformIn, PlatformOut,
+			   IncomingIn, IncomingOut)
 	    end;
-	{trainLeaving, in} ->
-	    loop(PassengerList, nil, PlatformOut,
+	{trainLeaving, ashmont} ->
+	    loop(Name, PassengerList, nil, PlatformOut,
 		 IncomingIn, IncomingOut);
-	{trainLeaving, out} ->
-	    loop(PassengerList, PlatformIn, nil,
-		 IncomingIn, IncomingOut);
-
+	{trainLeaving, alewife} ->
+	    loop(Name, PassengerList, PlatformIn, nil,
+		 IncomingIn, IncomingOut)
+    end.
 
 tryTrainEntry(Train, Queue, Platform) ->
 	%% returns yes or no if entered
 	%% sneds {enteredPlatform} if yes
 	%%       {entryFailed} if no
     case Platform of
-	nil -> {{Val, FirstInQueue},_} = queue:out(Queue),
+	nil -> {{value, FirstInQueue},_} = queue:out(Queue),
 	       case FirstInQueue of
 		   Train -> Train ! {enteredPlatform}, yes;
-		   _ -> Train ! {entryFailed}, no;
+		   _ -> Train ! {entryFailed}, no
+           end;
 	_ -> Train ! {entryFailed}, no
     end.
 
 alertPassengers(Train, Direction, PassengerList) ->
 	%% sends {train, Train, Direction} to passengerlist
-    lists:foreach(fun(Elem) -> Elem ! {train, Train, Direction} end).
+    lists:foreach(fun(Elem) -> Elem ! {train, Train, Direction} end, 
+                    PassengerList).
