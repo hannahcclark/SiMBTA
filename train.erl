@@ -24,6 +24,13 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 			clk ! { minuteDone },
 			loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime);
 
+		% Train is Almost At Station, Notify Station Accordingly
+		{tick, Time} when (TimeToStation == 2) ->
+			CurrStation ! { trainIncoming, self(), Direction },
+			io:fwrite("tick: ~p, notifying station ~n", [Time]),
+			clk ! { minuteDone },
+			loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation-1, MovedThisTick, DisembRemaining, WaitTime);
+
 		% Train is Outside Station, Ready to Enter
 		{tick, Time } when (TimeToStation == 1) ->
 			io:fwrite("tick: ~p, ready to enter~n", [Time]),
@@ -51,7 +58,7 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 				end;
 
 		% Will Arive in Future, Currently in Transit
-		{ tick, Time } when (TimeToStation > 1) ->
+		{ tick, Time } when (TimeToStation > 2) ->
 			io:fwrite("tick: ~p, currently in transit, ~p minutes remaining ~n", [Time, TimeToStation]),
 			clk ! { minuteDone },
 			loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation-1, MovedThisTick, DisembRemaining, WaitTime);
@@ -162,7 +169,6 @@ emptyMailbox() ->
 	end.
 
 
-% Note: I don't need the station PId returned from Station
 tryEnterPlatform(CurrStation, Direction) ->
 	CurrStation ! { trainEntry, self(), Direction },
 	receive
