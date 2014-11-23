@@ -68,16 +68,20 @@ makeXPassengers(X, StartStation, StartTime, EndStation) ->
     [passenger:start(StartStation, StartTime, EndStation)|
     makeXPassengers(X-1, StartStation, StartTime, EndStation)].
 
+%Sends delays to trains as appropriate
 delayLoop([]) -> clock:remove(clk, self());
 delayLoop(Delays) ->
-    receive
-        {clockTick, Minute} -> delayLoop(lists:foldr(
+    receive %Every minute, iterate over list of delays
+           %send any for that minute, call self with list of remaining ones
+        {tick, Minute} -> Remaining = lists:foldr(
             fun({Pid, Time, Length}, Rem) ->
                 case Time of
                     Minute -> Pid ! {delay, Length},
                               Rem;
                     _ -> [{Pid, Time, Length}|Rem]
                 end
-            end, [], Delays))
+            end, [], Delays),
+            clk ! {minuteDone},
+            delayLoop(Remaining)
     end.
 
