@@ -28,7 +28,9 @@ newStationStat(Proc, Stats) -> %Stats: {StationName, NumPass, HasAsh, HasAle}
     Proc ! {stationStat, Stats}.
 %Use to provide a minute update from a train
 newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
-                                % CurrLoc should be atom station or track
+                                % CurrLoc should be atom station if train is 
+                                % on a platform or track if it is in queue for a
+                                % platform
     Proc ! {trainStat, Stats}.
 %Use to provide completed journey info from a passenger
 passengerDone(Proc, PassInfo) -> Proc ! {passenger, PassInfo}.
