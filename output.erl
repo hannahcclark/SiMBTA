@@ -5,16 +5,22 @@
 %Starts output module as process registered under ProcName and outputting 
 %to file whose name is given as OutputFile
 start(ProcName, OutputFile) -> 
-    %{ok, Device} = file:open(OutputFile, [write]),
-    Device = standard_io,
+    {ok, Device} = file:open(OutputFile, [write]),
+    %Device = standard_io,
     Proc = spawn(fun() -> loop(0, 0, [], [], Device) end),
     clock:add(clk, Proc), %Synchronizes with clock so that output has meaning
     register(ProcName,Proc),
     {ok}.
 %Removes a process of type station or train from being watched by output
-remove(Proc, Type) -> Proc ! {remove, Type}. 
+remove(Proc, Type) -> Proc ! {remove, Type, self()},
+                      receive
+                         done -> ok
+                      end. 
 %Adds a process of type station or train from being watched by output
-add(Proc, Type) -> Proc ! {add, Type}.
+add(Proc, Type) -> Proc ! {add, Type, self()},
+                    receive
+                        done -> ok
+                    end.
 %Type should be atom of station or train only
 
 %Call to flush output and close file when simulation is over
@@ -24,14 +30,21 @@ endSimulation(Proc) -> Proc ! {endSim, self()},
                         end.
 
 %Use to provide a minute update from a station
-newStationStat(Proc, Stats) -> %Stats: {StationName, NumPass, HasAsh, HasAle}
-    Proc ! {stationStat, Stats}.
+newStationStat(Proc, Stats) -> %io:fwrite("s ~p~n", [self()]),%Stats: {StationName, NumPass, HasAsh, HasAle}
+    Proc ! {stationStat, Stats, self()},
+    receive
+        done -> ok
+    end.
 %Use to provide a minute update from a train
 newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
                                 % CurrLoc should be atom station if train is 
                                 % on a platform or track if it is in queue for a
                                 % platform
-    Proc ! {trainStat, Stats}.
+    %io:fwrite("t ~p~n", [self()]),
+    Proc ! {trainStat, Stats, self()},
+    receive
+        done -> ok
+    end.
 %Use to provide completed journey info from a passenger
 passengerDone(Proc, PassInfo) -> Proc ! {passenger, PassInfo}.
                         %PassInfo: {StartStation, EndStation, BegTime, Duration}
@@ -73,8 +86,8 @@ printPassenger({Start, Dest, Time, Dur}, Device) ->
 %In this case, all updates are printed and cleared, and the output
 %process has completed its work for the minute
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) 
-    when (length(TrainStats) =:= TrainCnt) and 
-        (length(StationStats) =:= StationCnt) and 
+    when (length(TrainStats) >= TrainCnt) and 
+        (length(StationStats) >= StationCnt) and 
         ((TrainCnt > 0) or (StationCnt > 0)) ->
         
         printTrains(TrainStats, Device),
@@ -84,20 +97,26 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, Device)
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, Device) ->
     receive
-        {add, train} -> loop(TrainCnt + 1, StationCnt, TrainStats, StationStats,
+        {add, train, Pid} -> Pid ! done,
+                                loop(TrainCnt + 1, StationCnt, TrainStats, StationStats,
                                 Device);
-        {add, station} -> loop(TrainCnt, StationCnt + 1, TrainStats,
+        {add, station, Pid} -> Pid ! done,
+                                loop(TrainCnt, StationCnt + 1, TrainStats,
                                 StationStats, Device);
-        {remove, train} -> loop(TrainCnt - 1, StationCnt, TrainStats, 
+        {remove, train, Pid} -> Pid ! done,
+                                loop(TrainCnt - 1, StationCnt, TrainStats, 
                                 StationStats, Device);
-        {remove, station} -> loop(TrainCnt, StationCnt - 1, TrainStats, 
+        {remove, station, Pid} -> Pid ! done,
+                                loop(TrainCnt, StationCnt - 1, TrainStats, 
                                 StationStats, Device);
         {tick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
                                 loop(TrainCnt, StationCnt, TrainStats, 
                                     StationStats, Device);
-        {trainStat, Stat} -> loop(TrainCnt, StationCnt, [Stat|TrainStats],
+        {trainStat, Stat, Pid} -> Pid ! done,
+                                loop(TrainCnt, StationCnt, [Stat|TrainStats],
                                 StationStats, Device);
-        {stationStat, Stat} -> loop(TrainCnt, StationCnt, TrainStats,
+        {stationStat, Stat, Pid} -> Pid ! done,
+                                loop(TrainCnt, StationCnt, TrainStats,
                                 [Stat|StationStats], Device);
         {passenger, PassInfo} -> printPassenger(PassInfo, Device),
                                 loop(TrainCnt, StationCnt, TrainStats,

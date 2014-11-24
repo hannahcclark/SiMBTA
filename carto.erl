@@ -150,7 +150,7 @@ timeToNext(Station, Direction) ->
         alewife ->
             case Station of
                 alewife -> {endStation, 0};
-                davis -> {alewife, 1};
+                davis -> {alewife, 2};
                 porter -> {davis, 2};
                 harvard -> {porter, 3};
                 central -> {harvard, 4};
@@ -169,7 +169,7 @@ timeToNext(Station, Direction) ->
             end;
         ashmont ->
             case Station of
-                alewife -> {davis, 1};
+                alewife -> {davis, 2};
                 davis -> {porter, 2};
                 porter -> {harvard, 3};
                 harvard -> {central, 4};
