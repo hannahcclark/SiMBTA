@@ -30,8 +30,8 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
             output:newStationStat(outMod, 
                    {Name, length(PassengerList), InCase, OutCase}),
             case whereis(clk) of
-            undefined -> ok;
-            _ -> clk ! {minuteDone}
+                undefined -> ok;
+                _ -> clk ! {minuteDone}
             end,
             loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, 
                     IncomingOut);
@@ -45,11 +45,13 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
 		 IncomingIn, IncomingOut);
 	{trainIncoming, Train, ashmont} -> 
 	    NewIncomingIn = queue:in(Train, IncomingIn),
-	    loop(Name, PassengerList, PlatformIn, PlatformOut,
+	    Train ! {inQueue},
+        loop(Name, PassengerList, PlatformIn, PlatformOut,
 		 NewIncomingIn, IncomingOut);
 	{trainIncoming, Train, alewife} ->
 	    NewIncomingOut = queue:in(Train, IncomingOut),
-	    loop(Name, PassengerList, PlatformIn, PlatformOut,
+	    Train ! {inQueue},
+        loop(Name, PassengerList, PlatformIn, PlatformOut,
 		 IncomingIn, NewIncomingOut);
 	{trainEntry, Train, ashmont} -> 
 	    case tryTrainEntry(Train, IncomingIn, PlatformIn) of
@@ -69,10 +71,12 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
 		no -> loop(Name, PassengerList, PlatformIn, PlatformOut,
 			   IncomingIn, IncomingOut)
 	    end;
-	{trainLeaving, ashmont} -> 
+	{trainLeaving, ashmont, Train} -> 
+            Train ! {trainLeft},
             loop(Name, PassengerList, nil, PlatformOut,
 		 IncomingIn, IncomingOut);
-	{trainLeaving, alewife} ->
+	{trainLeaving, alewife, Train} ->
+        Train ! {trainLeft},
 	    loop(Name, PassengerList, PlatformIn, nil,
 		 IncomingIn, IncomingOut);
     	{endSim} -> ok

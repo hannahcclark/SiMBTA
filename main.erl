@@ -15,12 +15,13 @@ start(FileName) -> {ok, Device} = file:open(FileName, [read]),
                                     %Create process to send delays, adding it to the clock
                                     %so that it sends them appropriately
                    clock:startClock(clk), %Everything is ready, so start clock's count
-                   %procsAlive(Procs),
-                   output:endSim(outMod), %Everything is done, so output may be ended
-                   lists:map(fun(Pid) -> clock:remove(clk, Pid),
-                                    exit(Pid, simDone)
-                        end, carto:cartograph()). %Remove remaining processes from clock
+                   procsAlive(Procs),
+                   output:endSimulation(outMod), %Everything is done, so output may be ended
+                   lists:foreach(fun(Pid) -> clock:remove(clk, Pid),
+                                    exit(whereis(Pid), simDone)
+                        end, carto:cartograph()), %Remove remaining processes from clock
                                       %and cause them to exit so that the clock will stop
+                    ok.
                      
 %Waits until all processes in a list are dead by filtering on alive processes at each recursion
 %and ending when there are no longer any
