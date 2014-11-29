@@ -1,0 +1,53 @@
+Minute 0
+train Direction:alewife Station:ashmont Passengers:0
+train Direction:ashmont Station:alewife Passengers:0
+station Name:alewife Passengers:50 AshTrain:true AleTrain:false
+station Name:davis Passengers:40 AshTrain:false AleTrain:false
+station Name:porter Passengers:30 AshTrain:false AleTrain:false
+station Name:harvard Passengers:20 AshTrain:false AleTrain:false
+station Name:central Passengers:15 AshTrain:false AleTrain:false
+station Name:kendall Passengers:10 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:300 AshTrain:false AleTrain:true
+Minute 1
+train Direction:alewife Station:ashmont Passengers:10
+train Direction:ashmont Station:alewife Passengers:20
+station Name:alewife Passengers:10 AshTrain:true AleTrain:false
+station Name:davis Passengers:40 AshTrain:false AleTrain:false
+station Name:porter Passengers:30 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:290 AshTrain:false AleTrain:true
+Minute 2
+train Direction:alewife Station:ashmont Passengers:20
+train Direction:ashmont Station:alewife Passengers:30
+station Name:alewife Passengers:0 AshTrain:true AleTrain:false
+station Name:davis Passengers:40 AshTrain:false AleTrain:false
+station Name:porter Passengers:30 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:280 AshTrain:false AleTrain:true
+Minute 3
+train Direction:alewife Station:ashmont Passengers:30
+train Direction:ashmont Station:alewife Passengers:30
+station Name:alewife Passengers:0 AshTrain:true AleTrain:false
+station Name:davis Passengers:40 AshTrain:false AleTrain:false
+station Name:porter Passengers:30 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:270 AshTrain:false AleTrain:true
+Minute 4
+train Direction:alewife Station:ashmont Passengers:40
+train Direction:ashmont Approaching:davis Passengers:30
+station Name:alewife Passengers:3 AshTrain:true AleTrain:false
+station Name:davis Passengers:40 AshTrain:false AleTrain:false
+station Name:porter Passengers:30 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:260 AshTrain:false AleTrain:true
+Minute 5
+train Direction:alewife Station:ashmont Passengers:50
+train Direction:ashmont Approaching:davis Passengers:30
+station Name:alewife Passengers:3 AshTrain:true AleTrain:false
+station Name:davis Passengers:45 AshTrain:false AleTrain:false
+station Name:porter Passengers:33 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:250 AshTrain:false AleTrain:true
+Minute 6
+train Direction:alewife Station:ashmont Passengers:60
+train Direction:ashmont Station:davis Passengers:30
+station Name:alewife Passengers:3 AshTrain:true AleTrain:false
+station Name:davis Passengers:47 AshTrain:false AleTrain:false
+station Name:porter Passengers:33 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:240 AshTrain:false AleTrain:true
+passenger Start:alewife End:davis Began:0 Duration:6
