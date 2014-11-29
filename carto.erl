@@ -1,6 +1,8 @@
 % name: Raewyn Duvall
 % updated: 11/5/14
 
+%Travel times found from the MBTA Realtime api's schedulebyroute endpoint
+
 -module(carto).
 -export([cartograph/0, directionFromTo/2, timeToNext/2, firstStation/1]).
 
@@ -150,41 +152,41 @@ timeToNext(Station, Direction) ->
         alewife ->
             case Station of
                 alewife -> {endStation, 0};
-                davis -> {alewife, 2};
-                porter -> {davis, 2};
+                davis -> {alewife, 3};
+                porter -> {davis, 3};
                 harvard -> {porter, 3};
-                central -> {harvard, 4};
-                kendall -> {central, 5};
-                charles_mgh -> {kendall, 6};
-                park_street -> {charles_mgh, 7};
-                downtown_crossing -> {park_street, 8};
-                south -> {downtown_crossing, 9};
-                broadway -> {south, 10};
-                andrew -> {broadway, 11};
-                jfk_umass -> {andrew, 12};
-                savin_hill -> {jfk_umass, 13};
-                fields_corner -> {savin_hill, 14};
-                shawmut -> {fields_corner, 15};
-                ashmont -> {shawmut, 16}
+                central -> {harvard, 2};
+                kendall -> {central, 2};
+                charles_mgh -> {kendall, 2};
+                park_street -> {charles_mgh, 2};
+                downtown_crossing -> {park_street, 1};
+                south -> {downtown_crossing, 2};
+                broadway -> {south, 2};
+                andrew -> {broadway, 2};
+                jfk_umass -> {andrew, 2};
+                savin_hill -> {jfk_umass, 3};
+                fields_corner -> {savin_hill, 3};
+                shawmut -> {fields_corner, 2};
+                ashmont -> {shawmut, 2}
             end;
         ashmont ->
             case Station of
                 alewife -> {davis, 2};
                 davis -> {porter, 2};
-                porter -> {harvard, 3};
-                harvard -> {central, 4};
-                central -> {kendall, 5};
-                kendall -> {charles_mgh, 6};
-                charles_mgh -> {park_street, 7};
-                park_street -> {downtown_crossing, 8};
-                downtown_crossing -> {south, 9};
-                south -> {broadway, 10};
-                broadway -> {andrew, 11};
-                andrew -> {jfk_umass, 12};
-                jfk_umass -> {savin_hill, 13};
-                savin_hill -> {fields_corner, 14};
-                fields_corner -> {shawmut, 15};
-                shawmut -> {ashmont, 16};
+                porter -> {harvard, 2};
+                harvard -> {central, 3};
+                central -> {kendall, 2};
+                kendall -> {charles_mgh, 2};
+                charles_mgh -> {park_street, 2};
+                park_street -> {downtown_crossing, 2};
+                downtown_crossing -> {south, 2};
+                south -> {broadway, 2};
+                broadway -> {andrew, 2};
+                andrew -> {jfk_umass, 2};
+                jfk_umass -> {savin_hill, 3};
+                savin_hill -> {fields_corner, 3};
+                fields_corner -> {shawmut, 3};
+                shawmut -> {ashmont, 2};
                 ashmont -> {endStation, 0}
             end
     end.
