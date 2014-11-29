@@ -1,7 +1,7 @@
 % name: Raewyn Duvall
 % updated: 11/5/14
 
-%Travel times found from the MBTA Realtime api's schedulebyroute endpoint
+%Travel times found from the MBTA Realtime api's schedulebyroute endpoint provide by MassDOT
 
 -module(carto).
 -export([cartograph/0, directionFromTo/2, timeToNext/2, firstStation/1]).
