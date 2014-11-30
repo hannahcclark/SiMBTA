@@ -53,9 +53,18 @@ var STATIONS = [
 	}
 ];
 
-var OFFSET = 30;
+var OFFSET = 40;
+var TRAINOFFSET = 25;
 
 $(document).ready(function() {
+
+	// Initialize the Slider
+	$('#slider').slider({
+		value: 0,
+		min:0,
+		max:6,
+		step:1
+	})
 
 	// Load Data
 	$.ajax({
@@ -63,8 +72,11 @@ $(document).ready(function() {
 		url: 'output.txt',
 		success: function(text) {
 			var data = parseData(text);
-			drawFrame(0, data);
+			drawFrame(1, data);
 
+			$('#slider').on("slide", function(e, ui) {
+				drawFrame(ui.value, data);				
+			})
 
 		},
 		error: function() {
@@ -126,6 +138,8 @@ var drawFrame = function(min, data) {
 
 	var mapCanvas = document.getElementById("map");
 	var mcx = mapCanvas.getContext("2d");
+
+	mcx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
 	var minuteData = data[min];
 	var dataByStation = (function() {
@@ -225,22 +239,19 @@ var drawFrame = function(min, data) {
 	};
 
 	var drawStation = function(x, y, numPassengers) {
-		mcx.fillStyle = "gray";
+		mcx.fillStyle = "#c0c0c0";
 		mcx.beginPath();
 		mcx.arc(x, y, 10, 0, 2 * Math.PI, false);
 		mcx.fill();
      	mcx.closePath();
 
      	mcx.fillStyle = "black";
-     	mcx.font = "8pt Arial";
+     	mcx.font = "7pt Arial";
      	mcx.textAlign = "center";
 		mcx.textBaseline = "middle";
      	mcx.fillText(numPassengers, x, y);
-     	console.log(x, y, numPassengers);
 	}
 
-	var TRAINOFFSET = 10;
-	console.log(trainsByStation);
 	for (var name in trainsByStation) {
 		
 		if (trainsByStation[name].approaching.alewife.length != 0) {
