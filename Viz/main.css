@@ -1,0 +1,9 @@
+h1, h2, h3, h4 {
+	margin:5px 0;
+	text-align: center;
+}
+
+#wrapper {
+	width:500px;
+	margin: 20px auto;
+}
