@@ -59,7 +59,7 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	%% sends {board, Pid} to train to request boarding
 	%%	 {disembark, Pid} to train to request disembarking
     receive
-	{train, nil, Direction ->
+	{train, nil, Direction} ->
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{train, Train, Direction} ->
 	    Train ! {board, self()},
