@@ -33,12 +33,12 @@ loop(Name, PassengerListIn, PassengerListOut,
 		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
 	{passengerEnters, Passenger, ashmont} -> 
 	    NewPassengerList = [Passenger|PassengerListIn],
-	    Passenger ! {inStation, PlatformIn},
+	    Passenger ! {train, PlatformIn, ashmont},
             loop(Name, NewPassengerList, PassengerListOut,
                  PlatformIn, PlatformOut, IncomingIn, IncomingOut);
 	{passengerEnters, Passenger, alewife} -> 
 	    NewPassengerList = [Passenger|PassengerListOut],
-	    Passenger ! {inStation, PlatformOut},
+	    Passenger ! {train, PlatformOut, alewife},
             loop(Name, PassengerListIn, NewPassengerList,
 		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
 	{passengerLeaves, Passenger, ashmont} -> 
