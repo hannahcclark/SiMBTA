@@ -1,3 +1,20 @@
+% Module: Passenger
+% Purpose: Imitate a passenger taking the T
+% Interface:
+%    start adds the passenger to clock and starts the waiting loop
+%        which will loop until the clock reaches the passenger start time
+%        at which point that loop will be the passenger waiting at the station
+%        and traversing the T
+%    trip_stats sends output the total trip time of the passenger
+% Original Author: Raewyn Duvall
+% Date: 11/15/14
+% ChangeLog:
+%    11/15/14 - RAD - created file
+%    11/18/14 - RAD - minor updates (typos, etc)
+%    11/22/14 - RAD - formatting, semicolon fix
+%    12/01/14 - RAD - updated to match station directional lists
+%    12/01/14 - RAD - deleted unnecissary train check upon entry
+
 -module(passenger).
 -export([start/3,loop/5,trip_stats/2]).
 
