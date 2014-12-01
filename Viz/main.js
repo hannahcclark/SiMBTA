@@ -62,7 +62,7 @@ $(document).ready(function() {
 	$('#slider').slider({
 		value: 0,
 		min:0,
-		max:6,
+		max:1,
 		step:1
 	})
 
@@ -77,6 +77,8 @@ $(document).ready(function() {
 			$('#slider').on("slide", function(e, ui) {
 				drawFrame(ui.value, data);				
 			})
+
+			$("#slider").slider("option", "max", data.length-1);
 
 		},
 		error: function() {
@@ -98,6 +100,10 @@ var parseData = function(text) {
 		}
 		return obj;
 	}
+
+	// Fix a Pesky Whitespace Bug
+	text = text.replace(new RegExp(": ", "g"), ":")
+	console.log(text);
 
 	var currMinute = 0;
 	var lines = text.split("\n");
@@ -136,12 +142,15 @@ var parseData = function(text) {
 
 var drawFrame = function(min, data) {
 
+	console.log("DRAWING "+min);
+
 	var mapCanvas = document.getElementById("map");
 	var mcx = mapCanvas.getContext("2d");
 
 	mcx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
 	var minuteData = data[min];
+	console.log(minuteData);
 	var dataByStation = (function() {
 		var data = {};
 		for (var i in minuteData.stations) {
@@ -231,6 +240,7 @@ var drawFrame = function(min, data) {
 	}, {});
 	for (var i in minuteData.trains) {
 		var train = minuteData.trains[i];
+		console.log(train);
 		if (train.Approaching !== undefined) {
 			trainsByStation[train.Approaching].approaching[train.Direction].push(train);
 		} else if (train.Station !== undefined) {
