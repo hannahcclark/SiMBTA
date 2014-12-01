@@ -7,7 +7,6 @@ start(Name) ->
     io:fwrite("reg~n", []),
     register(Name, spawn(fun() -> 
                     loop(Name, [], nil, nil, IncomingIn, IncomingOut) end)),
-    clock:add(clk, Name),
     output:add(outMod, station).
 
 loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
@@ -18,7 +17,7 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
 	%%		if yes -> alertPassengers
 	%%	    {trainLeaving, Direction} -> update queue 
     receive
-        {tick, Minute} ->
+        {sendInfo} ->
             case PlatformIn of
                 nil -> InCase = false;
                  _ -> InCase = true
@@ -29,15 +28,12 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
             end,
             output:newStationStat(outMod, 
                    {Name, length(PassengerList), InCase, OutCase}),
-            case whereis(clk) of
-                undefined -> ok;
-                _ -> clk ! {minuteDone}
-            end,
             loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, 
                     IncomingOut);
 	{passengerEnters, Passenger} -> 
 	    NewPassengerList = [Passenger|PassengerList],
-	    loop(Name, NewPassengerList, PlatformIn, PlatformOut,
+	    Passenger ! {inStation, PlatformIn, PlatformOut},
+        loop(Name, NewPassengerList, PlatformIn, PlatformOut,
 		 IncomingIn, IncomingOut);
 	{passengerLeaves, Passenger} -> 
 	    NewPassengerList = lists:delete(Passenger, PassengerList),
