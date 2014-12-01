@@ -1,3 +1,17 @@
+% Module: Passenger
+% Purpose: Imitate a station of the T
+% Interface:
+%    start spawns the main loop of the station which keeps track of everything
+%        happening in terms of passengers waiting and trains stopping
+% Original Author: Raewyn Duvall
+% Date: 11/15/14
+% ChangeLog:
+%    11/15/14 - RAD - created file
+%    11/22/14 - RAD - fixed bug
+%    11/22/14 - RAD - formatting
+%    12/01/14 - RAD - added waiting passenger count for train
+%    12/01/14 - RAD - added direction based passenger lists
+
 -module(station).
 -export([start/1,loop/6]).
 
