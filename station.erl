@@ -1,12 +1,12 @@
 -module(station).
--export([start/1,loop/6]).
+-export([start/1,loop/7]).
 
 start(Name) ->
     IncomingIn = queue:new(),
     IncomingOut = queue:new(),
     io:fwrite("reg~n", []),
     register(Name, spawn(fun() -> 
-                    loop(Name, [], nil, nil, IncomingIn, IncomingOut) end)),
+                    loop(Name,[], [], nil, nil, IncomingIn, IncomingOut) end)),
     output:add(outMod, station).
 
 loop(Name, PassengerListIn, PassengerListOut,
@@ -28,7 +28,8 @@ loop(Name, PassengerListIn, PassengerListOut,
                 _ -> OutCase = true
             end,
             output:newStationStat(outMod, 
-                   {Name, length(PassengerList), InCase, OutCase}),
+                   {Name, length(PassengerListIn) + length(PassengerListOut)
+                   , InCase, OutCase}),
             loop(Name, PassengerListIn, PassengerListOut,
 		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
 	{passengerEnters, Passenger, ashmont} -> 
@@ -86,11 +87,11 @@ loop(Name, PassengerListIn, PassengerListOut,
 	    loop(Name, PassengerListIn, PassengerListOut,
 		 PlatformIn, nil, IncomingIn, IncomingOut);
 	{numWaiting, ashmont, Train} ->
-	    Train ! {numWaiting, length(PassengerListIn)};
+	    Train ! {numWaiting, length(PassengerListIn)},
             loop(Name, PassengerListIn, PassengerListOut,
 		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
 	{numWaiting, alewife, Train} ->
-	    Train ! {numWaiting, length(PassengerListOut)};
+	    Train ! {numWaiting, length(PassengerListOut)},
             loop(Name, PassengerListIn, PassengerListOut,
 		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
     	{endSim} -> ok
