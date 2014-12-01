@@ -52,14 +52,14 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 
 					% Tell Passengers On Board
 					% Note: This formt is different - what is Name?
-					notifyPassengers(PassengerList, { station, CurrStation, self() }),
+					DisembCount = notifyPassengers(PassengerList, { station, CurrStation, self() }, 0),
 					io:fwrite("tick: ~p, entered station~n", [Time]),
 
-					DisembarkCount = peopleDisembarking(CurrStation, PassengerList, 0),
+					%DisembarkCount = peopleDisembarking(CurrStation, PassengerList, 0),
 					clk ! { minuteDone },
 					output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
 					io:fwrite("haha~n", []),
-                    loop(StartTime, Capacity, Direction, CurrStation, PassengerList, 0, 0, DisembarkCount, 0)
+                    loop(StartTime, Capacity, Direction, CurrStation, PassengerList, 0, 0, DisembCount, 0)
 
 				end;
 
@@ -91,7 +91,7 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0, 0);
 				
 				% Not At Capacity, Waited for 2 Minutes, So Leave
-				WaitTime == 2 ->
+				WaitTime == 1 ->
 					io:fwrite("tick: ~p, waited, leaving~n", [Time]),
 					CurrStation ! { trainLeaving, Direction, self() },
                     receive
@@ -103,11 +103,11 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
                                             clk ! {minuteDone};
                         true -> ok
                     end,
-					output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
+					output:newTrainStat(outMod, { Direction, track, CurrStation, length(PassengerList) }),
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0, 0);
 
 				% Not At Capacity, Many People On Platform
-				MovedThisTick > 10 ->
+				MovedThisTick > 100 ->
 					io:fwrite("tick: ~p, too many people moved~n", [Time]),
 					clk ! { minuteDone },
 					output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
@@ -157,7 +157,7 @@ loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, 
 		{ disembark, Passenger } ->
 			if
 				% Too Many People Have Attempted Disembarking This Minute
-				MovedThisTick > 10 ->
+				MovedThisTick > 100 ->
 					io:fwrite("    disembark attempt fail: too many moved this tick ~n"),
 					Passenger ! { disembarkFailed, self() },
 					loop(StartTime, Capacity, Direction, CurrStation, PassengerList, TimeToStation, MovedThisTick, DisembRemaining, WaitTime);
@@ -196,10 +196,13 @@ tryEnterPlatform(CurrStation, Direction) ->
 
 
 
-notifyPassengers([], _Message) -> ok;
-notifyPassengers([Passenger|PassengerList], Message) ->
+notifyPassengers([], _Message, DisembCount) -> DisembCount;
+notifyPassengers([Passenger|PassengerList], Message, DisembCount) ->
 	Passenger ! Message,
-	notifyPassengers(PassengerList, Message).
+    receive
+        {disYes} -> notifyPassengers(PassengerList, Message, DisembCount + 1);
+        {disNo} -> notifyPassengers(PassengerList, Message, DisembCount)
+    end.
 
 
 
