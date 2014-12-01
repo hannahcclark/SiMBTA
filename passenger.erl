@@ -42,25 +42,8 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	%% sends {board, Pid} to train to request boarding
 	%%	 {disembark, Pid} to train to request disembarking
     receive
-        {inStation, AshTrain, AleTrain} ->
-            case Direction of
-                ashmont ->
-                    case AshTrain of
-                        nil -> loop(StartTime, StartStation, CurrentLocation,
-                                    Endpoint, Direction);
-                        _ -> AshTrain ! {board, self()},
-                             loop(StartTime, StartStation, CurrentLocation,
-                                  Endpoint, Direction)
-                    end;
-                alewife -> 
-                    case AleTrain of
-                        nil -> loop(StartTime, StartStation, CurrentLocation,
-                                    Endpoint, Direction);
-                        _ -> AleTrain ! {board, self()},
-                             loop(StartTime, StartStation, CurrentLocation,
-                                  Endpoint, Direction)
-                    end
-            end;
+	{train, nil, Direction ->
+            loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{train, Train, Direction} ->
 	    Train ! {board, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
