@@ -21,7 +21,7 @@ wait(StartStation, StartTime, EndStation,  Direction) ->
 	{tick, StartTime} ->
 	    clock:remove(clk, self()),
 	    StartStation ! {passengerEnters, self(), Direction},
-		loop(StartTime, StartStation, StartStation, EndStation, Direction);
+	    loop(StartTime, StartStation, StartStation, EndStation, Direction);
 	{tick, _} ->
 	    clk ! {minuteDone},
 	    wait(StartStation, StartTime, EndStation, Direction)
@@ -67,18 +67,18 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
         {train, _, _} ->
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, Endpoint, Train} ->
-        Train ! {disYes},
+            Train ! {disYes},
 	    Train ! {disembark, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, _, Train} ->
-        Train ! {disNo},
+            Train ! {disNo},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{changedLocation, Endpoint} ->
             output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
 	        trip_stats(clock:currTime(clk), StartTime)}),
             io:fwrite("finclock ~p~n", [whereis(clk)]);
 	{changedLocation, Train} ->
-	    CurrentLocation ! {passengerLeaves, self()},
+	    CurrentLocation ! {passengerLeaves, self(), Direction},
 	    loop(StartTime, StartStation, Train, Endpoint, Direction);
 	{boardFailed, Train} ->
 	    Train ! {board, self()},
