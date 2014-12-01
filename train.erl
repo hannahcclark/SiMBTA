@@ -87,31 +87,32 @@ DisembRemaining, WaitTime) ->
 				% Train is At Capacity, So Leave
 				Capacity == length(PassengerList) ->
 					io:fwrite("tick: ~p, at capacity, leaving ~n", [Time]),
-					emptyMailbox(),
 					CurrStation ! { trainLeaving, Direction, self() },
 					receive
-                        {trainLeft} -> ok
-                    end,
-                    {NextStation, NewTimeToNext} = carto:timeToNext(CurrStation, Direction),
+                        			{trainLeft} -> ok
+                    			end,
+                    			{NextStation, NewTimeToNext} = carto:timeToNext(CurrStation, Direction),
 					NextStation ! { trainIncoming, self(), Direction },
-                    clk ! { minuteDone },
+                    			clk ! { minuteDone },
 					output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
+					emptyMailbox(),
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0);
 				
 				% Not At Capacity, Waited for A Minutes, So Leave
 				WaitTime == 1 ->
 					io:fwrite("tick: ~p, waited, leaving~n", [Time]),
 					CurrStation ! { trainLeaving, Direction, self() },
-                    receive
-                        {trainLeft} -> ok
-                    end,
+                    			receive
+                        			{trainLeft} -> ok
+                    			end,
 					{NextStation, NewTimeToNext} = carto:timeToNext(CurrStation, Direction),
-				    if
-                        NextStation =/= endStation -> NextStation ! { trainIncoming, self(), Direction },
-                                            clk ! {minuteDone};
-                        true -> ok %kill passenger list
-                    end,
+				    	if
+                        			NextStation =/= endStation -> NextStation ! { trainIncoming, self(), Direction },
+                                            		clk ! {minuteDone};
+                        			true -> ok %kill passenger list
+                    			end,
 					output:newTrainStat(outMod, { Direction, track, NextStation, length(PassengerList) }),
+					emptyMailbox(),
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0);
 
 				% Not At Capacity, Many People On Platform
