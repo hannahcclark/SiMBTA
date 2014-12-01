@@ -1,0 +1,11 @@
+train alewife 1 500 1
+delay 1 5
+passenger 3 2 south davis
+train ashmont 1 500 0
+passenger 1 1 alewife harvard
+passenger 1 5 porter kendall
+train alewife 10 500 0
+train ashmont 11 500 2
+delay 20 2
+delay 28 1
+train alewife 20 500 0
