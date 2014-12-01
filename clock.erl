@@ -35,7 +35,7 @@ add_rest(ObjList) -> receive
                      end.
 
 %Clock's main action loop, ends when no more objects are "listening" to the clock
-loop(_, [], _) -> ok;
+loop(_, [], _) -> io:fwrite("clock dies~n", []), ok;
 loop(Minute, ObjList, ObjDone) ->
                 receive
                     {minuteDone} ->  if
@@ -43,11 +43,13 @@ loop(Minute, ObjList, ObjDone) ->
                                 lists:foreach(fun(Pid) -> %signal all watched objects
                                         Pid ! {tick, Minute + 1}
                                     end, ObjList),
+                                    io:fwrite("~p objects~n", [length(ObjList)]),
                                 loop(Minute + 1, ObjList, 0); %loop with next minute
                             ObjDone + 1 < length(ObjList) -> %case of still waiting on objects
                                 loop(Minute, ObjList, ObjDone + 1)
                         end;
                     {add, Pid} -> loop(Minute, [Pid|ObjList], ObjDone);
                     {remove, Pid} -> loop(Minute, lists:delete(Pid, ObjList), ObjDone);
-                    {timeCheck, Pid} -> Pid ! {timeRet, Minute}
+                    {timeCheck, Pid} -> Pid ! {timeRet, Minute},
+                                        loop(Minute, ObjList, ObjDone)
                 end. 

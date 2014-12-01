@@ -16,11 +16,11 @@ start(FileName) -> {ok, Device} = file:open(FileName, [read]),
                                     %so that it sends them appropriately
                    clock:startClock(clk), %Everything is ready, so start clock's count
                    procsAlive(Procs),
-                   output:endSimulation(outMod), %Everything is done, so output may be ended
-                   lists:foreach(fun(Pid) -> clock:remove(clk, Pid),
-                                    exit(whereis(Pid), simDone)
-                        end, carto:cartograph()), %Remove remaining processes from clock
-                                      %and cause them to exit so that the clock will stop
+                   io:fwrite("procs dead ~n", []),
+                   output:endSimulation(outMod), %Everything is done, so output 
+                                                %may be ended and clock will end
+                   lists:foreach(fun(Pid) -> exit(whereis(Pid), simDone)
+                        end, carto:cartograph()), %cause stations to exit to clean up
                     ok.
                      
 %Waits until all processes in a list are dead by filtering on alive processes at each recursion
