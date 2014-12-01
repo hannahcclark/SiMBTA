@@ -75,6 +75,8 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
         Train ! {trainLeft},
 	    loop(Name, PassengerList, PlatformIn, nil,
 		 IncomingIn, IncomingOut);
+	{numWaiting, Train} ->
+	    Train ! {numWaiting, length(PassengerList)};
     	{endSim} -> ok
     end.
 
@@ -95,3 +97,4 @@ alertPassengers(Train, Direction, PassengerList) ->
     %%
     lists:foreach(fun(Elem) -> Elem ! {train, Train, Direction} end, 
                     PassengerList).
+
