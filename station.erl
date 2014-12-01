@@ -9,7 +9,8 @@ start(Name) ->
                     loop(Name, [], nil, nil, IncomingIn, IncomingOut) end)),
     output:add(outMod, station).
 
-loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
+loop(Name, PassengerListIn, PassengerListOut,
+     PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
 	%% receives {passengerEnters, Passenger} -> update passengerlist
 	%%	    {passengerLeaves, Passenger} -> update passengerlist
 	%%	    {trainIncoming, Train, Direction} -> addincomingtrain
@@ -28,53 +29,70 @@ loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
             end,
             output:newStationStat(outMod, 
                    {Name, length(PassengerList), InCase, OutCase}),
-            loop(Name, PassengerList, PlatformIn, PlatformOut, IncomingIn, 
-                    IncomingOut);
-	{passengerEnters, Passenger} -> 
-	    NewPassengerList = [Passenger|PassengerList],
-	    Passenger ! {inStation, PlatformIn, PlatformOut},
-        loop(Name, NewPassengerList, PlatformIn, PlatformOut,
-		 IncomingIn, IncomingOut);
-	{passengerLeaves, Passenger} -> 
-	    NewPassengerList = lists:delete(Passenger, PassengerList),
-	    loop(Name, NewPassengerList, PlatformIn, PlatformOut,
-		 IncomingIn, IncomingOut);
+            loop(Name, PassengerListIn, PassengerListOut,
+		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+	{passengerEnters, Passenger, ashmont} -> 
+	    NewPassengerList = [Passenger|PassengerListIn],
+	    Passenger ! {inStation, PlatformIn},
+            loop(Name, NewPassengerList, PassengerListOut,
+                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+	{passengerEnters, Passenger, alewife} -> 
+	    NewPassengerList = [Passenger|PassengerListOut],
+	    Passenger ! {inStation, PlatformOut},
+            loop(Name, PassengerListIn, NewPassengerList,
+		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+	{passengerLeaves, Passenger, ashmont} -> 
+	    NewPassengerList = lists:delete(Passenger, PassengerListIn),
+	    loop(Name, NewPassengerList, PassengerListOut,
+		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+	{passengerLeaves, Passenger, alewife} -> 
+	    NewPassengerList = lists:delete(Passenger, PassengerListOut),
+	    loop(Name, PassengerListIn, NewPassengerList,
+		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
 	{trainIncoming, Train, ashmont} -> 
 	    NewIncomingIn = queue:in(Train, IncomingIn),
 	    Train ! {inQueue},
-        loop(Name, PassengerList, PlatformIn, PlatformOut,
-		 NewIncomingIn, IncomingOut);
+            loop(Name, PassengerListIn, PassengerListOut,
+		 PlatformIn, PlatformOut, NewIncomingIn, IncomingOut);
 	{trainIncoming, Train, alewife} ->
 	    NewIncomingOut = queue:in(Train, IncomingOut),
 	    Train ! {inQueue},
-        loop(Name, PassengerList, PlatformIn, PlatformOut,
-		 IncomingIn, NewIncomingOut);
+            loop(Name, PassengerListIn, PassengerListOut,
+		 PlatformIn, PlatformOut, IncomingIn, NewIncomingOut);
 	{trainEntry, Train, ashmont} -> 
 	    case tryTrainEntry(Train, IncomingIn, PlatformIn) of
 		yes -> {_, NewIncomingIn} = queue:out(IncomingIn),
-		       alertPassengers(Train, ashmont, PassengerList),
-		       loop(Name, PassengerList, Train, PlatformOut,
-			    NewIncomingIn, IncomingOut);
-		no -> loop(Name, PassengerList, PlatformIn, PlatformOut,
-			   IncomingIn, IncomingOut)
+		       alertPassengers(Train, ashmont, PassengerListIn),
+		       loop(Name, PassengerListIn, PassengerListOut,
+			    Train, PlatformOut, NewIncomingIn, IncomingOut);
+		no -> loop(Name, PassengerListIn, PassengerListOut,
+			   PlatformIn, PlatformOut, IncomingIn, IncomingOut)
 	    end;
 	{trainEntry, Train, alewife} ->
 	    case tryTrainEntry(Train, IncomingOut, PlatformOut) of
 		yes -> {_,NewIncomingOut} = queue:out(IncomingOut),
-		       alertPassengers(Train, alewife, PassengerList),
-		       loop(Name, PassengerList, PlatformIn, Train,
-			    IncomingIn, NewIncomingOut);
-		no -> loop(Name, PassengerList, PlatformIn, PlatformOut,
-			   IncomingIn, IncomingOut)
+		       alertPassengers(Train, alewife, PassengerListOut),
+		       loop(Name, PassengerListIn, PassengerListOut,
+			    PlatformIn, Train, IncomingIn, NewIncomingOut);
+		no -> loop(Name, PassengerListIn, PassengerListOut,
+			   PlatformIn, PlatformOut, IncomingIn, IncomingOut)
 	    end;
 	{trainLeaving, ashmont, Train} -> 
             Train ! {trainLeft},
-            loop(Name, PassengerList, nil, PlatformOut,
-		 IncomingIn, IncomingOut);
+            loop(Name, PassengerListIn, PassengerListOut,
+		 nil, PlatformOut, IncomingIn, IncomingOut);
 	{trainLeaving, alewife, Train} ->
         Train ! {trainLeft},
-	    loop(Name, PassengerList, PlatformIn, nil,
-		 IncomingIn, IncomingOut);
+	    loop(Name, PassengerListIn, PassengerListOut,
+		 PlatformIn, nil, IncomingIn, IncomingOut);
+	{numWaiting, ashmont, Train} ->
+	    Train ! {numWaiting, length(PassengerListIn)};
+            loop(Name, PassengerListIn, PassengerListOut,
+		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+	{numWaiting, alewife, Train} ->
+	    Train ! {numWaiting, length(PassengerListOut)};
+            loop(Name, PassengerListIn, PassengerListOut,
+		 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
     	{endSim} -> ok
     end.
 
@@ -95,3 +113,4 @@ alertPassengers(Train, Direction, PassengerList) ->
     %%
     lists:foreach(fun(Elem) -> Elem ! {train, Train, Direction} end, 
                     PassengerList).
+

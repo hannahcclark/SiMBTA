@@ -20,8 +20,8 @@ wait(StartStation, StartTime, EndStation,  Direction) ->
     receive
 	{tick, StartTime} ->
 	    clock:remove(clk, self()),
-	    StartStation ! {passengerEnters, self()},
-		loop(StartTime, StartStation, StartStation, EndStation, Direction);
+	    StartStation ! {passengerEnters, self(), Direction},
+	    loop(StartTime, StartStation, StartStation, EndStation, Direction);
 	{tick, _} ->
 	    clk ! {minuteDone},
 	    wait(StartStation, StartTime, EndStation, Direction)
@@ -42,43 +42,43 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	%% sends {board, Pid} to train to request boarding
 	%%	 {disembark, Pid} to train to request disembarking
     receive
-    {inStation, AshTrain, AleTrain} ->
-        case Direction of
-            ashmont ->
-                case AshTrain of
-                    nil -> loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction);
-                    _ -> AshTrain ! {board, self()},
-                        loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction)
-                end;
-            alewife -> 
-                case AleTrain of
-                    nil -> loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction);
-                    _ -> AleTrain ! {board, self()},
-                        loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction)
-                end
-        end;
+        {inStation, AshTrain, AleTrain} ->
+            case Direction of
+                ashmont ->
+                    case AshTrain of
+                        nil -> loop(StartTime, StartStation, CurrentLocation,
+                                    Endpoint, Direction);
+                        _ -> AshTrain ! {board, self()},
+                             loop(StartTime, StartStation, CurrentLocation,
+                                  Endpoint, Direction)
+                    end;
+                alewife -> 
+                    case AleTrain of
+                        nil -> loop(StartTime, StartStation, CurrentLocation,
+                                    Endpoint, Direction);
+                        _ -> AleTrain ! {board, self()},
+                             loop(StartTime, StartStation, CurrentLocation,
+                                  Endpoint, Direction)
+                    end
+            end;
 	{train, Train, Direction} ->
 	    Train ! {board, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
         {train, _, _} ->
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, Endpoint, Train} ->
-        Train ! {disYes},
+            Train ! {disYes},
 	    Train ! {disembark, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, _, Train} ->
-        Train ! {disNo},
+            Train ! {disNo},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{changedLocation, Endpoint} ->
             output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
 	        trip_stats(clock:currTime(clk), StartTime)}),
             io:fwrite("finclock ~p~n", [whereis(clk)]);
 	{changedLocation, Train} ->
-	    CurrentLocation ! {passengerLeaves, self()},
+	    CurrentLocation ! {passengerLeaves, self(), Direction},
 	    loop(StartTime, StartStation, Train, Endpoint, Direction);
 	{boardFailed, Train} ->
 	    Train ! {board, self()},
