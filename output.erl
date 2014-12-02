@@ -27,7 +27,8 @@
 start(ProcName, OutputFile) -> 
     {ok, Device} = file:open(OutputFile, [write]),
     %Device = standard_io,
-    Proc = spawn(fun() -> loop(0, 0, [], [], false, Device) end),
+    Proc = spawn(fun() -> loop(0, 0, [], [], false, Device, false) end),
+    io:fwrite("output process: ~w~n", [Proc]),
     clock:add(clk, Proc), %Synchronizes with clock so that output has meaning
     register(ProcName,Proc),
     {ok}.
@@ -105,35 +106,36 @@ printPassenger({Start, Dest, Time, Dur}, Device) ->
 %to be relevant and not called when there is nothing to output
 %In this case, all updates are printed and cleared, and the output
 %process has completed its work for the minute
-loop(TrainCnt, StationCnt, TrainStats, StationStats, _,  Device) 
+loop(TrainCnt, StationCnt, TrainStats, StationStats, _,  Device, true) 
     when (length(TrainStats) >= TrainCnt) and 
         (length(StationStats) >= StationCnt) and 
         ((TrainCnt > 0) or (StationCnt > 0)) ->
         
         printTrains(TrainStats, Device),
         printStations(StationStats, Device),
+        io:fwrite("output complete~n", []),
         clk ! {minuteDone},
-        loop(TrainCnt, StationCnt, [], [], false, Device);
+        loop(TrainCnt, StationCnt, [], [], false, Device, false);
 
-loop(TrainCnt, StationCnt, TrainStats, StationStats, false, Device)
+loop(TrainCnt, StationCnt, TrainStats, StationStats, false, Device, MinuteOccurred)
     when (length(TrainStats) >= TrainCnt) and (TrainCnt > 0) ->
         lists:foreach(fun(Station) -> Station ! {sendInfo} end,
                         carto:cartograph()),
-        loop(TrainCnt, StationCnt, TrainStats, StationStats, true, Device);
-loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device) ->
+        loop(TrainCnt, StationCnt, TrainStats, StationStats, true, Device, MinuteOccurred);
+loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device, MinuteOccurred) ->
     receive
         {add, train, Pid} -> Pid ! done,
                                 loop(TrainCnt + 1, StationCnt, TrainStats, StationStats,
-                                ReqStations, Device);
+                                ReqStations, Device, MinuteOccurred);
         {add, station, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt + 1, TrainStats,
-                                StationStats, ReqStations, Device);
+                                StationStats, ReqStations, Device, MinuteOccurred);
         {remove, train, Pid} -> Pid ! done,
                                 loop(TrainCnt - 1, StationCnt, TrainStats, 
-                                StationStats, ReqStations, Device);
+                                StationStats, ReqStations, Device, MinuteOccurred);
         {remove, station, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt - 1, TrainStats, 
-                                StationStats, ReqStations, Device);
+                                StationStats, ReqStations, Device, MinuteOccurred);
         {tick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
                                 if
                                     TrainCnt =:= 0 ->
@@ -141,24 +143,25 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device) ->
                                             Station ! {sendInfo} end,
                                             carto:cartograph()),
                                         loop(TrainCnt, StationCnt, TrainStats, 
-                                        StationStats, true, Device);
+                                        StationStats, true, Device, true);
                                     true -> loop(TrainCnt, StationCnt, TrainStats, 
-                                        StationStats, ReqStations, Device)
+                                        StationStats, ReqStations, Device, true)
                                 end;
         {trainStat, Stat, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt, [Stat|TrainStats],
-                                StationStats, ReqStations, Device);
+                                StationStats, ReqStations, Device, MinuteOccurred);
         {stationStat, Stat, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt, TrainStats,
-                                [Stat|StationStats], ReqStations, Device);
+                                [Stat|StationStats], ReqStations, Device, MinuteOccurred);
         {passenger, PassInfo} -> printPassenger(PassInfo, Device),
                                 loop(TrainCnt, StationCnt, TrainStats,
-                                StationStats, ReqStations, Device);
+                                StationStats, ReqStations, Device, MinuteOccurred);
         %At the end of the simulation, the remaining statistics should be printed
         %it should be taken off the clock because it is not relevant anymore
         %and it must close the file to save the output before ending
         {endSim, Sender} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
+                    io:fwrite("output process removed~n", []),
                     clock:remove(clk, self()),
                     Sender ! file:close(Device)
     end.

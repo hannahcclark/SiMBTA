@@ -241,7 +241,7 @@ var drawFrame = function(min, data) {
 	for (var i in minuteData.trains) {
 		var train = minuteData.trains[i];
 		console.log(train);
-		if (train.Approaching !== undefined) {
+		if (train.Approaching !== undefined && train.Approaching != "endStation") {
 			trainsByStation[train.Approaching].approaching[train.Direction].push(train);
 		} else if (train.Station !== undefined) {
 			trainsByStation[train.Station].contained[train.Direction] = train;

@@ -61,13 +61,16 @@ loop(Minute, ObjList, ObjDone) ->
                                 lists:foreach(fun(Pid) -> %signal all watched objects
                                         Pid ! {tick, Minute + 1}
                                     end, ObjList),
-                                    io:fwrite("~p objects~n", [length(ObjList)]),
+                                    io:fwrite("~p objects received of ~p total, TIME MOVES FORWARD ~n", [ObjDone+1, length(ObjList)]),
                                 loop(Minute + 1, ObjList, 0); %loop with next minute
                             ObjDone + 1 < length(ObjList) -> %case of still waiting on objects
+                                io:fwrite("~p objects received of ~p total ~n", [ObjDone+1, length(ObjList)]),
                                 loop(Minute, ObjList, ObjDone + 1)
                         end;
                     {add, Pid} -> loop(Minute, [Pid|ObjList], ObjDone);
-                    {remove, Pid} -> loop(Minute, lists:delete(Pid, ObjList), ObjDone);
+                    {remove, Pid} -> 
+                        io:fwrite("removing from clock tracking, ~p objects remain: ~w minus ~w ~n", [length(ObjList)-1, ObjList, Pid]),
+                        loop(Minute, lists:delete(Pid, ObjList), ObjDone);
                     {timeCheck, Pid} -> Pid ! {timeRet, Minute},
                                         loop(Minute, ObjList, ObjDone)
                 end. 
