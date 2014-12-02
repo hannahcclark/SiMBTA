@@ -7,6 +7,9 @@
 % Date: 11/15/14
 % ChangeLog:
 %    11/15/14 - RAD - created file
+%    11/22/14 - HCC - fixed syntax errors
+%    11/22/14 - HCC - fixed typo bugs
+%    11/22/14 - HCC - added changes for output to station
 %    11/22/14 - RAD - fixed bug
 %    11/22/14 - RAD - formatting
 %    12/01/14 - RAD - added waiting passenger count for train
