@@ -1,5 +1,6 @@
 train alewife 1 500 1
-delay 1 5
+delay 5 5
+train alewife 6 500 0
 passenger 3 2 south davis
 train ashmont 1 500 0
 passenger 1 1 alewife harvard
