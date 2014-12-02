@@ -1,3 +1,18 @@
+% Module: Main
+% Purpose: Parse specification for and run simulation
+% Interface:
+%    start/1 runs the simulation with parameters specified by the input file
+% Original Author: Hannah Clark
+% Date: 11/8/14
+% ChangeLog:
+%    11/24/14 - HCC - fixed bugs in code to exit simulation
+%    11/23/14 - HCC - fixed bugs in delay loop function and procsAlive function
+%    11/22/14 - HCC - fixed bugs in start due to order of function calls that appeared in integration testing
+%    11/19/14 - HCC - changes to return values from functions and their usage to be able to automatically end simulation
+%    11/19/14 - HCC - fixed errors when inputting from file
+%    11/17/14 - HCC - fixed functions to support delays
+%    11/16/14 - HCC - added functions to support delays
+%    11/08/14 - HCC - created module
 -module(main).
 -export([start/1]).
 
