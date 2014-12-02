@@ -1,5 +1,19 @@
 % Module: Train
 % Purpose: Act as a train on the T
+% Its state is given by { StartTime, Capacity, Direction, EndStation, PassengerList, TimeToStation, DisembRemaining, WaitTime }
+%   where
+%   StartTime is the minute number at which the train left its initial station [set at init]
+%   Capacity is the maximum number of people that can be on the train [set at init]
+%	Direction is an atom of the final station on the route [set at init]
+%	CurrStation is an atom of the station the train is currently in or is approaching
+%	PassengerList is a list of passenger PIds of people currently on the train
+%	TimeToStation is the number of minutes until a train reaches the next station (under ideal conditions)
+%		This is decremented every minute of travel unless a delay is encountered
+%	DisembRemaining is the number of people waiting to disembark at a station.
+%		This is set when a train enters a station and prevents boarding until it is zero.
+%	WaitTime is the number of minutes a train has waited at a station without significant boarding.
+%		This is set to zero when a train arrives, and then increments every minute that fewer than the maximum
+%		  number of people attempt to board the train.
 % Interface:
 %    start/4 initializes a train based on input specifications
 % Original Author: Andrew Stephens
@@ -9,6 +23,7 @@
 %   12/01/14 - HCC - Made changes to allow for more realistic time/passenger movement parameters
 %   11/22/14 - HCC - Made changes necessary for adding to output
 %	11/19/14 - HCC - Fixed bug with what passengers was being told as new locations
+%	11/15/14 - AMS - Created file
 
 -module(train).
 -export([start/4]).
