@@ -11,9 +11,11 @@
 % ChangeLog:
 %    11/15/14 - RAD - created file
 %    11/18/14 - RAD - minor updates (typos, etc)
+%    11/19/14 - HCC - fixed glitch with passenger being added to clock
+%    11/19/14 - HCC - made changes to add to output module, fixed some typo bugs/syntax issues
 %    11/20/14 - HCC - added(then removed) some outputs for testing
 %    11/22/14 - RAD - formatting, semicolon fix
-%    12/01/14 - HCC - somewhat messy way of checking train check upon entry to station, because was not notified
+%    12/01/14 - HCC - somewhat messy way of checking train check upon entry to station, because was not otherwise notified
 %    12/01/14 - RAD - updated to match station directional lists
 %    12/01/14 - RAD - deleted no longer necissary train check upon entry
 
