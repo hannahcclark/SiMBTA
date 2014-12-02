@@ -1,3 +1,15 @@
+% Module: Train
+% Purpose: Act as a train on the T
+% Interface:
+%    start/4 initializes a train based on input specifications
+% Original Author: Andrew Stephens
+% Date: 11/15/14
+% ChangeLog:
+%   12/01/14 - HCC - Made changes to allow for more realistic boarding/disembarkation
+%   12/01/14 - HCC - Made changes to allow for more realistic time/passenger movement parameters
+%   11/22/14 - HCC - Made changes necessary for adding to output
+%	11/19/14 - HCC - Fixed bug with what passengers was being told as new locations
+
 -module(train).
 -export([start/4]).
 
