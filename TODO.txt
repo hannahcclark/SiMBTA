@@ -1,0 +1,7 @@
+- Test with passengers boarding from multiple stations, 1 exit point
+- Test with passengers disembarking at more than one station
+- Test with more than one train per direction
+- Test with single delay - HANNAH
+- Test with multiple delays - HANNAH
+- Test with train reaching capacity with no more people boarding
+- Test with train reaching capacity with more people who want to board

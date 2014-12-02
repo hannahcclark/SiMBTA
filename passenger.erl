@@ -1,3 +1,24 @@
+% Module: Passenger
+% Purpose: Imitate a passenger taking the T
+% Interface:
+%    start adds the passenger to clock and starts the waiting loop
+%        which will loop until the clock reaches the passenger start time
+%        at which point that loop will be the passenger waiting at the station
+%        and traversing the T
+%    trip_stats sends output the total trip time of the passenger
+% Original Author: Raewyn Duvall
+% Date: 11/15/14
+% ChangeLog:
+%    11/15/14 - RAD - created file
+%    11/18/14 - RAD - minor updates (typos, etc)
+%    11/19/14 - HCC - fixed glitch with passenger being added to clock
+%    11/19/14 - HCC - made changes to add to output module, fixed some typo bugs/syntax issues
+%    11/20/14 - HCC - added(then removed) some outputs for testing
+%    11/22/14 - RAD - formatting, semicolon fix
+%    12/01/14 - HCC - somewhat messy way of checking train check upon entry to station, because was not otherwise notified
+%    12/01/14 - RAD - updated to match station directional lists
+%    12/01/14 - RAD - deleted no longer necissary train check upon entry
+
 -module(passenger).
 -export([start/3,loop/5,trip_stats/2]).
 
@@ -20,8 +41,8 @@ wait(StartStation, StartTime, EndStation,  Direction) ->
     receive
 	{tick, StartTime} ->
 	    clock:remove(clk, self()),
-	    StartStation ! {passengerEnters, self()},
-		loop(StartTime, StartStation, StartStation, EndStation, Direction);
+	    StartStation ! {passengerEnters, self(), Direction},
+	    loop(StartTime, StartStation, StartStation, EndStation, Direction);
 	{tick, _} ->
 	    clk ! {minuteDone},
 	    wait(StartStation, StartTime, EndStation, Direction)
@@ -42,43 +63,26 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	%% sends {board, Pid} to train to request boarding
 	%%	 {disembark, Pid} to train to request disembarking
     receive
-    {inStation, AshTrain, AleTrain} ->
-        case Direction of
-            ashmont ->
-                case AshTrain of
-                    nil -> loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction);
-                    _ -> AshTrain ! {board, self()},
-                        loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction)
-                end;
-            alewife -> 
-                case AleTrain of
-                    nil -> loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction);
-                    _ -> AleTrain ! {board, self()},
-                        loop(StartTime, StartStation, CurrentLocation,
-                            Endpoint, Direction)
-                end
-        end;
+	{train, nil, Direction} ->
+            loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{train, Train, Direction} ->
 	    Train ! {board, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
         {train, _, _} ->
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, Endpoint, Train} ->
-        Train ! {disYes},
+            Train ! {disYes},
 	    Train ! {disembark, self()},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{station, _, Train} ->
-        Train ! {disNo},
+            Train ! {disNo},
 	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	{changedLocation, Endpoint} ->
             output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
 	        trip_stats(clock:currTime(clk), StartTime)}),
             io:fwrite("finclock ~p~n", [whereis(clk)]);
 	{changedLocation, Train} ->
-	    CurrentLocation ! {passengerLeaves, self()},
+	    CurrentLocation ! {passengerLeaves, self(), Direction},
 	    loop(StartTime, StartStation, Train, Endpoint, Direction);
 	{boardFailed, Train} ->
 	    Train ! {board, self()},
