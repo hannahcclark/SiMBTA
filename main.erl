@@ -41,7 +41,11 @@ start(FileName) -> {ok, Device} = file:open(FileName, [read]),
 %Waits until all processes in a list are dead by filtering on alive processes at each recursion
 %and ending when there are no longer any
 procsAlive([]) -> ok;
-procsAlive(Procs) -> procsAlive(lists:filter(fun(Proc) -> is_process_alive(Proc) end, Procs)).
+procsAlive(Procs) -> 
+    %io:fwrite("ALIVE: ~w~n", [Procs]),
+    procsAlive(lists:filter(fun(Proc) -> 
+        is_process_alive(Proc) 
+    end, Procs)).
 
 %Parses input file and starts processes as indicated by file
 %Procs is a list of Pids of trains and passengers created so far
@@ -85,7 +89,9 @@ makeXPassengers(X, StartStation, StartTime, EndStation) ->
     makeXPassengers(X-1, StartStation, StartTime, EndStation)].
 
 %Sends delays to trains as appropriate
-delayLoop([]) -> clock:remove(clk, self());
+delayLoop([]) -> 
+  io:fwrite("delay loop done forever~n", []),
+  clock:remove(clk, self());
 delayLoop(Delays) ->
     receive %Every minute, iterate over list of delays
            %send any for that minute, call self with list of remaining ones
@@ -97,6 +103,7 @@ delayLoop(Delays) ->
                     _ -> [{Pid, Time, Length}|Rem]
                 end
             end, [], Delays),
+            io:fwrite("delay loop minute done~n", []),
             clk ! {minuteDone},
             delayLoop(Remaining)
     end.
