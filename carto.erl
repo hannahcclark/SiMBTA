@@ -10,9 +10,12 @@
 % Date: 11/5/14
 % ChangeLog:
 %    11/05/14 - RAD - created file
+%    11/08/14 - HCC - fixed syntax errors in case statements
 %    11/15/14 - RAD - updated from north/south to in/out
 %    11/17/14 - RAD - updated from in/out to alewife/ashomont
 %    11/17/14 - RAD - time return is now tuple with next station
+%    11/19/14 - HCC - fixed syntax errors in case statements, added first station function
+%    11/29/14 - HCC - time between stations updated to MBTA data
 
 
 -module(carto).
