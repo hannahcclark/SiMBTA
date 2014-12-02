@@ -1,3 +1,21 @@
+% Module: Clock
+% Purpose: Maintains the simulation's concept of time and notify objects watching when it changes
+% Interface:
+%    init/1 spawns the clock process that will not count until clock is started
+%    add/2 adds a process to processes watching the clock
+%    remove/2 removes a process from the processes watching the clock
+%    startClock/1 begins incrementing of time
+%    currTime/1 returns the current time
+% Original Author: Hannah Clark
+% Date: 11/7/14
+% ChangeLog:
+%    12/01/14 - HCC - fixed a glitch in loop when sending current time
+%    11/22/14 - HCC - switched mapping over to send tick message to a foreach
+%    11/22/14 - HCC - changed name of start/1 to init/1 for more clarity
+%    11/19/14 - HCC - added currTime/1
+%    11/19/14 - HCC - fixed issue with notification of minute 0 missed in preliminary debugging
+%    11/16/14 - HCC - cleaned up debugging outputs
+%    11/07/14 - HCC - created/debugged module
 -module(clock).
 -export([init/1, remove/2, add/2, currTime/1, startClock/1]).
 
