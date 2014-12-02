@@ -5,3 +5,4 @@
 - Test with multiple delays - HANNAH
 - Test with train reaching capacity with no more people boarding
 - Test with train reaching capacity with more people who want to board
+- Fix train output issue - HANNAH
