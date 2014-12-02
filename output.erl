@@ -1,4 +1,22 @@
--module(output).
+% Module: Output
+% Purpose: Handle output to results file for simulation
+% Interface:
+%   start/2 creates a process to handle output registered under the specified name and outputing to the specified file
+%   add/2 adds a process, either a station or train, that will be sending output updates
+%   remove/2 removes a process, either a station or a train, that had been sending updates
+%   newStationStat/2 is used by stations to send updates
+%   newTrainStat/2 is used by trains to send updates
+%   passengerDone/2 is used by passenger to send trip end information
+%   endSimulation/1 is used to end output process
+% Original Author: Hannah Clark
+% Date: 11/16/14
+% ChangeLog:
+%    12/01/14 - HCC - changed method by which sending station updates is triggered
+%    11/24/14 - HCC - made messages synchronous  because of issue with scheduling
+%    11/22/14 - HCC - fixed adding to clock in start
+%    11/19/14 - HCC - changes made to endSim for correct ending of simulation
+%    11/17/14 - HCC - many changes for debugging
+%    11/16/14 - HCC - created module
 -export([start/2, remove/2, add/2, newStationStat/2, newTrainStat/2,
         passengerDone/2, endSimulation/1]).
 
