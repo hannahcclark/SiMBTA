@@ -1,7 +1,22 @@
-% name: Raewyn Duvall
-% updated: 11/5/14
+% Module: Carto
+% Purpose: Present a "map" of the T-lines (only Red currently)
+% Interface:
+%    cartograph() returns an ordered list of the stations
+%    firstStation returns the first station given a direction
+%    directionFromTo returns the end station given a certain route
+%    timeToNext returns the time to the next station given the current station
+%        and the direction
+% Original Author: Raewyn Duvall
+% Date: 11/5/14
+% ChangeLog:
+%    11/05/14 - RAD - created file
+%    11/08/14 - HCC - fixed syntax errors in case statements
+%    11/15/14 - RAD - updated from north/south to in/out
+%    11/17/14 - RAD - updated from in/out to alewife/ashomont
+%    11/17/14 - RAD - time return is now tuple with next station
+%    11/19/14 - HCC - fixed syntax errors in case statements, added first station function
+%    11/29/14 - HCC - time between stations updated to MBTA data
 
-%Travel times found from the MBTA Realtime api's schedulebyroute endpoint provide by MassDOT
 
 -module(carto).
 -export([cartograph/0, directionFromTo/2, timeToNext/2, firstStation/1]).
