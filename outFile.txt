@@ -99,6 +99,7 @@ station Name:alewife Passengers:1 AshTrain:false AleTrain:false
 Minute 5
 train Direction:alewife Station:shawmut Passengers:0
 train Direction:ashmont Station:davis Passengers:0
+train Direction: alewife Approaching:ashmont Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:true
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -113,15 +114,14 @@ station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:1 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:true AleTrain:false
 station Name:alewife Passengers:1 AshTrain:false AleTrain:false
 Minute 6
+train Direction:alewife Station:ashmont Passengers:0
 train Direction: alewife Approaching:fields_corner Passengers:0
 train Direction: ashmont Approaching:porter Passengers:0
-train Direction: alewife Approaching:fields_corner Passengers:0
-train Direction: ashmont Approaching:porter Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:true
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
@@ -139,8 +139,12 @@ station Name:porter Passengers:1 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:1 AshTrain:false AleTrain:false
 Minute 7
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+train Direction:alewife Station:ashmont Passengers:0
+train Direction: alewife Approaching:fields_corner Passengers:0
+train Direction: ashmont Approaching:porter Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:true
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
@@ -152,13 +156,13 @@ station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:1 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:1 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
-station Name:porter Passengers:1 AshTrain:true AleTrain:false
 Minute 8
 train Direction:alewife Station:fields_corner Passengers:0
 train Direction:ashmont Station:porter Passengers:0
+train Direction: alewife Approaching:shawmut Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
@@ -176,10 +180,9 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:1 AshTrain:true AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:1 AshTrain:false AleTrain:false
-Minute 9
 train Direction:ashmont Station:porter Passengers:0
 train Direction:alewife Station:fields_corner Passengers:0
-train Direction: alewife Approaching:ashmont Passengers:0
+train Direction: alewife Approaching:shawmut Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
@@ -197,11 +200,13 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:true AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:1 AshTrain:false AleTrain:false
-train Direction:alewife Station:ashmont Passengers:0
-train Direction: ashmont Approaching:harvard Passengers:1
+Minute 9
+train Direction:alewife Station:shawmut Passengers:0
 train Direction: alewife Approaching:savin_hill Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:true
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+train Direction: ashmont Approaching:harvard Passengers:1
+train Direction: alewife Approaching:ashmont Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:true
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
@@ -218,12 +223,13 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:1 AshTrain:false AleTrain:false
 Minute 10
-train Direction:alewife Station:ashmont Passengers:0
+train Direction:alewife Station:shawmut Passengers:0
 train Direction: alewife Approaching:savin_hill Passengers:0
 train Direction: ashmont Approaching:harvard Passengers:1
+train Direction:alewife Station:ashmont Passengers:0
 train Direction: ashmont Approaching:alewife Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:true
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:true
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
@@ -241,10 +247,11 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:1 AshTrain:false AleTrain:false
 Minute 11
 train Direction:ashmont Station:harvard Passengers:1
-train Direction: alewife Approaching:shawmut Passengers:0
+train Direction: alewife Approaching:fields_corner Passengers:0
 train Direction: alewife Approaching:savin_hill Passengers:0
 train Direction:ashmont Station:alewife Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+train Direction:alewife Station:ashmont Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:true
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
@@ -262,10 +269,12 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:1 AshTrain:true AleTrain:false
 Minute 12
+train Direction: alewife Approaching:shawmut Passengers:0
 train Direction:alewife Station:savin_hill Passengers:0
 train Direction:ashmont Station:harvard Passengers:1
-train Direction: alewife Approaching:shawmut Passengers:0
+train Direction: alewife Approaching:fields_corner Passengers:0
 train Direction:ashmont Station:alewife Passengers:0
+train Direction: alewife Approaching:shawmut Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -285,13 +294,14 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:true AleTrain:false
 Minute 13
 train Direction: ashmont Approaching:davis Passengers:1
+train Direction:alewife Station:fields_corner Passengers:0
 train Direction:alewife Station:shawmut Passengers:0
 train Direction: ashmont Approaching:central Passengers:1
 train Direction:alewife Station:savin_hill Passengers:0
 train Direction: ashmont Approaching:davis Passengers:1
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:true
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:true
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
@@ -310,11 +320,12 @@ Minute 14
 Minute 15
 train Direction:ashmont Station:davis Passengers:1
 train Direction: alewife Approaching:jfk_umass Passengers:0
+train Direction:alewife Station:fields_corner Passengers:0
 train Direction:alewife Station:shawmut Passengers:0
 train Direction: ashmont Approaching:central Passengers:1
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:true
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
@@ -331,6 +342,7 @@ station Name:davis Passengers:0 AshTrain:true AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 16
 train Direction:ashmont Station:davis Passengers:1
+train Direction: alewife Approaching:savin_hill Passengers:0
 train Direction: alewife Approaching:fields_corner Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
 train Direction: ashmont Approaching:central Passengers:1
@@ -354,6 +366,7 @@ station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 17
 train Direction:ashmont Station:central Passengers:1
 train Direction: ashmont Approaching:porter Passengers:1
+train Direction: alewife Approaching:savin_hill Passengers:0
 train Direction: alewife Approaching:fields_corner Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -378,6 +391,7 @@ train Direction:alewife Station:fields_corner Passengers:0
 train Direction:alewife Station:jfk_umass Passengers:0
 train Direction:ashmont Station:central Passengers:1
 train Direction: ashmont Approaching:porter Passengers:1
+train Direction: alewife Approaching:savin_hill Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
@@ -396,13 +410,14 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 train Direction:ashmont Station:porter Passengers:1
+train Direction:alewife Station:savin_hill Passengers:0
 train Direction:alewife Station:fields_corner Passengers:0
 train Direction:alewife Station:jfk_umass Passengers:0
 train Direction: ashmont Approaching:kendall Passengers:1
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:true
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:true
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
@@ -419,13 +434,14 @@ station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 19
 train Direction: alewife Approaching:andrew Passengers:0
 train Direction: alewife Approaching:savin_hill Passengers:0
+train Direction:alewife Station:savin_hill Passengers:0
 train Direction:ashmont Station:porter Passengers:1
 train Direction: ashmont Approaching:kendall Passengers:1
 train Direction: alewife Approaching:ashmont Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:true
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
@@ -441,6 +457,7 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 20
 train Direction:ashmont Station:kendall Passengers:1
+train Direction: alewife Approaching:jfk_umass Passengers:0
 train Direction: ashmont Approaching:harvard Passengers:1
 train Direction: alewife Approaching:andrew Passengers:0
 train Direction: alewife Approaching:savin_hill Passengers:0
@@ -466,6 +483,7 @@ Minute 21
 passenger Start:porter End:kendall Began:5 Duration:16
 train Direction:alewife Station:andrew Passengers:0
 train Direction:ashmont Station:kendall Passengers:1
+train Direction: alewife Approaching:jfk_umass Passengers:0
 train Direction: alewife Approaching:savin_hill Passengers:0
 train Direction: ashmont Approaching:harvard Passengers:1
 train Direction:alewife Station:ashmont Passengers:0
@@ -492,6 +510,7 @@ train Direction:ashmont Station:harvard Passengers:1
 train Direction:alewife Station:savin_hill Passengers:0
 train Direction: ashmont Approaching:charles_mgh Passengers:0
 train Direction:alewife Station:andrew Passengers:0
+train Direction: alewife Approaching:jfk_umass Passengers:0
 train Direction: alewife Approaching:shawmut Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -513,6 +532,7 @@ station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 23
 passenger Start:alewife End:harvard Began:1 Duration:22
 Minute 24
+train Direction:alewife Station:jfk_umass Passengers:0
 train Direction:alewife Station:shawmut Passengers:0
 train Direction: alewife Approaching:broadway Passengers:0
 train Direction:ashmont Station:harvard Passengers:1
@@ -522,7 +542,7 @@ station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:true
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:true
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:true
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:3 AshTrain:false AleTrain:false
@@ -539,13 +559,14 @@ Minute 25
 train Direction:ashmont Station:charles_mgh Passengers:0
 train Direction:alewife Station:shawmut Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
+train Direction:alewife Station:jfk_umass Passengers:0
 train Direction: ashmont Approaching:central Passengers:0
 train Direction: alewife Approaching:broadway Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:true
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:true
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:3 AshTrain:false AleTrain:false
@@ -562,6 +583,7 @@ Minute 26
 train Direction:alewife Station:broadway Passengers:0
 train Direction:ashmont Station:charles_mgh Passengers:0
 train Direction: alewife Approaching:fields_corner Passengers:0
+train Direction: alewife Approaching:andrew Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
 train Direction: ashmont Approaching:central Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -585,6 +607,7 @@ Minute 27
 train Direction:alewife Station:broadway Passengers:0
 train Direction: ashmont Approaching:park_street Passengers:0
 train Direction: alewife Approaching:fields_corner Passengers:0
+train Direction: alewife Approaching:andrew Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
 train Direction: ashmont Approaching:central Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -606,6 +629,7 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 28
 train Direction:alewife Station:fields_corner Passengers:0
+train Direction:alewife Station:andrew Passengers:0
 train Direction:alewife Station:jfk_umass Passengers:0
 train Direction:ashmont Station:central Passengers:0
 train Direction: alewife Approaching:south Passengers:0
@@ -615,7 +639,7 @@ station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:true
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:true
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:3 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
@@ -631,6 +655,7 @@ Minute 29
 train Direction:ashmont Station:park_street Passengers:0
 train Direction:alewife Station:fields_corner Passengers:0
 train Direction:alewife Station:jfk_umass Passengers:0
+train Direction:alewife Station:andrew Passengers:0
 train Direction:ashmont Station:central Passengers:0
 train Direction: alewife Approaching:south Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -638,7 +663,7 @@ station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:true
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:true
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:true
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:3 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
@@ -655,6 +680,7 @@ train Direction:alewife Station:south Passengers:0
 train Direction:ashmont Station:park_street Passengers:0
 train Direction: alewife Approaching:savin_hill Passengers:0
 train Direction: alewife Approaching:andrew Passengers:0
+train Direction: alewife Approaching:broadway Passengers:0
 train Direction:ashmont Station:central Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -673,11 +699,10 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 31
 train Direction:alewife Station:south Passengers:0
 train Direction: ashmont Approaching:downtown_crossing Passengers:0
 train Direction: ashmont Approaching:kendall Passengers:0
-train Direction: alewife Approaching:andrew Passengers:0
+train Direction: alewife Approaching:broadway Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -695,20 +720,18 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 32
-train Direction:alewife Station:andrew Passengers:0
-train Direction: alewife Approaching:downtown_crossing Passengers:3
-train Direction: alewife Approaching:savin_hill Passengers:0
+Minute 31
 train Direction: ashmont Approaching:downtown_crossing Passengers:0
+train Direction: alewife Approaching:andrew Passengers:0
 train Direction: ashmont Approaching:kendall Passengers:0
+train Direction: alewife Approaching:savin_hill Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:true
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:true
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
@@ -718,19 +741,41 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:true
+Minute 32
+train Direction: alewife Approaching:savin_hill Passengers:0
+train Direction: alewife Approaching:downtown_crossing Passengers:3
+train Direction:alewife Station:broadway Passengers:0
+train Direction: alewife Approaching:downtown_crossing Passengers:3
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:true
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:true AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:true
+station Name:kendall Passengers:0 AshTrain:true AleTrain:false
 Minute 33
 train Direction:ashmont Station:downtown_crossing Passengers:0
-train Direction:ashmont Station:kendall Passengers:0
 train Direction:alewife Station:andrew Passengers:0
-train Direction: alewife Approaching:downtown_crossing Passengers:3
-train Direction: alewife Approaching:savin_hill Passengers:0
+train Direction:ashmont Station:kendall Passengers:0
+train Direction:alewife Station:broadway Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:true
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:true
 station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:true AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
@@ -745,14 +790,15 @@ Minute 34
 train Direction:alewife Station:downtown_crossing Passengers:3
 train Direction:alewife Station:savin_hill Passengers:0
 train Direction:ashmont Station:downtown_crossing Passengers:0
+train Direction:alewife Station:andrew Passengers:0
 train Direction:ashmont Station:kendall Passengers:0
-train Direction: alewife Approaching:broadway Passengers:0
+train Direction: alewife Approaching:south Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:true
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:true
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:true AleTrain:true
@@ -768,8 +814,9 @@ Minute 35
 train Direction:alewife Station:savin_hill Passengers:0
 train Direction:alewife Station:downtown_crossing Passengers:3
 train Direction: ashmont Approaching:south Passengers:0
-train Direction: ashmont Approaching:charles_mgh Passengers:0
 train Direction: alewife Approaching:broadway Passengers:0
+train Direction: ashmont Approaching:charles_mgh Passengers:0
+train Direction: alewife Approaching:south Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -788,10 +835,11 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 36
-train Direction:alewife Station:broadway Passengers:0
+train Direction:alewife Station:south Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
 train Direction: alewife Approaching:park_street Passengers:3
 train Direction: ashmont Approaching:south Passengers:0
+train Direction: alewife Approaching:broadway Passengers:0
 train Direction: ashmont Approaching:charles_mgh Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -799,8 +847,8 @@ station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:false AleTrain:true
-station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:true
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
@@ -813,8 +861,9 @@ station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 37
 train Direction:alewife Station:park_street Passengers:3
 train Direction:ashmont Station:south Passengers:0
-train Direction:ashmont Station:charles_mgh Passengers:0
 train Direction:alewife Station:broadway Passengers:0
+train Direction:ashmont Station:charles_mgh Passengers:0
+train Direction:alewife Station:south Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -823,7 +872,7 @@ station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:true
-station Name:south Passengers:0 AshTrain:true AleTrain:false
+station Name:south Passengers:0 AshTrain:true AleTrain:true
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:true
 station Name:charles_mgh Passengers:0 AshTrain:true AleTrain:false
@@ -835,9 +884,10 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 38
 train Direction:alewife Station:park_street Passengers:3
-train Direction:ashmont Station:south Passengers:0
+train Direction:alewife Station:broadway Passengers:0
 train Direction:ashmont Station:charles_mgh Passengers:0
-train Direction: alewife Approaching:south Passengers:0
+train Direction:ashmont Station:south Passengers:0
+train Direction: alewife Approaching:downtown_crossing Passengers:0
 train Direction: alewife Approaching:jfk_umass Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -845,7 +895,7 @@ station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:true
 station Name:south Passengers:0 AshTrain:true AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:true
@@ -859,9 +909,10 @@ station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 39
 train Direction:alewife Station:jfk_umass Passengers:0
 train Direction: alewife Approaching:charles_mgh Passengers:3
-train Direction: ashmont Approaching:broadway Passengers:0
-train Direction: ashmont Approaching:park_street Passengers:0
 train Direction: alewife Approaching:south Passengers:0
+train Direction: ashmont Approaching:park_street Passengers:0
+train Direction: ashmont Approaching:broadway Passengers:0
+train Direction: alewife Approaching:downtown_crossing Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -880,109 +931,18 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 40
-train Direction:alewife Station:south Passengers:0
+train Direction:alewife Station:downtown_crossing Passengers:0
 train Direction:alewife Station:jfk_umass Passengers:0
 train Direction: alewife Approaching:charles_mgh Passengers:3
-train Direction: ashmont Approaching:broadway Passengers:0
+train Direction: alewife Approaching:south Passengers:0
 train Direction: ashmont Approaching:park_street Passengers:0
+train Direction: ashmont Approaching:broadway Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
 station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
 station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:true
 station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:true
-station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:false AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:false
-station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 41
-train Direction:alewife Station:charles_mgh Passengers:3
-train Direction:ashmont Station:broadway Passengers:0
-train Direction:ashmont Station:park_street Passengers:0
-train Direction:alewife Station:south Passengers:0
-train Direction: alewife Approaching:andrew Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:true AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:true
-station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:true AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:false
-station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 42
-train Direction:alewife Station:charles_mgh Passengers:3
-train Direction:ashmont Station:broadway Passengers:0
-train Direction:ashmont Station:park_street Passengers:0
-train Direction: alewife Approaching:downtown_crossing Passengers:0
-train Direction: alewife Approaching:andrew Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:true AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:false
-station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:true AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:false
-station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 43
-train Direction:alewife Station:andrew Passengers:0
-train Direction: alewife Approaching:kendall Passengers:3
-train Direction: ashmont Approaching:andrew Passengers:0
-train Direction: ashmont Approaching:downtown_crossing Passengers:0
-train Direction: alewife Approaching:downtown_crossing Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:true
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:false
-station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:false AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:false
-station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 44
-train Direction:alewife Station:downtown_crossing Passengers:0
-train Direction:alewife Station:andrew Passengers:0
-train Direction: alewife Approaching:kendall Passengers:3
-train Direction: ashmont Approaching:andrew Passengers:0
-train Direction: ashmont Approaching:downtown_crossing Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:true
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:true
@@ -994,11 +954,108 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+Minute 41
+train Direction:alewife Station:charles_mgh Passengers:3
+train Direction:alewife Station:south Passengers:0
+train Direction:ashmont Station:park_street Passengers:0
+train Direction:ashmont Station:broadway Passengers:0
+train Direction:alewife Station:downtown_crossing Passengers:0
+train Direction: alewife Approaching:andrew Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:true AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:true
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:true
+station Name:park_street Passengers:0 AshTrain:true AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+Minute 42
+train Direction:alewife Station:charles_mgh Passengers:3
+train Direction:alewife Station:south Passengers:0
+train Direction:ashmont Station:park_street Passengers:0
+train Direction:ashmont Station:broadway Passengers:0
+train Direction: alewife Approaching:park_street Passengers:0
+train Direction: alewife Approaching:andrew Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:true AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:true
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:true AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+Minute 43
+train Direction:alewife Station:park_street Passengers:0
+train Direction:alewife Station:andrew Passengers:0
+train Direction: alewife Approaching:kendall Passengers:3
+train Direction: alewife Approaching:downtown_crossing Passengers:0
+train Direction: ashmont Approaching:downtown_crossing Passengers:0
+train Direction: ashmont Approaching:andrew Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:true
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:true
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+Minute 44
+train Direction:alewife Station:park_street Passengers:0
+train Direction:alewife Station:andrew Passengers:0
+train Direction: alewife Approaching:kendall Passengers:3
+train Direction: alewife Approaching:downtown_crossing Passengers:0
+train Direction: ashmont Approaching:downtown_crossing Passengers:0
+train Direction: ashmont Approaching:andrew Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:true
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:true
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 45
 train Direction:alewife Station:kendall Passengers:3
-train Direction:ashmont Station:andrew Passengers:0
-train Direction:ashmont Station:downtown_crossing Passengers:0
 train Direction:alewife Station:downtown_crossing Passengers:0
+train Direction:ashmont Station:downtown_crossing Passengers:0
+train Direction:ashmont Station:andrew Passengers:0
+train Direction: alewife Approaching:charles_mgh Passengers:0
 train Direction: alewife Approaching:broadway Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1019,9 +1076,10 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 46
 train Direction:alewife Station:kendall Passengers:3
-train Direction:ashmont Station:andrew Passengers:0
+train Direction:alewife Station:downtown_crossing Passengers:0
 train Direction:ashmont Station:downtown_crossing Passengers:0
-train Direction: alewife Approaching:park_street Passengers:0
+train Direction:ashmont Station:andrew Passengers:0
+train Direction: alewife Approaching:charles_mgh Passengers:0
 train Direction: alewife Approaching:broadway Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1031,7 +1089,7 @@ station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
 station Name:andrew Passengers:0 AshTrain:true AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:0 AshTrain:false AleTrain:false
-station Name:downtown_crossing Passengers:0 AshTrain:true AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:true AleTrain:true
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:true
@@ -1041,11 +1099,12 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 47
-train Direction:alewife Station:park_street Passengers:0
+train Direction:alewife Station:charles_mgh Passengers:0
 train Direction:alewife Station:broadway Passengers:0
 train Direction: alewife Approaching:central Passengers:3
-train Direction: ashmont Approaching:jfk_umass Passengers:0
+train Direction: alewife Approaching:park_street Passengers:0
 train Direction: ashmont Approaching:south Passengers:0
+train Direction: ashmont Approaching:jfk_umass Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1055,8 +1114,8 @@ station Name:andrew Passengers:0 AshTrain:false AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:true
 station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:false AleTrain:true
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
@@ -1065,10 +1124,11 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 48
 train Direction:alewife Station:park_street Passengers:0
+train Direction:alewife Station:charles_mgh Passengers:0
 train Direction:alewife Station:broadway Passengers:0
 train Direction: alewife Approaching:central Passengers:3
-train Direction: ashmont Approaching:jfk_umass Passengers:0
 train Direction: ashmont Approaching:south Passengers:0
+train Direction: ashmont Approaching:jfk_umass Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1079,7 +1139,7 @@ station Name:broadway Passengers:0 AshTrain:false AleTrain:true
 station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:true
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
@@ -1088,9 +1148,10 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 49
 train Direction:alewife Station:central Passengers:3
-train Direction:ashmont Station:jfk_umass Passengers:0
 train Direction:ashmont Station:south Passengers:0
-train Direction: alewife Approaching:charles_mgh Passengers:0
+train Direction:ashmont Station:jfk_umass Passengers:0
+train Direction:alewife Station:park_street Passengers:0
+train Direction: alewife Approaching:kendall Passengers:0
 train Direction: alewife Approaching:south Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1101,7 +1162,7 @@ station Name:andrew Passengers:0 AshTrain:false AleTrain:false
 station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:0 AshTrain:true AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:true
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:true
@@ -1111,9 +1172,10 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 50
 train Direction:alewife Station:central Passengers:3
-train Direction:ashmont Station:jfk_umass Passengers:0
 train Direction:ashmont Station:south Passengers:0
+train Direction:ashmont Station:jfk_umass Passengers:0
 train Direction: alewife Approaching:charles_mgh Passengers:0
+train Direction: alewife Approaching:kendall Passengers:0
 train Direction: alewife Approaching:south Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1133,11 +1195,12 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 51
-train Direction:alewife Station:charles_mgh Passengers:0
+train Direction:alewife Station:kendall Passengers:0
 train Direction:alewife Station:south Passengers:0
 train Direction: alewife Approaching:harvard Passengers:3
-train Direction: ashmont Approaching:savin_hill Passengers:0
 train Direction: ashmont Approaching:broadway Passengers:0
+train Direction: ashmont Approaching:savin_hill Passengers:0
+train Direction: alewife Approaching:charles_mgh Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1148,8 +1211,8 @@ station Name:broadway Passengers:0 AshTrain:false AleTrain:false
 station Name:south Passengers:0 AshTrain:false AleTrain:true
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:true
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
@@ -1157,10 +1220,11 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 52
 train Direction:alewife Station:charles_mgh Passengers:0
+train Direction:alewife Station:kendall Passengers:0
 train Direction:alewife Station:south Passengers:0
 train Direction: alewife Approaching:harvard Passengers:3
-train Direction: ashmont Approaching:savin_hill Passengers:0
 train Direction: ashmont Approaching:broadway Passengers:0
+train Direction: ashmont Approaching:savin_hill Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1172,7 +1236,7 @@ station Name:south Passengers:0 AshTrain:false AleTrain:true
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:true
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
@@ -1181,7 +1245,8 @@ station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 53
 train Direction:alewife Station:harvard Passengers:3
 train Direction:ashmont Station:broadway Passengers:0
-train Direction: alewife Approaching:kendall Passengers:0
+train Direction:alewife Station:charles_mgh Passengers:0
+train Direction: alewife Approaching:central Passengers:0
 train Direction: alewife Approaching:downtown_crossing Passengers:0
 train Direction: ashmont Approaching:savin_hill Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -1194,7 +1259,7 @@ station Name:broadway Passengers:0 AshTrain:true AleTrain:false
 station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:true
@@ -1206,6 +1271,7 @@ train Direction:ashmont Station:savin_hill Passengers:0
 train Direction:alewife Station:harvard Passengers:3
 train Direction:ashmont Station:broadway Passengers:0
 train Direction: alewife Approaching:kendall Passengers:0
+train Direction: alewife Approaching:central Passengers:0
 train Direction: alewife Approaching:downtown_crossing Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1225,11 +1291,12 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 55
-train Direction:alewife Station:kendall Passengers:0
+train Direction:alewife Station:central Passengers:0
 train Direction:alewife Station:downtown_crossing Passengers:0
 train Direction:ashmont Station:savin_hill Passengers:0
 train Direction: alewife Approaching:porter Passengers:3
 train Direction: ashmont Approaching:andrew Passengers:0
+train Direction: alewife Approaching:kendall Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1241,14 +1308,15 @@ station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:true
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
-station Name:kendall Passengers:0 AshTrain:false AleTrain:true
-station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:true
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 56
 train Direction:alewife Station:kendall Passengers:0
+train Direction:alewife Station:central Passengers:0
 train Direction:alewife Station:downtown_crossing Passengers:0
 train Direction: ashmont Approaching:fields_corner Passengers:0
 train Direction: alewife Approaching:porter Passengers:3
@@ -1265,14 +1333,15 @@ station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:true
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:true
-station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:true
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 57
 train Direction:ashmont Station:andrew Passengers:0
-train Direction: alewife Approaching:central Passengers:0
+train Direction:alewife Station:kendall Passengers:0
+train Direction: alewife Approaching:harvard Passengers:0
 train Direction: alewife Approaching:park_street Passengers:0
 train Direction: ashmont Approaching:fields_corner Passengers:0
 train Direction: alewife Approaching:porter Passengers:3
@@ -1287,7 +1356,7 @@ station Name:south Passengers:0 AshTrain:false AleTrain:false
 station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:true
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
@@ -1298,6 +1367,7 @@ train Direction:alewife Station:porter Passengers:3
 train Direction:alewife Station:park_street Passengers:0
 train Direction:ashmont Station:andrew Passengers:0
 train Direction: alewife Approaching:central Passengers:0
+train Direction: alewife Approaching:harvard Passengers:0
 train Direction: ashmont Approaching:fields_corner Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1317,11 +1387,12 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:true
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 59
-train Direction:alewife Station:central Passengers:0
+train Direction:alewife Station:harvard Passengers:0
 train Direction:ashmont Station:fields_corner Passengers:0
 train Direction:alewife Station:porter Passengers:3
 train Direction:alewife Station:park_street Passengers:0
 train Direction: ashmont Approaching:jfk_umass Passengers:0
+train Direction: alewife Approaching:central Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:true AleTrain:false
@@ -1334,13 +1405,14 @@ station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:true
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:true
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:true
 station Name:porter Passengers:0 AshTrain:false AleTrain:true
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 60
 train Direction:alewife Station:central Passengers:0
+train Direction:alewife Station:harvard Passengers:0
 train Direction:ashmont Station:fields_corner Passengers:0
 train Direction: alewife Approaching:davis Passengers:3
 train Direction: alewife Approaching:charles_mgh Passengers:0
@@ -1358,13 +1430,14 @@ station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:true
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:true
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 61
 train Direction:ashmont Station:jfk_umass Passengers:0
-train Direction: alewife Approaching:harvard Passengers:0
+train Direction:alewife Station:central Passengers:0
+train Direction: alewife Approaching:porter Passengers:0
 train Direction: ashmont Approaching:shawmut Passengers:0
 train Direction: alewife Approaching:davis Passengers:3
 train Direction: alewife Approaching:charles_mgh Passengers:0
@@ -1380,7 +1453,7 @@ station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
 station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:true
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
@@ -1389,6 +1462,7 @@ Minute 62
 train Direction:alewife Station:charles_mgh Passengers:0
 train Direction:ashmont Station:jfk_umass Passengers:0
 train Direction: alewife Approaching:harvard Passengers:0
+train Direction: alewife Approaching:porter Passengers:0
 train Direction: ashmont Approaching:shawmut Passengers:0
 train Direction: alewife Approaching:davis Passengers:3
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -1410,9 +1484,10 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 63
 train Direction:alewife Station:davis Passengers:3
-train Direction:alewife Station:harvard Passengers:0
 train Direction:alewife Station:charles_mgh Passengers:0
 train Direction: ashmont Approaching:savin_hill Passengers:0
+train Direction: alewife Approaching:harvard Passengers:0
+train Direction: alewife Approaching:porter Passengers:0
 train Direction: ashmont Approaching:shawmut Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1427,7 +1502,7 @@ station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:true
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:true
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:true
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
@@ -1436,8 +1511,9 @@ passenger Start:south End:davis Began:2 Duration:61
 passenger Start:south End:davis Began:2 Duration:61
 Minute 64
 train Direction:alewife Station:davis Passengers:3
-train Direction:ashmont Station:shawmut Passengers:0
 train Direction:alewife Station:harvard Passengers:0
+train Direction:alewife Station:porter Passengers:0
+train Direction:ashmont Station:shawmut Passengers:0
 train Direction: alewife Approaching:kendall Passengers:0
 train Direction: ashmont Approaching:savin_hill Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -1454,12 +1530,13 @@ station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:true
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:true
 station Name:davis Passengers:0 AshTrain:false AleTrain:true
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 65
 train Direction:ashmont Station:shawmut Passengers:0
-train Direction: alewife Approaching:porter Passengers:0
+train Direction:alewife Station:harvard Passengers:0
+train Direction:alewife Station:porter Passengers:0
 train Direction: alewife Approaching:alewife Passengers:0
 train Direction: alewife Approaching:kendall Passengers:0
 train Direction: ashmont Approaching:savin_hill Passengers:0
@@ -1476,8 +1553,8 @@ station Name:park_street Passengers:0 AshTrain:false AleTrain:false
 station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:true
+station Name:porter Passengers:0 AshTrain:false AleTrain:true
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 66
@@ -1485,6 +1562,7 @@ train Direction:alewife Station:kendall Passengers:0
 train Direction:ashmont Station:savin_hill Passengers:0
 train Direction: ashmont Approaching:ashmont Passengers:0
 train Direction: alewife Approaching:porter Passengers:0
+train Direction: alewife Approaching:davis Passengers:0
 train Direction: alewife Approaching:alewife Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1508,6 +1586,7 @@ train Direction:alewife Station:kendall Passengers:0
 train Direction:ashmont Station:savin_hill Passengers:0
 train Direction: ashmont Approaching:ashmont Passengers:0
 train Direction: alewife Approaching:porter Passengers:0
+train Direction: alewife Approaching:davis Passengers:0
 train Direction: alewife Approaching:alewife Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1528,10 +1607,11 @@ station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 68
 train Direction:ashmont Station:ashmont Passengers:0
-train Direction:alewife Station:porter Passengers:0
 train Direction:alewife Station:alewife Passengers:0
 train Direction: alewife Approaching:central Passengers:0
 train Direction: ashmont Approaching:fields_corner Passengers:0
+train Direction: alewife Approaching:porter Passengers:0
+train Direction: alewife Approaching:davis Passengers:0
 station Name:ashmont Passengers:0 AshTrain:true AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1546,12 +1626,13 @@ station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:true
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:true
 Minute 69
-train Direction:ashmont Station:ashmont Passengers:0
 train Direction:alewife Station:porter Passengers:0
+train Direction:alewife Station:davis Passengers:0
+train Direction:ashmont Station:ashmont Passengers:0
 train Direction:alewife Station:alewife Passengers:0
 train Direction: alewife Approaching:central Passengers:0
 train Direction: ashmont Approaching:fields_corner Passengers:0
@@ -1570,11 +1651,12 @@ station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:true
-station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:true
 station Name:alewife Passengers:0 AshTrain:false AleTrain:true
 train Direction:alewife Station:central Passengers:0
+train Direction:alewife Station:porter Passengers:0
+train Direction:alewife Station:davis Passengers:0
 train Direction: ashmont Approaching:endStation Passengers:0
-train Direction: alewife Approaching:davis Passengers:0
 train Direction: alewife Approaching:endStation Passengers:0
 train Direction: ashmont Approaching:fields_corner Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
@@ -1591,30 +1673,13 @@ station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
 station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:true
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:true
+station Name:davis Passengers:0 AshTrain:false AleTrain:true
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 70
-train Direction: alewife Approaching:davis Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:false
-station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:false AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:false
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:false
-station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:true AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:true
-Minute 71
 train Direction:ashmont Station:fields_corner Passengers:0
+train Direction: alewife Approaching:alewife Passengers:0
+train Direction: alewife Approaching:davis Passengers:0
 train Direction:alewife Station:central Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1633,10 +1698,29 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 72
-train Direction:ashmont Station:fields_corner Passengers:0
-train Direction: alewife Approaching:harvard Passengers:0
+Minute 71
+train Direction: alewife Approaching:alewife Passengers:0
 train Direction: alewife Approaching:davis Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:true
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:true AleTrain:false
+Minute 72
+train Direction: alewife Approaching:harvard Passengers:0
+train Direction:ashmont Station:fields_corner Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:true AleTrain:false
@@ -1655,8 +1739,9 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 73
-train Direction:alewife Station:davis Passengers:0
 train Direction: ashmont Approaching:shawmut Passengers:0
+train Direction: alewife Approaching:alewife Passengers:0
+train Direction: alewife Approaching:davis Passengers:0
 train Direction: alewife Approaching:harvard Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1673,54 +1758,56 @@ station Name:kendall Passengers:0 AshTrain:false AleTrain:false
 station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:true
-station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 74
-train Direction:alewife Station:harvard Passengers:0
-train Direction:alewife Station:davis Passengers:0
-train Direction: ashmont Approaching:shawmut Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:false
-station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:false AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:true
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
-station Name:davis Passengers:0 AshTrain:false AleTrain:true
-station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 75
-train Direction:alewife Station:harvard Passengers:0
-train Direction: alewife Approaching:alewife Passengers:0
-train Direction: ashmont Approaching:shawmut Passengers:0
-station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
-station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
-station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
-station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
-station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
-station Name:andrew Passengers:0 AshTrain:false AleTrain:false
-station Name:broadway Passengers:0 AshTrain:false AleTrain:false
-station Name:south Passengers:0 AshTrain:false AleTrain:false
-station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
-station Name:park_street Passengers:0 AshTrain:false AleTrain:false
-station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
-station Name:kendall Passengers:0 AshTrain:false AleTrain:false
-station Name:central Passengers:0 AshTrain:false AleTrain:false
-station Name:harvard Passengers:0 AshTrain:false AleTrain:true
-station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 76
+Minute 74
+train Direction:alewife Station:alewife Passengers:0
+train Direction:alewife Station:davis Passengers:0
+train Direction:alewife Station:harvard Passengers:0
+train Direction: ashmont Approaching:shawmut Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:true
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:true
+station Name:alewife Passengers:0 AshTrain:false AleTrain:true
+Minute 75
+train Direction:alewife Station:alewife Passengers:0
+train Direction:alewife Station:davis Passengers:0
+train Direction:alewife Station:harvard Passengers:0
+train Direction: ashmont Approaching:shawmut Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:true
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:true
+station Name:alewife Passengers:0 AshTrain:false AleTrain:true
 train Direction:ashmont Station:shawmut Passengers:0
-train Direction: alewife Approaching:porter Passengers:0
+train Direction: alewife Approaching:endStation Passengers:0
 train Direction: alewife Approaching:alewife Passengers:0
+train Direction: alewife Approaching:porter Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:true AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1738,10 +1825,28 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+Minute 76
+train Direction: alewife Approaching:alewife Passengers:0
+train Direction: alewife Approaching:porter Passengers:0
+station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:true AleTrain:false
 Minute 77
 train Direction:ashmont Station:shawmut Passengers:0
-train Direction: alewife Approaching:porter Passengers:0
-train Direction: alewife Approaching:alewife Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:true AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1760,8 +1865,8 @@ station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 78
-train Direction:alewife Station:alewife Passengers:0
 train Direction: ashmont Approaching:ashmont Passengers:0
+train Direction: alewife Approaching:alewife Passengers:0
 train Direction: alewife Approaching:porter Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1779,10 +1884,10 @@ station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:false
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
-station Name:alewife Passengers:0 AshTrain:false AleTrain:true
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
 Minute 79
-train Direction:alewife Station:porter Passengers:0
 train Direction:alewife Station:alewife Passengers:0
+train Direction:alewife Station:porter Passengers:0
 train Direction: ashmont Approaching:ashmont Passengers:0
 station Name:ashmont Passengers:0 AshTrain:false AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
@@ -1801,9 +1906,10 @@ station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:true
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:true
+Minute 80
 train Direction:ashmont Station:ashmont Passengers:0
+train Direction:alewife Station:alewife Passengers:0
 train Direction:alewife Station:porter Passengers:0
-train Direction: alewife Approaching:endStation Passengers:0
 station Name:ashmont Passengers:0 AshTrain:true AleTrain:false
 station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
 station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
@@ -1820,5 +1926,43 @@ station Name:central Passengers:0 AshTrain:false AleTrain:false
 station Name:harvard Passengers:0 AshTrain:false AleTrain:false
 station Name:porter Passengers:0 AshTrain:false AleTrain:true
 station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:true
+train Direction:ashmont Station:ashmont Passengers:0
+train Direction: alewife Approaching:endStation Passengers:0
+train Direction: alewife Approaching:davis Passengers:0
+station Name:ashmont Passengers:0 AshTrain:true AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
 station Name:alewife Passengers:0 AshTrain:false AleTrain:false
-Minute 80
+Minute 81
+train Direction: alewife Approaching:davis Passengers:0
+station Name:ashmont Passengers:0 AshTrain:true AleTrain:false
+station Name:shawmut Passengers:0 AshTrain:false AleTrain:false
+station Name:fields_corner Passengers:0 AshTrain:false AleTrain:false
+station Name:savin_hill Passengers:0 AshTrain:false AleTrain:false
+station Name:jfk_umass Passengers:0 AshTrain:false AleTrain:false
+station Name:andrew Passengers:0 AshTrain:false AleTrain:false
+station Name:broadway Passengers:0 AshTrain:false AleTrain:false
+station Name:south Passengers:0 AshTrain:false AleTrain:false
+station Name:downtown_crossing Passengers:0 AshTrain:false AleTrain:false
+station Name:park_street Passengers:0 AshTrain:false AleTrain:false
+station Name:charles_mgh Passengers:0 AshTrain:false AleTrain:false
+station Name:kendall Passengers:0 AshTrain:false AleTrain:false
+station Name:central Passengers:0 AshTrain:false AleTrain:false
+station Name:harvard Passengers:0 AshTrain:false AleTrain:false
+station Name:porter Passengers:0 AshTrain:false AleTrain:false
+station Name:davis Passengers:0 AshTrain:false AleTrain:false
+station Name:alewife Passengers:0 AshTrain:false AleTrain:false
