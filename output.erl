@@ -11,12 +11,14 @@
 % Original Author: Hannah Clark
 % Date: 11/16/14
 % ChangeLog:
+%    12/02/14 - AMS - adding module definition at top
 %    12/01/14 - HCC - changed method by which sending station updates is triggered
 %    11/24/14 - HCC - made messages synchronous  because of issue with scheduling
 %    11/22/14 - HCC - fixed adding to clock in start
 %    11/19/14 - HCC - changes made to endSim for correct ending of simulation
 %    11/17/14 - HCC - many changes for debugging
 %    11/16/14 - HCC - created module
+-module(output).
 -export([start/2, remove/2, add/2, newStationStat/2, newTrainStat/2,
         passengerDone/2, endSimulation/1]).
 
@@ -110,10 +112,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, _,  Device)
         
         printTrains(TrainStats, Device),
         printStations(StationStats, Device),
-        case whereis(clk) of
-            undefined -> io:fwrite("~p problem here~n", [whereis(clk)]);
-            _ -> io:fwrite("clk ~p~n", [whereis(clk)]), clk ! {minuteDone}
-        end,
+        clk ! {minuteDone},
         loop(TrainCnt, StationCnt, [], [], false, Device);
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, false, Device)
