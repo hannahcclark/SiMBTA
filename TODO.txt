@@ -1,1 +1,3 @@
-Travel times found from the MBTA Realtime api's schedulebyroute endpoint provide by MassDOT
+Exit normally w/out needing to ctrl C
+
+Real Travel Times on Carto

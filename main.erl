@@ -19,7 +19,7 @@ start(FileName) -> {ok, Device} = file:open(FileName, [read]),
                    io:fwrite("procs dead ~n", []),
                    output:endSimulation(outMod), %Everything is done, so output 
                                                 %may be ended and clock will end
-                   lists:foreach(fun(Pid) -> exit(whereis(Pid), simDone)
+                   lists:foreach(fun(Pid) -> exit(whereis(Pid), endSim)
                         end, carto:cartograph()), %cause stations to exit to clean up
                     ok.
                      
