@@ -1,3 +1,3 @@
-Exit normally w/out needing to ctrl C
-
-Real Travel Times on Carto
+- Test with passengers boarding from multiple stations, 1 exit point
+- Test with passengers disembarking at more than one station
+- Test with more than one train per direction
