@@ -39,6 +39,7 @@ start(Capacity, StartTime, Direction, StartStation) ->
 
 loop(_StartTime, _Capacity, _Direction, endStation, _PassengerList, _, 
 _DisembRemaining, _WaitTime) ->
+	io:fwrite("train dying ~n", []),
 	output:remove(outMod, train),
 	clock:remove(clk, self()),
 	ok;
@@ -116,11 +117,11 @@ DisembRemaining, WaitTime) ->
 					io:fwrite("tick: ~p, at capacity, leaving ~n", [Time]),
 					CurrStation ! { trainLeaving, Direction, self() },
 					receive
-                        			{trainLeft} -> ok
-                    			end,
-                    			{NextStation, NewTimeToNext} = carto:timeToNext(CurrStation, Direction),
+						{trainLeft} -> ok
+                    end,
+                    {NextStation, NewTimeToNext} = carto:timeToNext(CurrStation, Direction),
 					NextStation ! { trainIncoming, self(), Direction },
-                    			clk ! { minuteDone },
+					clk ! { minuteDone },
 					output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
 					emptyMailbox(),
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0);
@@ -129,17 +130,21 @@ DisembRemaining, WaitTime) ->
 				WaitTime == 1 ->
 					io:fwrite("tick: ~p, waited, leaving~n", [Time]),
 					CurrStation ! { trainLeaving, Direction, self() },
-                    			receive
-                        			{trainLeft} -> ok
-                    			end,
+					receive
+                    	{trainLeft} -> ok
+					end,
+                    io:fwrite("left ok~n",[]),
 					{NextStation, NewTimeToNext} = carto:timeToNext(CurrStation, Direction),
-				    	if
-                        			NextStation =/= endStation -> NextStation ! { trainIncoming, self(), Direction },
-                                            		clk ! {minuteDone};
-                        			true -> ok %kill passenger list
-                    			end,
+				    if
+                    	NextStation =/= endStation -> 
+                    		NextStation ! { trainIncoming, self(), Direction },
+                    		clk ! {minuteDone};
+                    	true -> ok % TODO kill passenger list?
+					end,
+                    io:fwrite("send incoming message~n", []),
 					output:newTrainStat(outMod, { Direction, track, NextStation, length(PassengerList) }),
 					emptyMailbox(),
+					io:fwrite("mailbox empty~n", []),
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0);
 
 				% Not At Capacity, Many People On Platform
@@ -153,9 +158,11 @@ DisembRemaining, WaitTime) ->
 					clk ! { minuteDone },
 					output:newTrainStat(outMod, { Direction, station, CurrStation, length(PassengerList) }),
 					if
-					    MovedCurrTick =:= 100 -> loop(StartTime, Capacity, Direction, 
+					    MovedCurrTick =:= 100 -> 
+					    	loop(StartTime, Capacity, Direction, 
 					        CurrStation, NewPassList, TimeToStation, DisembarkRemaining, WaitTime);
-                        true -> loop(StartTime, Capacity, Direction, CurrStation, 
+                        true -> 
+                        	loop(StartTime, Capacity, Direction, CurrStation, 
                             NewPassList, TimeToStation, DisembarkRemaining, WaitTime + 1)
                     end
 			end;
@@ -174,7 +181,8 @@ DisembRemaining, WaitTime) ->
 
 emptyMailbox() ->
 	receive
-		_ -> ok
+		{ board, _ } -> emptyMailbox()
+		after 0 -> ok
 	end.
 
 stationMinute(Capacity, _, PassengerList, MovedThisTick, DisembRemaining, _BoardRemaining) 
