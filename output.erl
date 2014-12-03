@@ -115,7 +115,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, _,  Device, true, true)
         
         printTrains(TrainStats, Device),
         printStations(StationStats, Device),
-        io:fwrite("output complete~n", []),
+        %io:fwrite("output complete~n", []),
         clk ! {minuteDone},
         loop(TrainCnt, StationCnt, [], [], false, Device, false, false);
 
@@ -128,16 +128,16 @@ MinuteOccurred, CanWrite) when (length(TrainStats) >= TrainCnt) and (TrainCnt > 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device, 
     MinuteOccurred, CanWrite) ->
     receive
-        {add, train, Pid} -> Pid ! done,io:fwrite("~p of ~p trains~n", [length(TrainStats), TrainCnt+1]),
+        {add, train, Pid} -> Pid ! done,%io:fwrite("~p of ~p trains~n", [length(TrainStats), TrainCnt+1]),
                                 loop(TrainCnt + 1, StationCnt, TrainStats, StationStats,
                                 ReqStations, Device, MinuteOccurred, CanWrite);
-        {add, station, Pid} -> Pid ! done,io:fwrite("~p of ~p stations~n", [length(StationStats), StationCnt+1]),
+        {add, station, Pid} -> Pid ! done,%io:fwrite("~p of ~p stations~n", [length(StationStats), StationCnt+1]),
                                 loop(TrainCnt, StationCnt + 1, TrainStats,
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {remove, train, Pid} -> Pid ! done,io:fwrite("~p of ~p trains~n", [length(TrainStats), TrainCnt - 1]),
+        {remove, train, Pid} -> Pid ! done,%io:fwrite("~p of ~p trains~n", [length(TrainStats), TrainCnt - 1]),
                                 loop(TrainCnt - 1, StationCnt, TrainStats, 
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {remove, station, Pid} -> Pid ! done,io:fwrite("~p of ~p stations~n", [length(StationStats), StationCnt - 1]),
+        {remove, station, Pid} -> Pid ! done,%io:fwrite("~p of ~p stations~n", [length(StationStats), StationCnt - 1]),
                                 loop(TrainCnt, StationCnt - 1, TrainStats, 
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
         {tick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
@@ -151,10 +151,10 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
                                     true -> loop(TrainCnt, StationCnt, TrainStats, 
                                         StationStats, ReqStations, Device, true, CanWrite)
                                 end;
-        {trainStat, Stat, Pid} -> Pid ! done, io:fwrite("~p of ~p trains~n", [length(TrainStats) + 1, TrainCnt]),
+        {trainStat, Stat, Pid} -> Pid ! done, %io:fwrite("~p of ~p trains~n", [length(TrainStats) + 1, TrainCnt]),
                                 loop(TrainCnt, StationCnt, [Stat|TrainStats],
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {stationStat, Stat, Pid} -> Pid ! done,io:fwrite("~p of ~p stations~n", [length(StationStats) + 1, StationCnt]),
+        {stationStat, Stat, Pid} -> Pid ! done,%io:fwrite("~p of ~p stations~n", [length(StationStats) + 1, StationCnt]),
                                 loop(TrainCnt, StationCnt, TrainStats,
                                 [Stat|StationStats], ReqStations, Device, MinuteOccurred, CanWrite);
         {passenger, PassInfo} -> printPassenger(PassInfo, Device),
@@ -168,7 +168,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
         %and it must close the file to save the output before ending
         {endSim, Sender} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
-                    io:fwrite("output process removed~n", []),
+                    %io:fwrite("output process removed~n", []),
                     clock:remove(clk, self()),
                     Sender ! file:close(Device)
     end.
