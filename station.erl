@@ -14,6 +14,7 @@
 %    11/22/14 - RAD - formatting
 %    12/01/14 - RAD - added waiting passenger count for train
 %    12/01/14 - RAD - added direction based passenger lists
+%    12/03/14 - HCC - changed line to receive {endSim} to try cleaner way of causing station processes to die
 
 -module(station).
 -export([start/1,loop/7]).
