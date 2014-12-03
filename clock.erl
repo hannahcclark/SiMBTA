@@ -9,6 +9,7 @@
 % Original Author: Hannah Clark
 % Date: 11/7/14
 % ChangeLog:
+%    12/02/14 - HCC - added message to output corresponding to fix for train adding glitch
 %    12/01/14 - HCC - fixed a glitch in loop when sending current time
 %    11/22/14 - HCC - switched mapping over to send tick message to a foreach
 %    11/22/14 - HCC - changed name of start/1 to init/1 for more clarity
@@ -56,19 +57,27 @@ add_rest(ObjList) -> receive
 loop(_, [], _) -> io:fwrite("clock dies~n", []), ok;
 loop(Minute, ObjList, ObjDone) ->
                 receive
-                    {minuteDone} ->  if
+                    {minuteDone} ->  
+                        if
                             ObjDone + 1 == length(ObjList) -> %case that all watched objects have finished their minute
                                 lists:foreach(fun(Pid) -> %signal all watched objects
                                         Pid ! {tick, Minute + 1}
                                     end, ObjList),
                                     io:fwrite("~p objects received of ~p total, TIME MOVES FORWARD ~n", [ObjDone+1, length(ObjList)]),
                                 loop(Minute + 1, ObjList, 0); %loop with next minute
+                            ObjDone + 1 == length(ObjList) - 1 -> %all but output have finished minute, so tell output it can print
+                                output:canWrite(outMod),
+                                loop(Minute, ObjList, ObjDone + 1);
                             ObjDone + 1 < length(ObjList) -> %case of still waiting on objects
                                 io:fwrite("~p objects received of ~p total ~n", [ObjDone+1, length(ObjList)]),
                                 loop(Minute, ObjList, ObjDone + 1)
                         end;
                     {add, Pid} -> loop(Minute, [Pid|ObjList], ObjDone);
-                    {remove, Pid} -> 
+                    {remove, Pid} ->
+                        if
+                            ObjDone =:= length(ObjList) - 2 -> output:canWrite(outMod); % all but output have reported in, so tell output it can print
+                            true -> ok
+                        end,
                         io:fwrite("removing from clock tracking, ~p objects remain: ~w minus ~w ~n", [length(ObjList)-1, ObjList, Pid]),
                         loop(Minute, lists:delete(Pid, ObjList), ObjDone);
                     {timeCheck, Pid} -> Pid ! {timeRet, Minute},
