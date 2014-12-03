@@ -5,6 +5,7 @@
 % Original Author: Hannah Clark
 % Date: 11/8/14
 % ChangeLog:
+%    12/03/14 - HCC - eliminated debugging outputs (commented or deleted)
 %    12/03/14 - HCC - changed start and parser so simulation ends when trains are done and kills passenger processes still waiting in stations
 %    12/02/14 - HCC - fixed delay to not send minute done when about to
 %                     remove from clock
