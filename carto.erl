@@ -22,17 +22,22 @@
 -export([cartograph/0, directionFromTo/2, timeToNext/2, firstStation/1]).
 
 cartograph() ->
+    % Red Line Station List
     [alewife, davis, porter, harvard, central, kendall, charles_mgh,
      park_street, downtown_crossing, south, broadway, andrew, jfk_umass,
      savin_hill, fields_corner, shawmut, ashmont].
 
 firstStation(Dir) ->
+    % Checks direction and sends first station so train knows where it starts
     case Dir of
         ashmont -> alewife;
         alewife -> ashmont
     end.
 
 directionFromTo(Start, End) ->
+    % Checks all start ends and returns end station
+    % If the station list was a global, I could use indices to check much more
+    % easily... edit later?
     case Start of
         alewife -> ashmont;
         davis ->
@@ -163,6 +168,8 @@ directionFromTo(Start, End) ->
     end.
 
 timeToNext(Station, Direction) ->
+    % Gets time to next station given current station and direction
+    % Again could probably make more easy if as a global variable
     case Direction of
         alewife ->
             case Station of
