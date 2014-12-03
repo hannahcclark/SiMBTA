@@ -19,6 +19,7 @@
 % Original Author: Andrew Stephens
 % Date: 11/15/14
 % ChangeLog:
+%	12/02/14 - AMS/RAD - Fixed issues related to boarding and disembarking flow
 %   12/01/14 - HCC - Made changes to allow for more realistic boarding/disembarkation
 %   12/01/14 - HCC - Made changes to allow for more realistic time/passenger movement parameters
 %   11/22/14 - HCC - Made changes necessary for adding to output
@@ -218,23 +219,23 @@ stationMinute(_, _, PassengerList, 100, DisembRemaining, _BoardRemaining) ->
 stationMinute(Capacity, CurrStation, PassengerList, MovedThisTick, DisembRemaining, BoardRemaining) ->
     receive
         { disembark, Passenger } ->
-			%io:fwrite("disembark attempt success ~n"),
+			%io:fwrite("disembark attempt success, ~w remaining ~n"),
 			Passenger ! { changedLocation, CurrStation },
 			stationMinute(Capacity, CurrStation, lists:delete(Passenger, PassengerList), 
 					    MovedThisTick+1, DisembRemaining-1, BoardRemaining);
         { board, Passenger } ->
-			%io:fwrite("board attempt ~n"),
+			io:fwrite("board attempt ~n"),
 
 			if
 				% People Still Need to Get Off
 				DisembRemaining > 0 ->
-					%io:fwrite("board attempt fail: still disembarkers ~n"),
-					Passenger ! { entryFailed, self() },
+					io:fwrite("board attempt fail: still disembarkers ~n"),
+					Passenger ! { boardFailed, self() },
 					stationMinute(Capacity, CurrStation, PassengerList, MovedThisTick, DisembRemaining, BoardRemaining);
 
 				% Otherwise, Allow the Person to Board
 				true ->
-					%io:fwrite("board attempt success: person boarding ~n"),
+					io:fwrite("board attempt success: person boarding ~n"),
 					Passenger ! { changedLocation, self() },
 					stationMinute(Capacity, CurrStation, [Passenger|PassengerList], MovedThisTick+1, DisembRemaining, BoardRemaining - 1)
 			end
