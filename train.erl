@@ -19,6 +19,8 @@
 % Original Author: Andrew Stephens
 % Date: 11/15/14
 % ChangeLog:
+%    12/03/14 - HCC - removed debugging output
+%    12/03/14 - HCC - changes to make sure passengers are not still on train (later removed due to changes in main)
 %	12/02/14 - AMS/RAD - Fixed issues related to boarding and disembarking flow
 %   12/01/14 - HCC - Made changes to allow for more realistic boarding/disembarkation
 %   12/01/14 - HCC - Made changes to allow for more realistic time/passenger movement parameters
