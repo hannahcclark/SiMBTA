@@ -69,8 +69,8 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
 	    {changedLocation, Endpoint} ->
             % Disembarked so finish
             output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
-	        trip_stats(clock:currTime(clk), StartTime)}),
-            io:fwrite("finclock ~p~n", [whereis(clk)]);
+	        trip_stats(clock:currTime(clk), StartTime)});
+            %io:fwrite("finclock ~p~n", [whereis(clk)]);
 	    {changedLocation, Train} ->
             % Boarded train so leaves station
 	        CurrentLocation ! {passengerLeaves, self(), Direction},

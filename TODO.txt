@@ -1,10 +1,10 @@
-- Test with passengers boarding from multiple stations, 1 exit point - ANDREW
-- Test with passengers disembarking at more than one station - ANDREW
-- Test with more than one train per direction - ANDREW
+- Test with passengers boarding from multiple stations, 1 exit point - ANDREW - RESOLVED 2 DEC ~5:00 PM
+- Test with passengers disembarking at more than one station - ANDREW - RESOLVED 2 Dec ~5:00 PM
+- Test with more than one train per direction - ANDREW - RESOLVED 2 DEC ~5:00 PM
 - Test with single delay - HANNAH - RESOLVED 7:58PM 02/12/14
 - Test with multiple delays - HANNAH - RESOLVED 8:08 PM 02/12/14
 - Test with train reaching capacity with no more people boarding - RAEWYN - RESOLVED 11:11PM 02/12/14
-- Test with train reaching capacity with more people who want to board -RAEWYN
+- Test with train reaching capacity with more people who want to board -RAEWYN 3:32AM 02/12/14
 - Fix train output issue - HANNAH - RESOLVED 9:35PM 02/12/14
 - Fix issue that trains can't start before minute 2 (non presentation critical, but needed for friday)
 - Final test file - RAEWYN
