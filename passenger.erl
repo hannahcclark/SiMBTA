@@ -23,77 +23,71 @@
 -export([start/3,loop/5,trip_stats/2]).
 
 start(StartStation, StartTime, EndStation) ->
-	%% add self to clock
+	% Spawn self and add to clock
     Direction = carto:directionFromTo(StartStation, EndStation),
     Pid = spawn(fun() ->
-	wait(StartStation, StartTime, EndStation, Direction)
-	end),
+	            wait(StartStation, StartTime, EndStation, Direction)
+	      end),
     clock:add(clk, Pid),
     Pid.
 
 wait(StartStation, StartTime, EndStation,  Direction) ->
-	%% receives {tick, Time} -> if time is start time ->
-	%%				remove self from clock
-	%%				add self to station
-	%% sends {minuteDone} to Clock if time doesn't match start
-	%%	 {passengerEnters, Pid} to Station when time is start
-	%%		Pid is passenger's pid
     receive
-	{tick, StartTime} ->
-	    clock:remove(clk, self()),
-	    StartStation ! {passengerEnters, self(), Direction},
-	    loop(StartTime, StartStation, StartStation, EndStation, Direction);
-	{tick, _} ->
-	    clk ! {minuteDone},
-	    wait(StartStation, StartTime, EndStation, Direction)
+	    {tick, StartTime} ->
+            % Start passenger trip
+	        clock:remove(clk, self()),
+	        StartStation ! {passengerEnters, self(), Direction},
+	        loop(StartTime, StartStation, StartStation, EndStation, Direction);
+	    {tick, _} ->
+            % Wait for passenger start time
+	        clk ! {minuteDone},
+	        wait(StartStation, StartTime, EndStation, Direction)
     end.
 
 loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
-	%% CurrentLocation is a pid of a station or a train
-	%% receives {train, Pid, Direction} -> (sent from station)
-	%%		Pid is train's pid, Direction is train's direction
-	%%	    {station, Pid, Name} -> (sent from train)
-	%%		Pid is station's pid, Name is station's name
-	%%	    {changedLocation, NewLoc} -> (sent from train)
-	%%		notifies successful board or disembark request
-	%%	    {boardFailed, Pid} -> (sent from train)
-	%%		notifies failure to board
-	%%	    {disembarkFailed, Pid} -> (sent from train)
-	%%		notifies failure to disembark
-	%% sends {board, Pid} to train to request boarding
-	%%	 {disembark, Pid} to train to request disembarking
     receive
-	{train, nil, Direction} ->
+	    {train, nil, Direction} ->
+            % Station is waiting for a train in given direction so wait
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-	{train, Train, Direction} ->
-	    Train ! {board, self()},
-	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
+	    {train, Train, Direction} ->
+            % There is a train at the station going in the given direction
+            % So try to board
+	        Train ! {board, self()},
+	        loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
         {train, _, _} ->
+            % Wait for correct train
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-	{station, Endpoint, Train} ->
+	    {station, Endpoint, Train} ->
+            % Disembark train
             Train ! {disYes},
-	    Train ! {disembark, self()},
-	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-	{station, _, Train} ->
+	        Train ! {disembark, self()},
+	        loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
+	    {station, _, Train} ->
+            % Don't disembark train
             Train ! {disNo},
-	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-	{changedLocation, Endpoint} ->
+	        loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
+	    {changedLocation, Endpoint} ->
+            % Disembarked so finish
             output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
 	        trip_stats(clock:currTime(clk), StartTime)}),
             io:fwrite("finclock ~p~n", [whereis(clk)]);
-	{changedLocation, Train} ->
-	    CurrentLocation ! {passengerLeaves, self(), Direction},
-	    loop(StartTime, StartStation, Train, Endpoint, Direction);
-	{boardFailed, Train} ->
-	    Train ! {board, self()},
-	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
-	{disembarkFailed, Train} ->
-	    Train ! {disembark, self()},
-	    loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction)
+	    {changedLocation, Train} ->
+            % Boarded train so leaves station
+	        CurrentLocation ! {passengerLeaves, self(), Direction},
+	        loop(StartTime, StartStation, Train, Endpoint, Direction);
+        {boardFailed, Train} ->
+            % Failed to board train, tries again, and waits
+	        Train ! {board, self()},
+	        loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
+        {disembarkFailed, Train} ->
+            % Failed to disembark, tries again, and waits
+	        Train ! {disembark, self()},
+	        loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction)
     end.
 
 trip_stats(CurrentTime, StartTime) ->
-	%% results in travel time, maybe add more stats later
-    CurrentTime - StartTime.
-	
+    % Calcluates total time
+    % This is a seperate function in case more info should be sent back in a
+    % future version.
+    CurrentTime - StartTime.	
 
