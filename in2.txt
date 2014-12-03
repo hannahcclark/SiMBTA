@@ -1,0 +1,2 @@
+train ashmont 2 500 0
+passenger 501 1 alewife park_street
