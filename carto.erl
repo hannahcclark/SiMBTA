@@ -162,7 +162,7 @@ directionFromTo(Start, End) ->
         shawmut ->
             case End of
                 ashmont -> ashmont;
-                true -> alewife
+                _ -> alewife
             end;
         ashmont -> alewife
     end.
