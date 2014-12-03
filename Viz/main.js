@@ -58,6 +58,14 @@ var TRAINOFFSET = 25;
 
 $(document).ready(function() {
 
+	$('#analyze').hide();
+	// Populate Analysis Form
+	for (var i in STATIONS) {
+		var option = '<option value="'+STATIONS[i].slug+'">'+STATIONS[i].display+'</option>';
+		$('#origin_select').append(option);
+		$('#dest_select').append(option);
+	}
+
 	// Initialize the Slider
 	$('#slider').slider({
 		value: 0,
@@ -73,12 +81,54 @@ $(document).ready(function() {
 		success: function(text) {
 			var data = parseData(text);
 			drawFrame(1, data);
+			$('#minutecount').text("Minute: 1 / "+(data.length-3));
 
+			// Slider Event Listener
 			$('#slider').on("slide", function(e, ui) {
-				drawFrame(ui.value, data);				
+				drawFrame(ui.value, data);
+				$('#minutecount').text("Minute: "+ui.value+" / "+(data.length-3));
 			})
 
-			$("#slider").slider("option", "max", data.length-1);
+			$("#slider").slider("option", "min", 1);
+			$("#slider").slider("option", "max", data.length-3);
+
+			// Button Event Listener
+			$('#analyze-link').click(function() {
+				$('#analyze').slideDown(250);
+				return false;
+			})
+
+			var passengersAggregate = [];
+			for (var i in data) {
+				if (data[i].passengers != []) {
+					for (var j in data[i].passengers) {
+						passengersAggregate.push(data[i].passengers[j])
+					}
+				}
+			}
+
+			// Average Calculator
+			$('#calc_average').click(function() {
+
+				var durations = [];
+				var origin = $('#origin_select').val();
+				var destination = $('#dest_select').val();
+				for (var i in passengersAggregate) {
+					if (passengersAggregate[i].Start == origin && passengersAggregate[i].End == destination) {
+						durations.push(passengersAggregate[i].Duration);
+					}
+				}
+
+				if (durations.length == 0) {
+					$('#avg-result').html("No data available.");
+				} else {
+					var average = durations.reduce(function(a,b) { return parseInt(a)+parseInt(b); })/(durations.length);
+					$('#avg-result').html("Average: <strong>"+Math.round(average)+"</strong> Minutes");
+				}
+
+				return false;
+
+			})
 
 		},
 		error: function() {
@@ -287,8 +337,6 @@ var drawFrame = function(min, data) {
 		}
 		
 	};
-
-	// Draw Active Passengers
 
 	// Anti-Aliasing Hack
 	//mcx.translate(0.5, 0.5);

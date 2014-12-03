@@ -1,3 +1,0 @@
-train ashmont 2 500 0
-passenger 499 1 alewife park_street
-passenger 4 3 alewife kendall
