@@ -11,6 +11,7 @@
 % Original Author: Hannah Clark
 % Date: 11/16/14
 % ChangeLog:
+%    12/03/14 - HCC - changed requesting of station info to be in if statement rather than recieve
 %    12/03/14 - HCC - added case for train removal in loop where there are no more trains
 %    12/02/14 - HCC - added message that output is allowed (from clock) to fix issue of trains not adding correctly
 %    12/02/14 - AMS - adding module definition at top
