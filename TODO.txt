@@ -10,6 +10,7 @@
 - Final test file - RAEWYN - RESOLVED 5:45AM 03/12/14
 - Find why final test file is hanging - HANNAH
 - REMINDER - remove Outputs after debugging is done (for presentation) - HANNAH
+- REMINDER - clean up github repo (for friday)
 
 Note for Raewyn: Passengers should never receive a notification for a train
 going in the wrong direction. Edit your cases/messages?
