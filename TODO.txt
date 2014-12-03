@@ -2,7 +2,7 @@
 - Test with passengers disembarking at more than one station - ANDREW
 - Test with more than one train per direction - ANDREW
 - Test with single delay - HANNAH - RESOLVED 7:58PM 02/12/14
-- Test with multiple delays - HANNAH
+- Test with multiple delays - HANNAH - RESOLVED 8:08 PM 02/12/14
 - Test with train reaching capacity with no more people boarding
 - Test with train reaching capacity with more people who want to board
 - Fix train output issue - HANNAH
