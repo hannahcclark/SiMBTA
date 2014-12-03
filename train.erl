@@ -90,9 +90,9 @@ DisembRemaining, WaitTime) ->
 				enteredPlatform ->
 
 					% Tell Passengers On Board
-					% Note: This formt is different - what is Name?
 					DisembCount = notifyPassengers(PassengerList, { station, CurrStation, self() }, 0),
-					%io:fwrite("tick: ~p, entered station~n", [Time]),
+					io:fwrite("tick: ~p, entered station~n", [Time]),
+					io:fwrite("disemb count ~p ~n", [DisembCount]),
 
 					%DisembarkCount = peopleDisembarking(CurrStation, PassengerList, 0),
 					clk ! { minuteDone },
@@ -112,13 +112,13 @@ DisembRemaining, WaitTime) ->
 		% Train is Currently Boarding
 		{ tick, Time } when (TimeToStation == 0) -> 
 
-			%io:fwrite("tick: ~p, currently boarding~n", [Time]),
+			io:fwrite("tick: ~p, currently boarding~n", [Time]),
 
 			if
 
-				% Train is At Capacity, So Leave
-				Capacity == length(PassengerList) ->
-					%io:fwrite("tick: ~p, at capacity, leaving ~n", [Time]),
+				% Train is At Capacity (after Everyone Has Disembarked)
+				(Capacity == length(PassengerList)) and (DisembRemaining == 0) ->
+					io:fwrite("tick: ~p, at capacity, leaving ~n", [Time]),
 					CurrStation ! { trainLeaving, Direction, self() },
 					receive
 						{trainLeft} -> ok
@@ -130,9 +130,9 @@ DisembRemaining, WaitTime) ->
 					emptyMailbox(),
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0);
 				
-				% Not At Capacity, Waited for A Minutes, So Leave
-				WaitTime == 1 ->
-					%io:fwrite("tick: ~p, waited, leaving~n", [Time]),
+				% Not At Capacity, Waited for A Minutes, So Leave (after Everyone has Disembarked)
+				(WaitTime == 1) and (DisembRemaining == 0) ->
+					io:fwrite("tick: ~p, waited, leaving~n", [Time]),
 					CurrStation ! { trainLeaving, Direction, self() },
 					receive
                     	{trainLeft} -> ok
@@ -151,15 +151,18 @@ DisembRemaining, WaitTime) ->
 					%io:fwrite("mailbox empty~n", []),
 					loop(StartTime, Capacity, Direction, NextStation, PassengerList, NewTimeToNext, 0, 0);
 
-				% Not At Capacity, Many People On Platform
+				% Other Cases
 				true ->
 				    CurrStation ! {numWaiting, Direction, self()},
 				    receive
 				        {numWaiting, BoardCount} -> BoardCount
 				     end,
+				     io:fwrite("tick ~p, entering station minute~n", [Time]),
 					{NewPassList, MovedCurrTick, DisembarkRemaining} = 
 					    stationMinute(Capacity, CurrStation, PassengerList, 0, DisembRemaining, BoardCount),
+					 io:fwrite("size of new pass list: ~w ~n", [length(NewPassList)]),
 					clk ! { minuteDone },
+					io:fwrite("once again, size of new pass list: ~w ~n", [length(NewPassList)]),
 					output:newTrainStat(outMod, { Direction, station, CurrStation, length(NewPassList) }),
 					if
 					    MovedCurrTick =:= 100 -> 
@@ -193,11 +196,25 @@ emptyMailbox() ->
 			ok
 	end.
 
+
+
+% Train is At Capacity; Stop Boarding
 stationMinute(Capacity, _, PassengerList, MovedThisTick, DisembRemaining, _BoardRemaining) 
-    when (Capacity =:= length(PassengerList)) and (DisembRemaining =:= 0) -> {PassengerList, MovedThisTick, DisembRemaining};
+    when (Capacity =:= length(PassengerList)) and (DisembRemaining =:= 0) -> 
+    io:fwrite("train at capacity ~n", []),
+    {PassengerList, MovedThisTick, DisembRemaining};
+
+% Nobody Needs to Disembark or Board
 stationMinute(_, _, PassengerList, MovedThisTick, 0, 0) ->
+	io:fwrite("no passenger movement ~n", []),
     {PassengerList, MovedThisTick, 0};
-stationMinute(_, _, PassengerList, 100, DisembRemaining, _BoardRemaining) -> {PassengerList, 100, DisembRemaining};
+
+% 100 Passengers Have Moved; Try Again Next Minute
+stationMinute(_, _, PassengerList, 100, DisembRemaining, _BoardRemaining) -> 
+	io:fwrite("max passenger movement, ~w remaining ~n", [DisembRemaining]),
+	{PassengerList, 100, DisembRemaining};
+
+% Standard Case
 stationMinute(Capacity, CurrStation, PassengerList, MovedThisTick, DisembRemaining, BoardRemaining) ->
     receive
         { disembark, Passenger } ->
