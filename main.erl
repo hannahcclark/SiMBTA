@@ -5,6 +5,7 @@
 % Original Author: Hannah Clark
 % Date: 11/8/14
 % ChangeLog:
+%    12/03/14 - HCC - changed start and parser so simulation ends when trains are done and kills passenger processes still waiting in stations
 %    12/02/14 - HCC - fixed delay to not send minute done when about to
 %                     remove from clock
 %    12/01/14 - RAD - fixed a Pid message
@@ -26,26 +27,27 @@ start(FileName) -> {ok, Device} = file:open(FileName, [read]),
                                       %themselves when created without errors
                    lists:foreach(fun(Elem) -> station:start(Elem) end, 
                             carto:cartograph()), %make station processes
-                   {Delays, Procs} = parseInput(Device, [], []),
+                   {Delays, Trains, Passengers} = parseInput(Device, [], [], []),
                                       %Read file to make trains, passengers, and delays
                    clock:add(clk, spawn(fun()->
                                     delayLoop(Delays) end)),
                                     %Create process to send delays, adding it to the clock
                                     %so that it sends them appropriately
                    clock:startClock(clk), %Everything is ready, so start clock's count
-                   procsAlive(Procs),
-                   io:fwrite("procs dead ~n", []),
+                   procsAlive(Trains),
+                   %io:fwrite("procs dead ~n", []),
                    output:endSimulation(outMod), %Everything is done, so output 
                                                 %may be ended and clock will end
+                   lists:foreach(fun(Pid) -> exit(Pid, kill) end, Passengers),
                    lists:foreach(fun(Pid) -> exit(whereis(Pid), endSim)
                         end, carto:cartograph()), %cause stations to exit to clean up
                     ok.
                      
 %Waits until all processes in a list are dead by filtering on alive processes at each recursion
 %and ending when there are no longer any
-procsAlive([]) -> ok;
-procsAlive(Procs) -> 
-    %io:fwrite("ALIVE: ~w~n", [Procs]),
+procsAlive([]) -> %io:fwrite("procs dead~n", []), 
+                    ok;
+procsAlive(Procs) ->
     procsAlive(lists:filter(fun(Proc) -> 
         is_process_alive(Proc) 
     end, Procs)).
@@ -53,7 +55,7 @@ procsAlive(Procs) ->
 %Parses input file and starts processes as indicated by file
 %Procs is a list of Pids of trains and passengers created so far
 %Delays is a list of Delays created so far
-parseInput(Device, Delays, Procs) -> 
+parseInput(Device, Delays, Trains, Passengers) -> 
     case io:fread(Device, "", "~a ")  of %read in a passenger or train
         {ok, [Name|_]} -> 
             case Name of
@@ -62,17 +64,19 @@ parseInput(Device, Delays, Procs) ->
                         io:fread(Device, "", "~a ~10u ~10u ~10u"),
                     Train = train:start(Cap, Time, Dir, carto:firstStation(Dir)),
                     parseInput(Device, parseDelays(NumDelays, Train, Delays, 
-                                Device), [Train|Procs]); %Parse next input,
+                                Device), [Train|Trains], Passengers); %Parse next input,
                                 %adding train to procs, processing delays, if any,
                                 % and adding them to delays
                 passenger -> 
                     {ok, [Count, Time, Start, End]} =
                         io:fread(Device, "", "~10u ~10u ~a ~a"),
-                    parseInput(Device, Delays, lists:append(Procs,
-                        makeXPassengers(Count, Start, Time, End)))
+                    %miakeXPassengers(Count, Start, Time, End),
+                    %parseInput(Device, Delays, Procs, )
+                    parseInput(Device, Delays, Trains, lists:append(Passengers,
+                      makeXPassengers(Count, Start, Time, End)))
                                       %Parse next input, adding passengers to procs
             end;
-        eof -> {Delays,Procs} %Return delays and procs when nothing more to read in
+        eof -> {Delays,Trains, Passengers} %Return delays and procs when nothing more to read in
     end.
 
 %Function to parse a number of delays belonging to train whose pid is Train
@@ -93,7 +97,7 @@ makeXPassengers(X, StartStation, StartTime, EndStation) ->
 
 %Sends delays to trains as appropriate
 delayLoop([]) -> 
-  io:fwrite("delay loop done forever~n", []),
+  %io:fwrite("delay loop done forever~n", []),
   clock:remove(clk, self());
 delayLoop(Delays) ->
     receive %Every minute, iterate over list of delays
@@ -106,9 +110,9 @@ delayLoop(Delays) ->
                     _ -> [{Pid, Time, Length}|Rem]
                 end
             end, [], Delays),
-            io:fwrite("delay loop minute done~n", []),
+            %io:fwrite("delay loop minute done~n", []),
             if
-                Remaining =:= [] -> io:fwrite("Done~n", []), ok;
+                Remaining =:= [] ->  ok;
                 true -> clk ! {minuteDone}
             end,
             delayLoop(Remaining)

@@ -22,7 +22,7 @@ start(Name) ->
     % Spawns station with all basecases and registering station name
     IncomingIn = queue:new(),
     IncomingOut = queue:new(),
-    io:fwrite("reg~n", []),
+    %io:fwrite("reg~n", []),
     register(Name, spawn(fun() -> 
                     loop(Name,[], [], nil, nil, IncomingIn, IncomingOut) end)),
     output:add(outMod, station).
@@ -125,7 +125,8 @@ loop(Name, PassengerListIn, PassengerListOut,
             Train ! {numWaiting, length(PassengerListOut)},
             loop(Name, PassengerListIn, PassengerListOut,
                  PlatformIn, PlatformOut, IncomingIn, IncomingOut);
-        {endSim} -> ok % End process at end of simulation
+        {endSim, Sender} -> %io:fwrite("stationdone~n", []), 
+                            Sender ! ok % End process at end of simulation
     end.
 
 tryTrainEntry(Train, Queue, Platform) ->

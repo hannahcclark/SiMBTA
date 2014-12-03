@@ -9,6 +9,7 @@
 % Original Author: Hannah Clark
 % Date: 11/7/14
 % ChangeLog:
+%    12/03/14 - HCC - added minute output to stdout, deleted debug output
 %    12/02/14 - HCC - added message to output corresponding to fix for train adding glitch
 %    12/01/14 - HCC - fixed a glitch in loop when sending current time
 %    11/22/14 - HCC - switched mapping over to send tick message to a foreach
@@ -54,7 +55,7 @@ add_rest(ObjList) -> receive
                      end.
 
 %Clock's main action loop, ends when no more objects are "listening" to the clockd
-loop(_, [], _) -> io:fwrite("clock dies~n", []), ok;
+loop(_, [], _) -> ok;
 loop(Minute, ObjList, ObjDone) ->
                 receive
                     {minuteDone} ->  
@@ -63,6 +64,7 @@ loop(Minute, ObjList, ObjDone) ->
                                 lists:foreach(fun(Pid) -> %signal all watched objects
                                         Pid ! {tick, Minute + 1}
                                     end, ObjList),
+                                    io:fwrite("Minute ~p~n", [Minute]),
                                     %io:fwrite("~p objects received of ~p total, TIME MOVES FORWARD ~n", [ObjDone+1, length(ObjList)]),
                                 loop(Minute + 1, ObjList, 0); %loop with next minute
                             ObjDone + 1 == length(ObjList) - 1 -> %all but output have finished minute, so tell output it can print

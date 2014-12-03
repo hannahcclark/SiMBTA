@@ -11,6 +11,7 @@
 % Original Author: Hannah Clark
 % Date: 11/16/14
 % ChangeLog:
+%    12/03/14 - HCC - added case for train removal in loop where there are no more trains
 %    12/02/14 - HCC - added message that output is allowed (from clock) to fix issue of trains not adding correctly
 %    12/02/14 - AMS - adding module definition at top
 %    12/01/14 - HCC - changed method by which sending station updates is triggered
@@ -29,25 +30,26 @@ start(ProcName, OutputFile) ->
     {ok, Device} = file:open(OutputFile, [write]),
     %Device = standard_io,
     Proc = spawn(fun() -> loop(0, 0, [], [], false, Device, false, false) end),
-    io:fwrite("output process: ~w~n", [Proc]),
+    %io:fwrite("output process: ~w~n", [Proc]),
     clock:add(clk, Proc), %Synchronizes with clock so that output has meaning
     register(ProcName,Proc),
     {ok}.
-canWrite(Proc) -> io:fwrite("canwrite~n", []), Proc ! {canWrite}.
+canWrite(Proc) -> Proc ! {canWrite}.
 %Removes a process of type station or train from being watched by output
 remove(Proc, Type) -> Proc ! {remove, Type, self()},
                       receive
                          done -> ok
                       end. 
 %Adds a process of type station or train from being watched by output
-add(Proc, Type) ->io:fwrite("adding ~p~n", [Type]),  Proc ! {add, Type, self()},
+add(Proc, Type) ->%io:fwrite("adding ~p~n", [Type]),  
+                Proc ! {add, Type, self()},
                     receive
-                        done -> io:fwrite("did add ~p~n", [Type]), ok
+                        done ->  ok
                     end.
 %Type should be atom of station or train only
 
 %Call to flush output and close file when simulation is over
-endSimulation(Proc) -> io:fwrite("end called ~n", []),
+endSimulation(Proc) -> %io:fwrite("end called ~n", []),
                         Proc ! {endSim, self()},
                         receive
                             Message -> Message
@@ -127,34 +129,48 @@ MinuteOccurred, CanWrite) when (length(TrainStats) >= TrainCnt) and (TrainCnt > 
             MinuteOccurred, CanWrite);
 loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device, 
     MinuteOccurred, CanWrite) ->
+    if 
+        (not ReqStations) and MinuteOccurred and CanWrite and ((TrainCnt =:= 0) 
+        or (length(TrainStats) =:= TrainCnt)) -> 
+            lists:foreach(fun(Station) -> Station ! {sendInfo} end, carto:cartograph()),
+            loop(TrainCnt, StationCnt, TrainStats, StationStats, true, Device, MinuteOccurred, CanWrite);
+        true -> 
     receive
-        {add, train, Pid} -> Pid ! done,%io:fwrite("~p of ~p trains~n", [length(TrainStats), TrainCnt+1]),
+        {add, train, Pid} -> Pid ! done,
                                 loop(TrainCnt + 1, StationCnt, TrainStats, StationStats,
                                 ReqStations, Device, MinuteOccurred, CanWrite);
-        {add, station, Pid} -> Pid ! done,%io:fwrite("~p of ~p stations~n", [length(StationStats), StationCnt+1]),
+        {add, station, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt + 1, TrainStats,
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {remove, train, Pid} -> Pid ! done,%io:fwrite("~p of ~p trains~n", [length(TrainStats), TrainCnt - 1]),
+        {remove, train, Pid} -> Pid ! done,
+       %                         if
+        %                            MinuteOccurred and ((TrainCnt - 1) =:= 0) ->
+         %                                lists:foreach(fun(Station) -> 
+          %                                  Station ! {sendInfo} end,
+           %                                 carto:cartograph());
+            %                        true -> ok
+             %                   end,
                                 loop(TrainCnt - 1, StationCnt, TrainStats, 
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {remove, station, Pid} -> Pid ! done,%io:fwrite("~p of ~p stations~n", [length(StationStats), StationCnt - 1]),
+        {remove, station, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt - 1, TrainStats, 
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
         {tick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
-                                if
-                                    TrainCnt =:= 0 ->
-                                        lists:foreach(fun(Station) -> 
-                                            Station ! {sendInfo} end,
-                                            carto:cartograph()),
-                                        loop(TrainCnt, StationCnt, TrainStats, 
-                                        StationStats, true, Device, true, CanWrite);
-                                    true -> loop(TrainCnt, StationCnt, TrainStats, 
-                                        StationStats, ReqStations, Device, true, CanWrite)
-                                end;
-        {trainStat, Stat, Pid} -> Pid ! done, %io:fwrite("~p of ~p trains~n", [length(TrainStats) + 1, TrainCnt]),
+              %                  if
+               %                     TrainCnt =:= 0 ->
+                %                        lists:foreach(fun(Station) -> 
+                 %                           Station ! {sendInfo} end,
+                  %                          carto:cartograph()),
+                   %                     loop(TrainCnt, StationCnt, TrainStats, 
+                    %                    StationStats, true, Device, true, CanWrite);
+                     %               true -> 
+                            loop(TrainCnt, StationCnt, TrainStats, 
+                                        StationStats, ReqStations, Device, true, CanWrite);
+                      %          end;
+        {trainStat, Stat, Pid} -> Pid ! done, 
                                 loop(TrainCnt, StationCnt, [Stat|TrainStats],
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {stationStat, Stat, Pid} -> Pid ! done,%io:fwrite("~p of ~p stations~n", [length(StationStats) + 1, StationCnt]),
+        {stationStat, Stat, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt, TrainStats,
                                 [Stat|StationStats], ReqStations, Device, MinuteOccurred, CanWrite);
         {passenger, PassInfo} -> printPassenger(PassInfo, Device),
@@ -168,7 +184,15 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
         %and it must close the file to save the output before ending
         {endSim, Sender} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
+                    clearPassengers(Device),
                     %io:fwrite("output process removed~n", []),
                     clock:remove(clk, self()),
                     Sender ! file:close(Device)
+    end
+    end.
+
+clearPassengers(Device) ->
+receive
+    {passenger, PassInfo} -> printPassenger(PassInfo, Device), clearPassengers(Device)
+    after 0 -> ok
     end.
