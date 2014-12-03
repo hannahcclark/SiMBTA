@@ -21,8 +21,27 @@
 
         <h4>Scroll Through Time:</h4>
         <div id="slider"></div>
+        <div id="minutecount">min</div>
 
-        <canvas id="map" width="500" height="800"></cavans>
+        <canvas id="map" width="500" height="800"></canvas>
+
+        <a href="#" id="analyze-link">Analyze</a>
+
+        <div id="analyze">
+
+            <h4>Average Travel Time</h4>
+
+            <label for="origin_select">Origin Station</label>
+            <select id="origin_select"></select>
+
+            <label for="dest_select">Destination Station</label>
+            <select id="dest_select"></select>
+
+            <input type="button" id="calc_average" value="Calculate" />
+
+            <div id="avg-result"></div>
+
+        </div>
 
         </div>
 
