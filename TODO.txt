@@ -8,9 +8,12 @@
 - Fix train output issue - HANNAH - RESOLVED 9:35PM 02/12/14
 - Fix issue that trains can't start before minute 2 (non presentation critical, but maybe needed for friday, maybe?)
 - Final test file - RAEWYN - RESOLVED 5:45AM 03/12/14
-- Find why final test file is hanging - HANNAH
-- REMINDER - remove Outputs after debugging is done (for presentation) - HANNAH
-- REMINDER - clean up github repo (for friday)
+- Find why final test file is hanging at end - HANNAH - RESOLVED - 2:30ish PM 03/12/14
+- REMINDER - remove Outputs after debugging is done (for presentation) - HANNAH - RESOLVED - 2:30ish PM 03/12/14
+- REMINDER - clean up commented out lines in code (in friday meeting) - GROUP
+- REMINDER - clean up github repo (in friday meeting) - GROUP
+- Fix heisenbug causing hang in middle of simulation
+- Fix issue with some passengers not dying (passengers on trains)
 
 Note for Raewyn: Passengers should never receive a notification for a train
 going in the wrong direction. Edit your cases/messages?
