@@ -7,7 +7,7 @@
 - Test with train reaching capacity with more people who want to board -RAEWYN 3:32AM 02/12/14
 - Fix train output issue - HANNAH - RESOLVED 9:35PM 02/12/14
 - Fix issue that trains can't start before minute 2 (non presentation critical, but needed for friday)
-- Final test file - RAEWYN
+- Final test file - RAEWYN - RESOLVED 5:45AM 03/12/14
 
 Note for Raewyn: Passengers should never receive a notification for a train
 going in the wrong direction. Edit your cases/messages?
