@@ -9,6 +9,7 @@
 % Original Author: Hannah Clark
 % Date: 11/7/14
 % ChangeLog:
+%    12/03/14 - HCC - eliminated debugging outputs (commented or deleted)
 %    12/03/14 - HCC - added minute output to stdout, deleted debug output
 %    12/02/14 - HCC - added message to output corresponding to fix for train adding glitch
 %    12/01/14 - HCC - fixed a glitch in loop when sending current time
