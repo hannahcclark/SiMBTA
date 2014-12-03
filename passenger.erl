@@ -18,6 +18,7 @@
 %    12/01/14 - HCC - somewhat messy way of checking train check upon entry to station, because was not otherwise notified
 %    12/01/14 - RAD - updated to match station directional lists
 %    12/01/14 - RAD - deleted no longer necissary train check upon entry
+%    12/03/14 - HCC - changed line to receive {endSim} to try cleaner way of causing station processes to die
 
 -module(passenger).
 -export([start/3,loop/5,trip_stats/2]).
