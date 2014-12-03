@@ -1,3 +1,4 @@
 train ashmont 5 500 0
-train alewife 5 500 0
-passenger 190 5 alewife davis
+train alewife 1 500 1
+delay 1 5
+passenger 1 5 alewife davis
