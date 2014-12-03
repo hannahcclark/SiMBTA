@@ -1,4 +1,4 @@
-train ashmont 5  500 0
+train ashmont 5 500 0
 train ashmont 10 500 0
 train ashmont 15 500 0
 train ashmont 20 500 0
@@ -8,7 +8,7 @@ train ashmont 35 500 0
 train ashmont 40 500 0
 train ashmont 45 500 0
 train ashmont 50 500 0
-train alewife 5  500 0
+train alewife 5 500 0
 train alewife 10 500 0
 train alewife 15 500 0
 train alewife 20 500 0
