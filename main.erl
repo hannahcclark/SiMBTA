@@ -7,6 +7,7 @@
 % ChangeLog:
 %    12/02/14 - HCC - fixed delay to not send minute done when about to
 %                     remove from clock
+%    12/01/14 - RAD - fixed a Pid message
 %    11/24/14 - HCC - fixed bugs in code to exit simulation
 %    11/23/14 - HCC - fixed bugs in delay loop function and procsAlive function
 %    11/22/14 - HCC - fixed bugs in start due to order of function calls that appeared in integration testing
