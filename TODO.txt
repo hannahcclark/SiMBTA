@@ -5,4 +5,4 @@
 - Test with multiple delays - HANNAH - RESOLVED 8:08 PM 02/12/14
 - Test with train reaching capacity with no more people boarding
 - Test with train reaching capacity with more people who want to board
-- Fix train output issue - HANNAH
+- Fix train output issue - HANNAH - RESOLVED 9:35PM 02/12/14
