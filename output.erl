@@ -11,6 +11,7 @@
 % Original Author: Hannah Clark
 % Date: 11/16/14
 % ChangeLog:
+%    12/04/14 - HCC - cleaned up commented out lines
 %    12/03/14 - HCC - eliminated debugging outputs (commented or deleted)
 %    12/03/14 - HCC - changed requesting of station info to be in if statement rather than recieve
 %    12/03/14 - HCC - added case for train removal in loop where there are no more trains
@@ -30,9 +31,7 @@
 %to file whose name is given as OutputFile
 start(ProcName, OutputFile) -> 
     {ok, Device} = file:open(OutputFile, [write]),
-    %Device = standard_io,
     Proc = spawn(fun() -> loop(0, 0, [], [], false, Device, false, false) end),
-    %io:fwrite("output process: ~w~n", [Proc]),
     clock:add(clk, Proc), %Synchronizes with clock so that output has meaning
     register(ProcName,Proc),
     {ok}.
@@ -43,7 +42,7 @@ remove(Proc, Type) -> Proc ! {remove, Type, self()},
                          done -> ok
                       end. 
 %Adds a process of type station or train from being watched by output
-add(Proc, Type) ->%io:fwrite("adding ~p~n", [Type]),  
+add(Proc, Type) ->  
                 Proc ! {add, Type, self()},
                     receive
                         done ->  ok
@@ -51,14 +50,13 @@ add(Proc, Type) ->%io:fwrite("adding ~p~n", [Type]),
 %Type should be atom of station or train only
 
 %Call to flush output and close file when simulation is over
-endSimulation(Proc) -> %io:fwrite("end called ~n", []),
-                        Proc ! {endSim, self()},
+endSimulation(Proc) -> Proc ! {endSim, self()},
                         receive
                             Message -> Message
                         end.
 
 %Use to provide a minute update from a station
-newStationStat(Proc, Stats) -> %io:fwrite("s ~p~n", [self()]),%Stats: {StationName, NumPass, HasAsh, HasAle}
+newStationStat(Proc, Stats) -> 
     Proc ! {stationStat, Stats, self()},
     receive
         done -> ok
@@ -68,7 +66,6 @@ newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
                                 % CurrLoc should be atom station if train is 
                                 % on a platform or track if it is in queue for a
                                 % platform
-    %io:fwrite("t ~p~n", [self()]),
     Proc ! {trainStat, Stats, self()},
     receive
         done -> ok
@@ -119,7 +116,6 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, _,  Device, true, true)
         
         printTrains(TrainStats, Device),
         printStations(StationStats, Device),
-        %io:fwrite("output complete~n", []),
         clk ! {minuteDone},
         loop(TrainCnt, StationCnt, [], [], false, Device, false, false);
 
@@ -145,30 +141,14 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
                                 loop(TrainCnt, StationCnt + 1, TrainStats,
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
         {remove, train, Pid} -> Pid ! done,
-       %                         if
-        %                            MinuteOccurred and ((TrainCnt - 1) =:= 0) ->
-         %                                lists:foreach(fun(Station) -> 
-          %                                  Station ! {sendInfo} end,
-           %                                 carto:cartograph());
-            %                        true -> ok
-             %                   end,
                                 loop(TrainCnt - 1, StationCnt, TrainStats, 
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
         {remove, station, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt - 1, TrainStats, 
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
         {tick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
-              %                  if
-               %                     TrainCnt =:= 0 ->
-                %                        lists:foreach(fun(Station) -> 
-                 %                           Station ! {sendInfo} end,
-                  %                          carto:cartograph()),
-                   %                     loop(TrainCnt, StationCnt, TrainStats, 
-                    %                    StationStats, true, Device, true, CanWrite);
-                     %               true -> 
                             loop(TrainCnt, StationCnt, TrainStats, 
                                         StationStats, ReqStations, Device, true, CanWrite);
-                      %          end;
         {trainStat, Stat, Pid} -> Pid ! done, 
                                 loop(TrainCnt, StationCnt, [Stat|TrainStats],
                                 StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
@@ -187,7 +167,6 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
         {endSim, Sender} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
                     clearPassengers(Device),
-                    %io:fwrite("output process removed~n", []),
                     clock:remove(clk, self()),
                     Sender ! file:close(Device)
     end
