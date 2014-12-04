@@ -6,14 +6,18 @@
 - Test with train reaching capacity with no more people boarding - RAEWYN - RESOLVED 11:11PM 02/12/14
 - Test with train reaching capacity with more people who want to board -RAEWYN 3:32AM 02/12/14
 - Fix train output issue - HANNAH - RESOLVED 9:35PM 02/12/14
-- Fix issue that trains can't start before minute 2 (non presentation critical, but maybe needed for friday, maybe?)
+-* Fix issue that trains can't start before minute 2 (non presentation critical, but maybe needed for friday, maybe?)
 - Final test file - RAEWYN - RESOLVED 5:45AM 03/12/14
 - Find why final test file is hanging at end - HANNAH - RESOLVED - 2:30ish PM 03/12/14
 - REMINDER - remove Outputs after debugging is done (for presentation) - HANNAH - RESOLVED - 2:30ish PM 03/12/14
-- REMINDER - clean up commented out lines in code (in friday meeting) - GROUP
-- REMINDER - clean up github repo (in friday meeting) - GROUP
+-* REMINDER - clean up commented out lines in code (in friday meeting) - GROUP
+-* REMINDER - clean up github repo (in friday meeting) - GROUP
 - Fix heisenbug causing hang in middle of simulation
-- Fix issue with some passengers not dying (passengers on trains)
+    - bug was previously appearing at least 1 per 10 runs, ran 30+ times without appearing,
+      concluded initial proposed fix actually is working (hopefully), but just hadn't been compiled for some reason
+      - RESOLVED (maybe) - HANNAH 2:20PM 04/12/14
+-* Fix issue with some passengers not dying without being forcibly killed (passengers on trains)
+-* Change In and Out in PlatformIn/Out and PassengerListIn/Out to Ash and Ale respectively
 
 Note for Raewyn: Passengers should never receive a notification for a train
 going in the wrong direction. Edit your cases/messages?
