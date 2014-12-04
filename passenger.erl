@@ -35,8 +35,8 @@ wait(StartStation, StartTime, EndStation,  Direction) ->
     receive
 	    {tick, StartTime} ->
             % Start passenger trip
-	        clock:remove(clk, self()),
 	        StartStation ! {passengerEnters, self(), Direction},
+            clock:remove(clk, self()),
 	        loop(StartTime, StartStation, StartStation, EndStation, Direction);
 	    {tick, _} ->
             % Wait for passenger start time
@@ -70,7 +70,6 @@ loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
             % Disembarked so finish
             output:passengerDone(outMod, {StartStation, Endpoint, StartTime, 
 	        trip_stats(clock:currTime(clk), StartTime)});
-            %io:fwrite("finclock ~p~n", [whereis(clk)]);
 	    {changedLocation, Train} ->
             % Boarded train so leaves station
 	        CurrentLocation ! {passengerLeaves, self(), Direction},

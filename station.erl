@@ -127,6 +127,8 @@ loop(Name, PassengerListIn, PassengerListOut,
             loop(Name, PassengerListIn, PassengerListOut,
                  PlatformIn, PlatformOut, IncomingIn, IncomingOut);
         {endSim, Sender} -> %io:fwrite("stationdone~n", []), 
+                            lists:map(fun(Elem) -> exit(Elem, kill) end,
+                                lists:append(PassengerListIn, PassengerListOut)),
                             Sender ! ok % End process at end of simulation
     end.
 

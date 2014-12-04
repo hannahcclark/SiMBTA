@@ -1,10 +1,11 @@
 % Module: Main
 % Purpose: Parse specification for and run simulation
 % Interface:
-%    start/1 runs the simulation with parameters specified by the input file
+%    run/1 runs the simulation with parameters specified by the input file
 % Original Author: Hannah Clark
 % Date: 11/8/14
 % ChangeLog:
+%    12/04/14 - HCC - changed start/1 to run/1 for clarity, cleaned up commented out lines
 %    12/03/14 - HCC - eliminated debugging outputs (commented or deleted)
 %    12/03/14 - HCC - changed start and parser so simulation ends when trains are done and kills passenger processes still waiting in stations
 %    12/02/14 - HCC - fixed delay to not send minute done when about to
@@ -19,9 +20,9 @@
 %    11/16/14 - HCC - added functions to support delays
 %    11/08/14 - HCC - created module
 -module(main).
--export([start/1]).
+-export([run/1]).
 
-start(FileName) -> {ok, Device} = file:open(FileName, [read]), 
+run(FileName) -> {ok, Device} = file:open(FileName, [read]), 
                    clock:init(clk), %Init clock so processes can add themselves
                                       %when created without errors
                    output:start(outMod, "outFile.txt"), %Start output so processes can add 
@@ -36,18 +37,16 @@ start(FileName) -> {ok, Device} = file:open(FileName, [read]),
                                     %so that it sends them appropriately
                    clock:startClock(clk), %Everything is ready, so start clock's count
                    procsAlive(Trains),
-                   %io:fwrite("procs dead ~n", []),
                    output:endSimulation(outMod), %Everything is done, so output 
                                                 %may be ended and clock will end
                    lists:foreach(fun(Pid) -> exit(Pid, kill) end, Passengers),
-                   lists:foreach(fun(Pid) -> exit(whereis(Pid), endSim)
+                   lists:foreach(fun(Pid) -> exit(whereis(Pid),kill)
                         end, carto:cartograph()), %cause stations to exit to clean up
                     ok.
                      
 %Waits until all processes in a list are dead by filtering on alive processes at each recursion
 %and ending when there are no longer any
-procsAlive([]) -> %io:fwrite("procs dead~n", []), 
-                    ok;
+procsAlive([]) -> ok;
 procsAlive(Procs) ->
     procsAlive(lists:filter(fun(Proc) -> 
         is_process_alive(Proc) 
@@ -71,8 +70,6 @@ parseInput(Device, Delays, Trains, Passengers) ->
                 passenger -> 
                     {ok, [Count, Time, Start, End]} =
                         io:fread(Device, "", "~10u ~10u ~a ~a"),
-                    %miakeXPassengers(Count, Start, Time, End),
-                    %parseInput(Device, Delays, Procs, )
                     parseInput(Device, Delays, Trains, lists:append(Passengers,
                       makeXPassengers(Count, Start, Time, End)))
                                       %Parse next input, adding passengers to procs
@@ -98,7 +95,6 @@ makeXPassengers(X, StartStation, StartTime, EndStation) ->
 
 %Sends delays to trains as appropriate
 delayLoop([]) -> 
-  %io:fwrite("delay loop done forever~n", []),
   clock:remove(clk, self());
 delayLoop(Delays) ->
     receive %Every minute, iterate over list of delays
