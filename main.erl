@@ -59,6 +59,11 @@ run(FileName) -> {ok, Device} = file:open(FileName, [read]),
                             Passengers)),
                     ok.
                      
+
+
+
+
+
 %Waits until all processes in a list are dead by filtering on alive processes at
 %each recursion and ending when there are no longer any
 procsAlive([]) -> ok;

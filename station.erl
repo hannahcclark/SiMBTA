@@ -28,6 +28,42 @@ start(Name) ->
                     loop(Name,[], [], nil, nil, IncomingIn, IncomingOut) end)),
     output:add(outMod, station).
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 loop(Name, PassengerListIn, PassengerListOut,
      PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
     receive
@@ -93,6 +129,7 @@ loop(Name, PassengerListIn, PassengerListOut,
                 no -> loop(Name, PassengerListIn, PassengerListOut,
                            PlatformIn, PlatformOut, IncomingIn, IncomingOut)
             end;
+
         {trainEntry, Train, alewife} ->
             % Check if train is first in corresponding queue
             case tryTrainEntry(Train, IncomingOut, PlatformOut) of

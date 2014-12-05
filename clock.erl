@@ -55,7 +55,17 @@ add_rest(ObjList) -> receive
                      after 100 -> ObjList
                      end.
 
+
+
+
+
+
+
+
+
+
 %Clock's main action loop, ends when no more objects are "listening" to the clockd
+
 loop(_, [], _) -> ok;
 loop(Minute, ObjList, ObjDone) ->
                 receive
