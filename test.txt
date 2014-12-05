@@ -1,2 +1,5 @@
 train alewife 3 500 0
-passenger 50 1 ashmont alewife
+passenger 5 1 ashmont alewife
+train ashmont 5 500 2
+delay 10 3
+delay 15 2
