@@ -77,7 +77,7 @@ $(document).ready(function() {
 	// Load Data
 	$.ajax({
 		type: 'GET',
-		url: 'outFile.txt',
+		url: '/outFile.txt',
 		success: function(text) {
 			var data = parseData(text);
 			drawFrame(1, data);
