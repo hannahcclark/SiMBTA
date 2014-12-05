@@ -14,4 +14,4 @@
 - REMINDER - clean up github repo (in friday meeting) - RAEWYN - RESOLVED 6:04PM 05/12/14
 - Fix heisenbug causing hang in middle of simulation (for the most feasible number of test runs)- RESOLVED - HANNAH 2:20PM 04/12/14
 - Fix issue with stations not being able to be killed with {endSim, Sender}, so that we don't have to call exit for stations and passengers in main - HANNAH - 05/12/14 (my bad for including reason for this bug)
-- Change In and Out in PlatformIn/Out and PassengerListIn/Out to Ash and Ale respectively - RAEWYN
+- Change In and Out in PlatformIn/Out and PassengerListIn/Out to Ash and Ale respectively - RAEWYN - RESOLVED - 6:17pm 05/12/14
