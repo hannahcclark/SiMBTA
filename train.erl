@@ -54,17 +54,10 @@ start(Capacity, StartTime, Direction, StartStation) ->
     Pid.
 
 
-loop(_StartTime, _Capacity, _Direction, endStation, PassengerList, _, 
+loop(_StartTime, _Capacity, _Direction, endStation, _PassengerList, _, 
 _DisembRemaining, _WaitTime) ->
 	receive
-		{ tick, Time } ->
-            io:fwrite("~p~n", [length(PassengerList)]),
-            lists:foreach(fun(Pid) -> 
-                Pid ! {tellStation, self()},
-                receive
-                    {point, Station, Beg} -> io:fwrite("~p ~p~n", [Station, Beg])
-                end
-                end, PassengerList),
+		{ tick, _Time } ->
 			output:remove(outMod, train),
 			clock:remove(clk, self())
 		end,
@@ -95,7 +88,7 @@ DisembRemaining, WaitTime) ->
 			    TimeToStation, DisembRemaining, WaitTime);
             
 		% Train is Outside Station, Ready to Enter
-		{tick, Time } when (TimeToStation == 1) ->
+		{tick, _Time } when (TimeToStation == 1) ->
 			case tryEnterPlatform(CurrStation, Direction) of
 				% Being Blocked
 				entryFailed ->
@@ -121,7 +114,7 @@ DisembRemaining, WaitTime) ->
 				end;
 
 		% Will Arive in Future, Currently in Transit
-		{ tick, Time } when (TimeToStation > 1) ->
+		{ tick, _Time } when (TimeToStation > 1) ->
 			clk ! { minuteDone },
 			output:newTrainStat(outMod, {Direction, track, CurrStation, 
                 length(PassengerList)}),
@@ -129,7 +122,7 @@ DisembRemaining, WaitTime) ->
                 TimeToStation-1, DisembRemaining, WaitTime);
 
 		% Train is Currently Boarding
-		{ tick, Time } when (TimeToStation == 0) -> 
+		{ tick, _Time } when (TimeToStation == 0) -> 
 			if
 
 				% Train is At Capacity (after Everyone Has Disembarked)

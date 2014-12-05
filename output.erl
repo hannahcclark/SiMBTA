@@ -68,13 +68,13 @@ endSimulation(Proc) -> Proc ! {endSim, self()},
 
 %Use to provide a minute update from a station
 newStationStat(Proc, Stats) -> 
-    Proc ! {stationStat, Stats, self()}.
+    Proc ! {stationStat, Stats}.
 %Use to provide a minute update from a train
 newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
                                 % CurrLoc should be atom station if train is 
                                 % on a platform or track if it is in queue for a
                                 % platform
-    Proc ! {trainStat, Stats, self()}.
+    Proc ! {trainStat, Stats}.
 %Use to provide completed journey info from a passenger
 passengerDone(Proc, PassInfo) -> Proc ! {passenger, PassInfo}.
                         %PassInfo: {StartStation, EndStation, BegTime, Duration}
@@ -162,10 +162,10 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
                             loop(TrainCnt, StationCnt, TrainStats, 
                                 StationStats, ReqStations, Device, true, 
                                 CanWrite);
-        {trainStat, Stat, Pid} -> loop(TrainCnt, StationCnt, [Stat|TrainStats],
+        {trainStat, Stat} -> loop(TrainCnt, StationCnt, [Stat|TrainStats],
                                     StationStats, ReqStations, Device, 
                                     MinuteOccurred, CanWrite);
-        {stationStat, Stat, Pid} -> loop(TrainCnt, StationCnt, TrainStats,
+        {stationStat, Stat} -> loop(TrainCnt, StationCnt, TrainStats,
                                     [Stat|StationStats], ReqStations, Device, 
                                     MinuteOccurred, CanWrite);
         {passenger, PassInfo} -> printPassenger(PassInfo, Device),
