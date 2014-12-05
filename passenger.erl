@@ -12,15 +12,17 @@
 %    11/15/14 - RAD - created file
 %    11/18/14 - RAD - minor updates (typos, etc)
 %    11/19/14 - HCC - fixed glitch with passenger being added to clock
-%    11/19/14 - HCC - made changes to add to output module, fixed some typo bugs/syntax issues
+%    11/19/14 - HCC - made changes to add to output module, fixed some typo 
+%                     bugs/syntax issues
 %    11/20/14 - HCC - added(then removed) some outputs for testing
 %    11/22/14 - RAD - formatting, semicolon fix
-%    12/01/14 - HCC - somewhat messy way of checking train check upon entry to station, because was not otherwise notified
+%    12/01/14 - HCC - somewhat messy way of checking train check upon entry to 
+%                     station, because was not otherwise notified
 %    12/01/14 - RAD - updated to match station directional lists
 %    12/01/14 - RAD - deleted no longer necissary train check upon entry
 
 -module(passenger).
--export([start/3,loop/5,trip_stats/2]).
+-export([start/3]).
 
 start(StartStation, StartTime, EndStation) ->
 	% Spawn self and add to clock
@@ -36,6 +38,10 @@ wait(StartStation, StartTime, EndStation,  Direction) ->
 	    {tick, StartTime} ->
             % Start passenger trip
 	        StartStation ! {passengerEnters, self(), Direction},
+            %receive
+            %    {entered} -> ok
+            %end,
+            %io:fwrite("~p~n", [EndStation]),
             clock:remove(clk, self()),
 	        loop(StartTime, StartStation, StartStation, EndStation, Direction);
 	    {tick, _} ->
@@ -46,6 +52,8 @@ wait(StartStation, StartTime, EndStation,  Direction) ->
 
 loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
     receive
+        {tellStation, Sender} -> Sender ! {point, Endpoint, StartStation},
+            loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	    {train, nil, Direction} ->
             % Station is waiting for a train in given direction so wait
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
