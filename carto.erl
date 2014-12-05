@@ -58,6 +58,12 @@ directionFromTo(Start, End) ->
                 porter -> alewife;
                 _ -> ashmont
             end;
+
+
+
+
+
+
         central ->
             case End of
                 alewife -> alewife;
@@ -119,6 +125,11 @@ directionFromTo(Start, End) ->
                 ashmont -> ashmont;
                 _ -> alewife
             end;
+
+
+
+
+
         broadway ->
             case End of
                 andrew -> ashmont;
@@ -166,6 +177,24 @@ directionFromTo(Start, End) ->
             end;
         ashmont -> alewife
     end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 timeToNext(Station, Direction) ->
     % Gets time to next station given current station and direction

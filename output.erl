@@ -53,14 +53,12 @@ remove(Proc, Type) -> Proc ! {remove, Type, self()},
                          done -> ok
                       end. 
 %Adds a process of type station or train from being watched by output
+%Type should be atom of station or train only
 add(Proc, Type) ->  
                 Proc ! {add, Type, self()},
                     receive
                         done ->  ok
                     end.
-%Type should be atom of station or train only
-
-%Call to flush output and close file when simulation is over
 endSimulation(Proc) -> Proc ! {endSim, self()},
                         receive
                             Message -> Message
