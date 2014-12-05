@@ -16,7 +16,7 @@
     - bug was previously appearing at least 1 per 10 runs, ran 30+ times without appearing,
       concluded initial proposed fix actually is working (hopefully), but just hadn't been compiled for some reason
       - RESOLVED (maybe) - HANNAH 2:20PM 04/12/14
--* Fix issue with some passengers not dying without being forcibly killed (passengers on trains)
+-* Fix issue with stations not being able to be killed with {endSim, Sender}, so that we don't have to call exit for stations and passengers in main (maybe)
 -* Change In and Out in PlatformIn/Out and PassengerListIn/Out to Ash and Ale respectively
 
 Note for Raewyn: Passengers should never receive a notification for a train
