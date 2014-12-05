@@ -61,7 +61,8 @@ $(document).ready(function() {
 	$('#analyze').hide();
 	// Populate Analysis Form
 	for (var i in STATIONS) {
-		var option = '<option value="'+STATIONS[i].slug+'">'+STATIONS[i].display+'</option>';
+		var option = '<option value="'+STATIONS[i].slug+'">'
+			+STATIONS[i].display+'</option>';
 		$('#origin_select').append(option);
 		$('#dest_select').append(option);
 	}
@@ -86,7 +87,8 @@ $(document).ready(function() {
 			// Slider Event Listener
 			$('#slider').on("slide", function(e, ui) {
 				drawFrame(ui.value, data);
-				$('#minutecount').text("Minute: "+ui.value+" / "+(data.length-3));
+				$('#minutecount').text("Minute: "+ui.value+" / "
+					+(data.length-3));
 			})
 
 			// Set Slider Options
@@ -119,7 +121,8 @@ $(document).ready(function() {
 
 				// Find All Passenger Trips that Match the Start and End
 				for (var i in passengersAggregate) {
-					if (passengersAggregate[i].Start == origin && passengersAggregate[i].End == destination) {
+					if (passengersAggregate[i].Start == origin && 
+						passengersAggregate[i].End == destination) {
 						durations.push(passengersAggregate[i].Duration);
 					}
 				}
@@ -128,8 +131,11 @@ $(document).ready(function() {
 				if (durations.length == 0) {
 					$('#avg-result').html("No data available.");
 				} else {
-					var average = durations.reduce(function(a,b) { return parseInt(a)+parseInt(b); })/(durations.length);
-					$('#avg-result').html("Average: <strong>"+Math.round(average)+"</strong> Minutes");
+					var average = durations.reduce(function(a,b) { 
+						return parseInt(a)+parseInt(b); 
+					})/(durations.length);
+					$('#avg-result').html("Average: <strong>"
+						+Math.round(average)+"</strong> Minutes");
 				}
 
 				return false;
@@ -283,7 +289,8 @@ var drawFrame = function(min, data) {
 		return 0;
 	}
 	// Create Initial Array of Empty Values for Each Station
-	// Each Station Has One Train Contained in it, and an Array of Trains Waiting to Enter
+	// Each Station Has One Train Contained in it
+	//   and an Array of Trains Waiting to Enter
 	var trainsByStation = STATIONS.reduce(function(obj, station, i) {
 		obj[station.slug] = {
 			station: station,
@@ -302,8 +309,10 @@ var drawFrame = function(min, data) {
 	// Group All Train Data by Station
 	for (var i in minuteData.trains) {
 		var train = minuteData.trains[i];
-		if (train.Approaching !== undefined && train.Approaching != "endStation") {
-			trainsByStation[train.Approaching].approaching[train.Direction].push(train);
+		if (train.Approaching !== undefined && 
+			train.Approaching != "endStation") {
+			trainsByStation[train.Approaching].approaching[train.Direction]
+																.push(train);
 		} else if (train.Station !== undefined) {
 			trainsByStation[train.Station].contained[train.Direction] = train;
 		}
@@ -328,13 +337,15 @@ var drawFrame = function(min, data) {
 		
 		if (trainsByStation[name].approaching.alewife.length != 0) {
 			trainsByStation[name].approaching.alewife.forEach(function(el, i) {
-				drawStation(200 + TRAINOFFSET + (i*20), trainsByStation[name].station.y+20, el.Passengers);
+				drawStation(200 + TRAINOFFSET + (i*20), 
+					trainsByStation[name].station.y+20, el.Passengers);
 			})
 		}
 
 		if (trainsByStation[name].approaching.ashmont.length != 0) {
 			trainsByStation[name].approaching.ashmont.forEach(function(el, i) {
-				drawStation(200 - TRAINOFFSET - (i*20), trainsByStation[name].station.y-20, el.Passengers);
+				drawStation(200 - TRAINOFFSET - (i*20), 
+					trainsByStation[name].station.y-20, el.Passengers);
 			})
 		}
 
