@@ -1,9 +1,12 @@
 % Module: Output
 % Purpose: Handle output to results file for simulation
 % Interface:
-%   start/2 creates a process to handle output registered under the specified name and outputing to the specified file
-%   add/2 adds a process, either a station or train, that will be sending output updates
-%   remove/2 removes a process, either a station or a train, that had been sending updates
+%   start/2 creates a process to handle output registered under the specified 
+%       name and outputing to the specified file
+%   add/2 adds a process, either a station or train, that will be sending output
+%       updates
+%   remove/2 removes a process, either a station or a train, that had been 
+%       sending updates
 %   newStationStat/2 is used by stations to send updates
 %   newTrainStat/2 is used by trains to send updates
 %   passengerDone/2 is used by passenger to send trip end information
@@ -11,14 +14,22 @@
 % Original Author: Hannah Clark
 % Date: 11/16/14
 % ChangeLog:
+%    12/05/15 - HCC - enforced 80 character per line limit
+%    12/05/14 - HCC - eliminated unnecessary synchonous message passing that
+%                     may have been causing hangs
 %    12/04/14 - HCC - cleaned up commented out lines
 %    12/03/14 - HCC - eliminated debugging outputs (commented or deleted)
-%    12/03/14 - HCC - changed requesting of station info to be in if statement rather than recieve
-%    12/03/14 - HCC - added case for train removal in loop where there are no more trains
-%    12/02/14 - HCC - added message that output is allowed (from clock) to fix issue of trains not adding correctly
+%    12/03/14 - HCC - changed requesting of station info to be in if statement 
+%                     rather than recieve
+%    12/03/14 - HCC - added case for train removal in loop where there are no 
+%                     more trains
+%    12/02/14 - HCC - added message that output is allowed (from clock) to fix 
+%                     issue of trains not adding correctly
 %    12/02/14 - AMS - adding module definition at top
-%    12/01/14 - HCC - changed method by which sending station updates is triggered
-%    11/24/14 - HCC - made messages synchronous  because of issue with scheduling
+%    12/01/14 - HCC - changed method by which sending station updates is 
+%                     triggered
+%    11/24/14 - HCC - made messages synchronous  because of issue with 
+%                     scheduling
 %    11/22/14 - HCC - fixed adding to clock in start
 %    11/19/14 - HCC - changes made to endSim for correct ending of simulation
 %    11/17/14 - HCC - many changes for debugging
@@ -57,19 +68,13 @@ endSimulation(Proc) -> Proc ! {endSim, self()},
 
 %Use to provide a minute update from a station
 newStationStat(Proc, Stats) -> 
-    Proc ! {stationStat, Stats, self()},
-    receive
-        done -> ok
-    end.
+    Proc ! {stationStat, Stats, self()}.
 %Use to provide a minute update from a train
 newTrainStat(Proc, Stats) -> %Stats: {Dir, CurrLoc, NextOrCurrStation, NumPass}
                                 % CurrLoc should be atom station if train is 
                                 % on a platform or track if it is in queue for a
                                 % platform
-    Proc ! {trainStat, Stats, self()},
-    receive
-        done -> ok
-    end.
+    Proc ! {trainStat, Stats, self()}.
 %Use to provide completed journey info from a passenger
 passengerDone(Proc, PassInfo) -> Proc ! {passenger, PassInfo}.
                         %PassInfo: {StartStation, EndStation, BegTime, Duration}
@@ -88,7 +93,7 @@ printTrains([{Dir, CurrLoc, Station, Pass}|Trains], Device) ->
     end,
     printTrains(Trains, Device).
 
-%Outputs all station updates from time period passed in to output file in format 
+%Outputs all station updates from time period passed in to output file in format
 %indicated by outputFormat.txt
 printStations([], _) -> {ok};
 printStations([{StationName, NumPass, HasAsh, HasAle}|Stations], Device) ->
@@ -120,7 +125,8 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, _,  Device, true, true)
         loop(TrainCnt, StationCnt, [], [], false, Device, false, false);
 
 loop(TrainCnt, StationCnt, TrainStats, StationStats, false, Device, 
-MinuteOccurred, CanWrite) when (length(TrainStats) >= TrainCnt) and (TrainCnt > 0) ->
+MinuteOccurred, CanWrite) when (length(TrainStats) >= TrainCnt) and 
+(TrainCnt > 0) ->
         lists:foreach(fun(Station) -> Station ! {sendInfo} end,
                         carto:cartograph()),
         loop(TrainCnt, StationCnt, TrainStats, StationStats, true, Device, 
@@ -130,40 +136,51 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
     if 
         (not ReqStations) and MinuteOccurred and CanWrite and ((TrainCnt =:= 0) 
         or (length(TrainStats) =:= TrainCnt)) -> 
-            lists:foreach(fun(Station) -> Station ! {sendInfo} end, carto:cartograph()),
-            loop(TrainCnt, StationCnt, TrainStats, StationStats, true, Device, MinuteOccurred, CanWrite);
+            lists:foreach(fun(Station) -> Station ! {sendInfo} end, 
+                carto:cartograph()),
+            loop(TrainCnt, StationCnt, TrainStats, StationStats, true, Device, 
+                MinuteOccurred, CanWrite);
         true -> 
     receive
         {add, train, Pid} -> Pid ! done,
-                                loop(TrainCnt + 1, StationCnt, TrainStats, StationStats,
-                                ReqStations, Device, MinuteOccurred, CanWrite);
+                                loop(TrainCnt + 1, StationCnt, TrainStats, 
+                                    StationStats, ReqStations, Device, 
+                                    MinuteOccurred, CanWrite);
         {add, station, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt + 1, TrainStats,
-                                StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
+                                    StationStats, ReqStations, Device, 
+                                    MinuteOccurred, CanWrite);
         {remove, train, Pid} -> Pid ! done,
                                 loop(TrainCnt - 1, StationCnt, TrainStats, 
-                                StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
+                                    StationStats, ReqStations, Device, 
+                                    MinuteOccurred, CanWrite);
         {remove, station, Pid} -> Pid ! done,
                                 loop(TrainCnt, StationCnt - 1, TrainStats, 
-                                StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
+                                    StationStats, ReqStations, Device, 
+                                    MinuteOccurred, CanWrite);
         {tick, Minute} -> io:fwrite(Device, "Minute ~p~n", [Minute]),
                             loop(TrainCnt, StationCnt, TrainStats, 
-                                        StationStats, ReqStations, Device, true, CanWrite);
-        {trainStat, Stat, Pid} -> Pid ! done, 
-                                loop(TrainCnt, StationCnt, [Stat|TrainStats],
-                                StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {stationStat, Stat, Pid} -> Pid ! done,
-                                loop(TrainCnt, StationCnt, TrainStats,
-                                [Stat|StationStats], ReqStations, Device, MinuteOccurred, CanWrite);
+                                StationStats, ReqStations, Device, true, 
+                                CanWrite);
+        {trainStat, Stat, Pid} -> loop(TrainCnt, StationCnt, [Stat|TrainStats],
+                                    StationStats, ReqStations, Device, 
+                                    MinuteOccurred, CanWrite);
+        {stationStat, Stat, Pid} -> loop(TrainCnt, StationCnt, TrainStats,
+                                    [Stat|StationStats], ReqStations, Device, 
+                                    MinuteOccurred, CanWrite);
         {passenger, PassInfo} -> printPassenger(PassInfo, Device),
                                 loop(TrainCnt, StationCnt, TrainStats,
-                                StationStats, ReqStations, Device, MinuteOccurred, CanWrite);
-        {canWrite} -> loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations,
-                            Device, MinuteOccurred, true); %sent by clock when all but output has reported minute done
-                            %This ensures that add messages will be received because otherwise the train wouldn't have reported it's minute done because of synchronous message passing function
-        %At the end of the simulation, the remaining statistics should be printed
-        %it should be taken off the clock because it is not relevant anymore
-        %and it must close the file to save the output before ending
+                                    StationStats, ReqStations, Device, 
+                                    MinuteOccurred, CanWrite);
+        {canWrite} -> loop(TrainCnt, StationCnt, TrainStats, StationStats, 
+                            ReqStations, Device, MinuteOccurred, true); 
+            %sent by clock when all but output has reported minute done
+            %This ensures that add messages will be received because otherwise 
+            %the train wouldn't have reported it's minute done because of 
+            %synchronous message passing function
+        %At the end of the simulation, the remaining statistics should be 
+        %printed it should be taken off the clock because it is not relevant 
+        %anymore and it must close the file to save the output before ending
         {endSim, Sender} -> printTrains(TrainStats, Device),
                     printStations(StationStats, Device),
                     clearPassengers(Device),
@@ -174,6 +191,7 @@ loop(TrainCnt, StationCnt, TrainStats, StationStats, ReqStations, Device,
 
 clearPassengers(Device) ->
 receive
-    {passenger, PassInfo} -> printPassenger(PassInfo, Device), clearPassengers(Device)
+    {passenger, PassInfo} -> printPassenger(PassInfo, Device), 
+                            clearPassengers(Device)
     after 0 -> ok
     end.
