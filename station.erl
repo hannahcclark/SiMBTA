@@ -22,10 +22,10 @@
 
 start(Name) ->
     % Spawns station with all basecases and registering station name
-    IncomingIn = queue:new(),
-    IncomingOut = queue:new(),
+    IncomingAsh = queue:new(),
+    IncomingAle = queue:new(),
     register(Name, spawn(fun() -> 
-                    loop(Name,[], [], nil, nil, IncomingIn, IncomingOut) end)),
+                    loop(Name,[], [], nil, nil, IncomingAsh, IncomingAle) end)),
     output:add(outMod, station).
 
 
@@ -64,108 +64,107 @@ start(Name) ->
 
 
 
-loop(Name, PassengerListIn, PassengerListOut,
-     PlatformIn, PlatformOut, IncomingIn, IncomingOut) ->
+loop(Name, PassengerListAsh, PassengerListAle,
+     PlatformAsh, PlatformAle, IncomingAsh, IncomingAle) ->
     receive
         {sendInfo} ->
             % Sends info to output
-            case PlatformIn of
+            case PlatformAsh of
                 nil -> InCase = false;
                  _ -> InCase = true
             end,
-            case PlatformOut of
+            case PlatformAle of
                 nil -> OutCase = false;
                 _ -> OutCase = true
             end,
             output:newStationStat(outMod, 
-                {Name, length(PassengerListIn) + length(PassengerListOut),
+                {Name, length(PassengerListAsh) + length(PassengerListAle),
                  InCase, OutCase}),
-            loop(Name, PassengerListIn, PassengerListOut,
-                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+            loop(Name, PassengerListAsh, PassengerListAle,
+                 PlatformAsh, PlatformAle, IncomingAsh, IncomingAle);
         {passengerEnters, Passenger, ashmont} ->
             % Add passenger to corresponding direction list
-            NewPassengerList = [Passenger|PassengerListIn],
-            Passenger ! {train, PlatformIn, ashmont},
-    %        Passenger ! {entered},
-            loop(Name, NewPassengerList, PassengerListOut,
-                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+            NewPassengerList = [Passenger|PassengerListAsh],
+            Passenger ! {train, PlatformAsh, ashmont},
+            loop(Name, NewPassengerList, PassengerListAle,
+                 PlatformAsh, PlatformAle, IncomingAsh, IncomingAle);
         {passengerEnters, Passenger, alewife} ->
             % Add passenger to corresponding direction list
-            NewPassengerList = [Passenger|PassengerListOut],
-            Passenger ! {train, PlatformOut, alewife},
-            loop(Name, PassengerListIn, NewPassengerList,
-                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+            NewPassengerList = [Passenger|PassengerListAle],
+            Passenger ! {train, PlatformAle, alewife},
+            loop(Name, PassengerListAsh, NewPassengerList,
+                 PlatformAsh, PlatformAle, IncomingAsh, IncomingAle);
         {passengerLeaves, Passenger, ashmont} ->
             % Remove passenger from corresponding direction list
-            NewPassengerList = lists:delete(Passenger, PassengerListIn),
-            loop(Name, NewPassengerList, PassengerListOut,
-                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+            NewPassengerList = lists:delete(Passenger, PassengerListAsh),
+            loop(Name, NewPassengerList, PassengerListAle,
+                 PlatformAsh, PlatformAle, IncomingAsh, IncomingAle);
         {passengerLeaves, Passenger, alewife} ->
             % Remove passenger from corresponding direction list
-            NewPassengerList = lists:delete(Passenger, PassengerListOut),
-            loop(Name, PassengerListIn, NewPassengerList,
-                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+            NewPassengerList = lists:delete(Passenger, PassengerListAle),
+            loop(Name, PassengerListAsh, NewPassengerList,
+                 PlatformAsh, PlatformAle, IncomingAsh, IncomingAle);
         {trainIncoming, Train, ashmont} ->
             % Add train to corresponding queue
-            NewIncomingIn = queue:in(Train, IncomingIn),
+            NewIncomingAsh = queue:in(Train, IncomingAsh),
             Train ! {inQueue},
-            loop(Name, PassengerListIn, PassengerListOut,
-                 PlatformIn, PlatformOut, NewIncomingIn, IncomingOut);
+            loop(Name, PassengerListAsh, PassengerListAle,
+                 PlatformAsh, PlatformAle, NewIncomingAsh, IncomingAle);
         {trainIncoming, Train, alewife} ->
             % Add train to corresponding queue
-            NewIncomingOut = queue:in(Train, IncomingOut),
+            NewIncomingAle = queue:in(Train, IncomingAle),
             Train ! {inQueue},
-            loop(Name, PassengerListIn, PassengerListOut,
-                 PlatformIn, PlatformOut, IncomingIn, NewIncomingOut);
+            loop(Name, PassengerListAsh, PassengerListAle,
+                 PlatformAsh, PlatformAle, IncomingAsh, NewIncomingAle);
         {trainEntry, Train, ashmont} ->
             % Check if train is first in corresponding queue
-            case tryTrainEntry(Train, IncomingIn, PlatformIn) of
+            case tryTrainEntry(Train, IncomingAsh, PlatformAsh) of
                 % If so, remove from queue and alert passengers
-                yes -> {_, NewIncomingIn} = queue:out(IncomingIn),
-                    alertPassengers(Train, ashmont, PassengerListIn),
-                    loop(Name, PassengerListIn, PassengerListOut,
-                         Train, PlatformOut, NewIncomingIn, IncomingOut);
+                yes -> {_, NewIncomingAsh} = queue:out(IncomingAsh),
+                    alertPassengers(Train, ashmont, PassengerListAsh),
+                    loop(Name, PassengerListAsh, PassengerListAle,
+                         Train, PlatformAle, NewIncomingAsh, IncomingAle);
                 % If not, do nothing
-                no -> loop(Name, PassengerListIn, PassengerListOut,
-                           PlatformIn, PlatformOut, IncomingIn, IncomingOut)
+                no -> loop(Name, PassengerListAsh, PassengerListAle,
+                           PlatformAsh, PlatformAle, IncomingAsh, IncomingAle)
             end;
 
         {trainEntry, Train, alewife} ->
             % Check if train is first in corresponding queue
-            case tryTrainEntry(Train, IncomingOut, PlatformOut) of
+            case tryTrainEntry(Train, IncomingAle, PlatformAle) of
                 % If so, remove from queue and alert passengers
-                yes -> {_,NewIncomingOut} = queue:out(IncomingOut),
-                    alertPassengers(Train, alewife, PassengerListOut),
-                    loop(Name, PassengerListIn, PassengerListOut,
-                         PlatformIn, Train, IncomingIn, NewIncomingOut);
+                yes -> {_,NewIncomingAle} = queue:out(IncomingAle),
+                    alertPassengers(Train, alewife, PassengerListAle),
+                    loop(Name, PassengerListAsh, PassengerListAle,
+                         PlatformAsh, Train, IncomingAsh, NewIncomingAle);
                 % If not, do nothing
-                no -> loop(Name, PassengerListIn, PassengerListOut,
-                           PlatformIn, PlatformOut, IncomingIn, IncomingOut)
+                no -> loop(Name, PassengerListAsh, PassengerListAle,
+                           PlatformAsh, PlatformAle, IncomingAsh, IncomingAle)
             end;
         {trainLeaving, ashmont, Train} ->
             % Tell train it left successfully
             Train ! {trainLeft},
             % Set corresponding platform to nil
-            loop(Name, PassengerListIn, PassengerListOut,
-                 nil, PlatformOut, IncomingIn, IncomingOut);
+            loop(Name, PassengerListAsh, PassengerListAle,
+                 nil, PlatformAle, IncomingAsh, IncomingAle);
         {trainLeaving, alewife, Train} ->
             % Tell train it left successfully
             Train ! {trainLeft},
             % Set corresponding platform to nil
-            loop(Name, PassengerListIn, PassengerListOut,
-                 PlatformIn, nil, IncomingIn, IncomingOut);
+            loop(Name, PassengerListAsh, PassengerListAle,
+                 PlatformAsh, nil, IncomingAsh, IncomingAle);
         {numWaiting, ashmont, Train} ->
             % Tell train how many passengers are wanting to board
-            Train ! {numWaiting, length(PassengerListIn)},
-            loop(Name, PassengerListIn, PassengerListOut,
-                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+            Train ! {numWaiting, length(PassengerListAsh)},
+            loop(Name, PassengerListAsh, PassengerListAle,
+                 PlatformAsh, PlatformAle, IncomingAsh, IncomingAle);
         {numWaiting, alewife, Train} ->
             % Tell train how many passengers are wanting to board
-            Train ! {numWaiting, length(PassengerListOut)},
-            loop(Name, PassengerListIn, PassengerListOut,
-                 PlatformIn, PlatformOut, IncomingIn, IncomingOut);
+            Train ! {numWaiting, length(PassengerListAle)},
+            loop(Name, PassengerListAsh, PassengerListAle,
+                 PlatformAsh, PlatformAle, IncomingAsh, IncomingAle);
         {endSim, Sender} -> lists:map(fun(Elem) -> exit(Elem, kill) end,
-                            lists:append(PassengerListIn, PassengerListOut)),
+                            lists:append(PassengerListAsh, PassengerListAle)),
                             Sender ! ok % End process at end of simulation
     end.
 
