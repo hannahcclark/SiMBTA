@@ -1,1 +1,0 @@
-{"init terminating in do_boot",{{badmatch,{error,enoent}},[{main,start,1,[{file,"main.erl"},{line,19}]},{init,start_it,1,[]},{init,start_em,1,[]}]}}
