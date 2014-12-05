@@ -282,7 +282,7 @@ passenger 50 12 ashmont central
 passenger 50 14 ashmont kendall
 passenger 50 16 ashmont charles_mgh
 passenger 50 18 ashmont park_street
-passenger 50 22 ashmont downtwon_crossing
+passenger 50 22 ashmont downtown_crossing
 passenger 50 24 ashmont south
 passenger 50 26 ashmont broadway
 passenger 50 28 ashmont andrew

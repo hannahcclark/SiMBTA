@@ -1,4 +1,4 @@
-% Module: Passenger
+% Module: Station
 % Purpose: Imitate a station of the T
 % Interface:
 %    start spawns the main loop of the station which keeps track of everything
@@ -14,7 +14,8 @@
 %    11/22/14 - RAD - formatting
 %    12/01/14 - RAD - added waiting passenger count for train
 %    12/01/14 - RAD - added direction based passenger lists
-%    12/03/14 - HCC - changed line to receive {endSim} to try cleaner way of causing station processes to die
+%    12/03/14 - HCC - changed line to receive {endSim} to try cleaner way of 
+%                     causing station processes to die
 
 -module(station).
 -export([start/1,loop/7]).
@@ -23,7 +24,6 @@ start(Name) ->
     % Spawns station with all basecases and registering station name
     IncomingIn = queue:new(),
     IncomingOut = queue:new(),
-    %io:fwrite("reg~n", []),
     register(Name, spawn(fun() -> 
                     loop(Name,[], [], nil, nil, IncomingIn, IncomingOut) end)),
     output:add(outMod, station).
@@ -50,6 +50,7 @@ loop(Name, PassengerListIn, PassengerListOut,
             % Add passenger to corresponding direction list
             NewPassengerList = [Passenger|PassengerListIn],
             Passenger ! {train, PlatformIn, ashmont},
+    %        Passenger ! {entered},
             loop(Name, NewPassengerList, PassengerListOut,
                  PlatformIn, PlatformOut, IncomingIn, IncomingOut);
         {passengerEnters, Passenger, alewife} ->
@@ -126,9 +127,8 @@ loop(Name, PassengerListIn, PassengerListOut,
             Train ! {numWaiting, length(PassengerListOut)},
             loop(Name, PassengerListIn, PassengerListOut,
                  PlatformIn, PlatformOut, IncomingIn, IncomingOut);
-        {endSim, Sender} -> %io:fwrite("stationdone~n", []), 
-                            lists:map(fun(Elem) -> exit(Elem, kill) end,
-                                lists:append(PassengerListIn, PassengerListOut)),
+        {endSim, Sender} -> lists:map(fun(Elem) -> exit(Elem, kill) end,
+                            lists:append(PassengerListIn, PassengerListOut)),
                             Sender ! ok % End process at end of simulation
     end.
 
