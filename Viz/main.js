@@ -77,7 +77,7 @@ $(document).ready(function() {
 	// Load Data
 	$.ajax({
 		type: 'GET',
-		url: 'output.txt',
+		url: 'outFile.txt',
 		success: function(text) {
 			var data = parseData(text);
 			drawFrame(1, data);
@@ -89,6 +89,7 @@ $(document).ready(function() {
 				$('#minutecount').text("Minute: "+ui.value+" / "+(data.length-3));
 			})
 
+			// Set Slider Options
 			$("#slider").slider("option", "min", 1);
 			$("#slider").slider("option", "max", data.length-3);
 
@@ -98,6 +99,8 @@ $(document).ready(function() {
 				return false;
 			})
 
+			// Combine All Passengers Data 
+			// We Don't Need It on an Per-Minute Basis
 			var passengersAggregate = [];
 			for (var i in data) {
 				if (data[i].passengers != []) {
@@ -113,12 +116,15 @@ $(document).ready(function() {
 				var durations = [];
 				var origin = $('#origin_select').val();
 				var destination = $('#dest_select').val();
+
+				// Find All Passenger Trips that Match the Start and End
 				for (var i in passengersAggregate) {
 					if (passengersAggregate[i].Start == origin && passengersAggregate[i].End == destination) {
 						durations.push(passengersAggregate[i].Duration);
 					}
 				}
 
+				// Calculate Average and Return to User
 				if (durations.length == 0) {
 					$('#avg-result').html("No data available.");
 				} else {
@@ -132,6 +138,7 @@ $(document).ready(function() {
 
 		},
 		error: function() {
+			// Are You Running on a Web Server?
 			alert('Could not open data file.');
 		}
 	})
@@ -142,6 +149,7 @@ var parseData = function(text) {
 
 	var data = [];
 
+	// Turns a Line of a File Into an Object
 	var parseLine = function(chunks) {
 		var obj = {};
 		for (var i = 1; i < chunks.length; i++) {
@@ -155,11 +163,13 @@ var parseData = function(text) {
 	text = text.replace(new RegExp(": ", "g"), ":")
 	console.log(text);
 
+	// Go Through the File
 	var currMinute = 0;
 	var lines = text.split("\n");
 	for (var i in lines) {
 		var chunks = lines[i].split(" ");
 
+		// Switch Based on First Word in the Line
 		switch(chunks[0]) {
 			case "Minute":
 				currMinute = parseInt(chunks[1]);
@@ -190,9 +200,8 @@ var parseData = function(text) {
 
 }
 
+// Canvas Drawing
 var drawFrame = function(min, data) {
-
-	console.log("DRAWING "+min);
 
 	var mapCanvas = document.getElementById("map");
 	var mcx = mapCanvas.getContext("2d");
@@ -200,7 +209,7 @@ var drawFrame = function(min, data) {
 	mcx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
 	var minuteData = data[min];
-	console.log(minuteData);
+	// Turn List of Stations Into Associative Array by Station Slug
 	var dataByStation = (function() {
 		var data = {};
 		for (var i in minuteData.stations) {
@@ -274,6 +283,7 @@ var drawFrame = function(min, data) {
 		return 0;
 	}
 	// Create Initial Array of Empty Values for Each Station
+	// Each Station Has One Train Contained in it, and an Array of Trains Waiting to Enter
 	var trainsByStation = STATIONS.reduce(function(obj, station, i) {
 		obj[station.slug] = {
 			station: station,
@@ -288,9 +298,10 @@ var drawFrame = function(min, data) {
 		}
 		return obj;
 	}, {});
+
+	// Group All Train Data by Station
 	for (var i in minuteData.trains) {
 		var train = minuteData.trains[i];
-		console.log(train);
 		if (train.Approaching !== undefined && train.Approaching != "endStation") {
 			trainsByStation[train.Approaching].approaching[train.Direction].push(train);
 		} else if (train.Station !== undefined) {
@@ -312,6 +323,7 @@ var drawFrame = function(min, data) {
      	mcx.fillText(numPassengers, x, y);
 	}
 
+	// Draw all Trains Next to Stations
 	for (var name in trainsByStation) {
 		
 		if (trainsByStation[name].approaching.alewife.length != 0) {
