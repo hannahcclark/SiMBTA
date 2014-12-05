@@ -6,18 +6,11 @@
 - Test with train reaching capacity with no more people boarding - RAEWYN - RESOLVED 11:11PM 02/12/14
 - Test with train reaching capacity with more people who want to board -RAEWYN 3:32AM 02/12/14
 - Fix train output issue - HANNAH - RESOLVED 9:35PM 02/12/14
--* Fix issue that trains can't start before minute 2 (non presentation critical, but maybe needed for friday, maybe?)
 - Final test file - RAEWYN - RESOLVED 5:45AM 03/12/14
 - Find why final test file is hanging at end - HANNAH - RESOLVED - 2:30ish PM 03/12/14
 - REMINDER - remove Outputs after debugging is done (for presentation) - HANNAH - RESOLVED - 2:30ish PM 03/12/14
--* REMINDER - clean up commented out lines in code (in friday meeting) - GROUP
+- REMINDER - clean up commented out lines in code/made 80 characters - GROUP - RESOLVED 05/12/14
 -* REMINDER - clean up github repo (in friday meeting) - GROUP
-- Fix heisenbug causing hang in middle of simulation
-    - bug was previously appearing at least 1 per 10 runs, ran 30+ times without appearing,
-      concluded initial proposed fix actually is working (hopefully), but just hadn't been compiled for some reason
-      - RESOLVED (maybe) - HANNAH 2:20PM 04/12/14
--* Fix issue with stations not being able to be killed with {endSim, Sender}, so that we don't have to call exit for stations and passengers in main (maybe)
--* Change In and Out in PlatformIn/Out and PassengerListIn/Out to Ash and Ale respectively
-
-Note for Raewyn: Passengers should never receive a notification for a train
-going in the wrong direction. Edit your cases/messages?
+- Fix heisenbug causing hang in middle of simulation (for the most feasible number of test runs)- RESOLVED - HANNAH 2:20PM 04/12/14
+- Fix issue with stations not being able to be killed with {endSim, Sender}, so that we don't have to call exit for stations and passengers in main - HANNAH - 05/12/14 (my bad for including reason for this bug)
+- Change In and Out in PlatformIn/Out and PassengerListIn/Out to Ash and Ale respectively - RAEWYN
