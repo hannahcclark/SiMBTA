@@ -59,16 +59,6 @@ add(Proc, Type) ->
                     receive
                         done ->  ok
                     end.
-
-
-
-
-
-Minute num
-train Direction:dir Station:station Passengers:num
-train Direction:dir Approaching:station Passengers:num
-station Name:station Passengers:num AshTrain:bool AleTrain:bool
-passenger Start:station End:station Began:timeNum Duration:num%Call to flush output and close file when simulation is over
 endSimulation(Proc) -> Proc ! {endSim, self()},
                         receive
                             Message -> Message
