@@ -50,10 +50,22 @@ wait(StartStation, StartTime, EndStation,  Direction) ->
 	        wait(StartStation, StartTime, EndStation, Direction)
     end.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction) ->
     receive
-        {tellStation, Sender} -> Sender ! {point, Endpoint, StartStation},
-            loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);
 	    {train, nil, Direction} ->
             % Station is waiting for a train in given direction so wait
             loop(StartTime, StartStation, CurrentLocation, Endpoint, Direction);

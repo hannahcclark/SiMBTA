@@ -54,6 +54,16 @@ start(Capacity, StartTime, Direction, StartStation) ->
     Pid.
 
 
+
+
+
+
+
+
+
+
+
+
 loop(_StartTime, _Capacity, _Direction, endStation, _PassengerList, _, 
 _DisembRemaining, _WaitTime) ->
 	receive
@@ -113,6 +123,13 @@ DisembRemaining, WaitTime) ->
 
 				end;
 
+
+
+
+
+
+
+
 		% Will Arive in Future, Currently in Transit
 		{ tick, _Time } when (TimeToStation > 1) ->
 			clk ! { minuteDone },
@@ -168,6 +185,16 @@ DisembRemaining, WaitTime) ->
 					emptyMailbox(),
 					loop(StartTime, Capacity, Direction, NextStation, 
                         PassengerList, NewTimeToNext, 0, 0);
+
+
+
+
+
+
+
+
+
+
 
 				% Other Cases
 				true ->
