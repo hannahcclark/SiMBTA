@@ -1,9 +1,0 @@
-train ashmont 2 500 0
-train ashmont 9 500 0
-train alewife 4 500 0
-passenger 1 1 alewife park_street
-passenger 3 1 alewife downtown_crossing
-passenger 4 1 davis park_street
-passenger 5 3 porter park_street
-passenger 3 2 harvard shawmut
-passenger 3 6 harvard park_street
