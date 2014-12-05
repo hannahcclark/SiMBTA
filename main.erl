@@ -5,16 +5,23 @@
 % Original Author: Hannah Clark
 % Date: 11/8/14
 % ChangeLog:
-%    12/04/14 - HCC - changed start/1 to run/1 for clarity, cleaned up commented out lines
+%    12/05/14 - HCC - enforced 80 character rule
+%    12/05/14 - HCC - changed to proper way of ending station processes
+%    12/04/14 - HCC - changed start/1 to run/1 for clarity, cleaned up commented
+%                     out lines
 %    12/03/14 - HCC - eliminated debugging outputs (commented or deleted)
-%    12/03/14 - HCC - changed start and parser so simulation ends when trains are done and kills passenger processes still waiting in stations
+%    12/03/14 - HCC - changed start and parser so simulation ends when trains 
+%                     are done and kills passenger processes still waiting in 
+%                     stations
 %    12/02/14 - HCC - fixed delay to not send minute done when about to
 %                     remove from clock
 %    12/01/14 - RAD - fixed a Pid message
 %    11/24/14 - HCC - fixed bugs in code to exit simulation
 %    11/23/14 - HCC - fixed bugs in delay loop function and procsAlive function
-%    11/22/14 - HCC - fixed bugs in start due to order of function calls that appeared in integration testing
-%    11/19/14 - HCC - changes to return values from functions and their usage to be able to automatically end simulation
+%    11/22/14 - HCC - fixed bugs in start due to order of function calls that 
+%                     appeared in integration testing
+%    11/19/14 - HCC - changes to return values from functions and their usage to
+%                     be able to automatically end simulation
 %    11/19/14 - HCC - fixed errors when inputting from file
 %    11/17/14 - HCC - fixed functions to support delays
 %    11/16/14 - HCC - added functions to support delays
@@ -25,27 +32,35 @@
 run(FileName) -> {ok, Device} = file:open(FileName, [read]), 
                    clock:init(clk), %Init clock so processes can add themselves
                                       %when created without errors
-                   output:start(outMod, "outFile.txt"), %Start output so processes can add 
-                                      %themselves when created without errors
+                    %Start output so processes can add themselves when created
+                    %without errors
+                    output:start(outMod, "outFile.txt"), 
                    lists:foreach(fun(Elem) -> station:start(Elem) end, 
                             carto:cartograph()), %make station processes
-                   {Delays, Trains, Passengers} = parseInput(Device, [], [], []),
-                                      %Read file to make trains, passengers, and delays
-                   clock:add(clk, spawn(fun()->
-                                    delayLoop(Delays) end)),
-                                    %Create process to send delays, adding it to the clock
-                                    %so that it sends them appropriately
-                   clock:startClock(clk), %Everything is ready, so start clock's count
+                   %Read file to make trains, passengers, and delays
+                   {Delays, Trains, Passengers} = parseInput(Device, [], [], 
+                                                    []),
+                   %Create process to send delays, adding it to the clock
+                    clock:add(clk, spawn(fun()-> delayLoop(Delays) end)),
+                    %Everything is ready, so start clock's count
+                    clock:startClock(clk), 
                    procsAlive(Trains),
                    output:endSimulation(outMod), %Everything is done, so output 
                                                 %may be ended and clock will end
-                   lists:foreach(fun(Pid) -> exit(Pid, kill) end, Passengers),
-                   lists:foreach(fun(Pid) -> exit(whereis(Pid),kill)
-                        end, carto:cartograph()), %cause stations to exit to clean up
+                   %cause stations to exit to clean up
+                   lists:foreach(fun(Pid) ->  Pid ! {endSim, self()},
+                        receive
+                            ok -> ok
+                        end
+                        end, carto:cartograph()),
+                    %eliminate any passengers that did not yet enter a station
+                    lists:foreach(fun(Pid) -> exit(Pid, kill) end,
+                        lists:filter(fun(Pid)->is_process_alive(Pid) end,
+                            Passengers)),
                     ok.
                      
-%Waits until all processes in a list are dead by filtering on alive processes at each recursion
-%and ending when there are no longer any
+%Waits until all processes in a list are dead by filtering on alive processes at
+%each recursion and ending when there are no longer any
 procsAlive([]) -> ok;
 procsAlive(Procs) ->
     procsAlive(lists:filter(fun(Proc) -> 
@@ -62,19 +77,21 @@ parseInput(Device, Delays, Trains, Passengers) ->
                 train -> 
                     {ok, [Dir, Time, Cap, NumDelays]} = 
                         io:fread(Device, "", "~a ~10u ~10u ~10u"),
-                    Train = train:start(Cap, Time, Dir, carto:firstStation(Dir)),
-                    parseInput(Device, parseDelays(NumDelays, Train, Delays, 
-                                Device), [Train|Trains], Passengers); %Parse next input,
-                                %adding train to procs, processing delays, if any,
-                                % and adding them to delays
+                    Train = train:start(Cap, Time, Dir, 
+                        carto:firstStation(Dir)),
+                    %Parse next input, adding train to procs, processing delays,
+                    %if any, and adding them to delays
+                   parseInput(Device, parseDelays(NumDelays, Train, Delays, 
+                                Device), [Train|Trains], Passengers); 
                 passenger -> 
                     {ok, [Count, Time, Start, End]} =
                         io:fread(Device, "", "~10u ~10u ~a ~a"),
+                    %Parse next input, adding passengers to procs
                     parseInput(Device, Delays, Trains, lists:append(Passengers,
                       makeXPassengers(Count, Start, Time, End)))
-                                      %Parse next input, adding passengers to procs
             end;
-        eof -> {Delays,Trains, Passengers} %Return delays and procs when nothing more to read in
+        %Return delays and procs when nothing more to read in
+        eof -> {Delays,Trains, Passengers}
     end.
 
 %Function to parse a number of delays belonging to train whose pid is Train
